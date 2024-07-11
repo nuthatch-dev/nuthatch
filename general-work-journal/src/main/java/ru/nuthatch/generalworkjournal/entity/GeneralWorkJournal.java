@@ -34,7 +34,6 @@ public class GeneralWorkJournal implements Serializable {
      * Обязательный элемент
      */
     @Embedded
-    @Column(name = "doc_info")
     protected DocInfo docInfo;
 
     /**
@@ -153,7 +152,41 @@ public class GeneralWorkJournal implements Serializable {
      * Обязательный элемент
      */
     @Embedded
-    @Column(name = "permanent_object_common_info",
-            nullable = false)
     protected PermanentObjectCommonInfo permanentObjectCommonInfo;
+
+    /**
+     * Общие сведения об общем журнале работ
+     * Необязательный элемент
+     */
+    @OneToOne
+    @Column(name = "general_work_journal_common_info")
+    protected GeneralWorkJournalCommonInfo generalWorkJournalCommonInfo;
+
+    /**
+     * Регистрационная надпись органа государственного строительного надзора (Id)
+     * Необязательный элемент
+     * Строгий формат:
+     * _хххххххх-хххх-хххх-хххх-хххххххххххх
+     * Наложенные ограничения
+     * _[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
+     */
+    @Column(name = "supervisory_authority_registration_mark_id")
+    protected UUID supervisoryAuthorityRegistrationMarkId;
+
+    /**
+     * Список ID инженерно-технического персонала лица, осуществляющего строительство,
+     * занятого при строительстве, реконструкции,
+     * капитальном ремонте объекта капитального строительства
+     * Обязательный элемент
+     * Строгий формат:
+     * _хххххххх-хххх-хххх-хххх-хххххххххххх
+     * Наложенные ограничения
+     * _[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
+     * Список
+     */
+    @ElementCollection
+    @Column(name = "engineering_and_technical_persons_ids_set")
+    protected Set<UUID> engineeringAndTechnicalPersonsIdsSet = new HashSet<>();
+
+
 }

@@ -1,5 +1,7 @@
 package ru.nuthatch.generalworkjournal.entity;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -10,6 +12,12 @@ import lombok.Data;
  */
 @Data
 @Embeddable
+@AttributeOverrides({
+        @AttributeOverride(name = "document_name",
+                column = @Column(name = "doc_info_name")),
+        @AttributeOverride(name = "document_number",
+                column = @Column(name = "doc_info_number"))
+})
 public class DocInfo {
 
     /**
@@ -17,8 +25,7 @@ public class DocInfo {
      * Обязательный элемент
      * Минимум 1 символ
      */
-    @Column(name = "document_name",
-            nullable = false)
+    @Column(nullable = false)
     protected String name;
 
     /**
@@ -26,8 +33,7 @@ public class DocInfo {
      * Обязательный элемент
      * Минимум 1 символ
      */
-    @Column(name = "document_number",
-            nullable = false)
+    @Column(nullable = false)
     protected String number;
 
 }
