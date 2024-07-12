@@ -1,4 +1,4 @@
-package ru.nuthatch.generalworkjournal.entity;
+package ru.nuthatch.generalworkjournal.common;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;

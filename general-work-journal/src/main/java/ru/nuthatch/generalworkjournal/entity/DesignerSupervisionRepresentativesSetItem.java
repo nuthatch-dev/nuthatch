@@ -47,8 +47,6 @@ public class DesignerSupervisionRepresentativesSetItem implements Serializable {
      * Обязательный элемент
      */
     @ManyToOne
-    @Column(name = "organization",
-            nullable = false)
     protected OrganizationWithOptionalSroAndId organization;
 
     /**

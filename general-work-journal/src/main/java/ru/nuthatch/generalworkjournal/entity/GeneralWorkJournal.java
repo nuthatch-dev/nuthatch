@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import ru.nuthatch.generalworkjournal.common.BaseDocument;
 import ru.nuthatch.generalworkjournal.common.ConstructionTypeName;
+import ru.nuthatch.generalworkjournal.common.DocInfo;
 import ru.nuthatch.generalworkjournal.common.OrganizationWithOptionalSroAndId;
 
 import java.io.Serial;
@@ -41,8 +42,6 @@ public class GeneralWorkJournal implements Serializable {
      * Обязательный элемент
      */
     @ManyToOne
-    @Column(name = "permanent_object_info",
-            nullable = false)
     protected PermanentObjectInfo permanentObjectInfo;
 
     /**
@@ -92,7 +91,6 @@ public class GeneralWorkJournal implements Serializable {
      * Необязательный элемент
      */
     @ManyToOne
-    @Column(name = "permission_to_construction_root")
     protected ExecutiveAuthorityDocInfo permissionToConstructionRoot;
 
     /**
@@ -100,8 +98,6 @@ public class GeneralWorkJournal implements Serializable {
      * Обязательный элемент
      */
     @ManyToOne
-    @Column(name = "project_documentation_contractor",
-            nullable = false)
     protected OrganizationWithOptionalSroAndId projectDocumentationContractor;
 
     /**
@@ -111,7 +107,6 @@ public class GeneralWorkJournal implements Serializable {
      * Список
      */
     @ManyToMany(fetch = FetchType.LAZY)
-    @Column(name = "designer_supervision_representatives_set")
     protected Set<DesignerSupervisionRepresentativesSetItem> designerSupervisionRepresentativesSet = new HashSet<>();
 
     /**
@@ -144,7 +139,6 @@ public class GeneralWorkJournal implements Serializable {
      * Необязательный элемент
      */
     @ManyToOne
-    @Column(name = "state_supervisory_authority_info")
     protected StateSupervisoryAuthorityInfo stateSupervisoryAuthorityInfo;
 
     /**
@@ -159,7 +153,6 @@ public class GeneralWorkJournal implements Serializable {
      * Необязательный элемент
      */
     @OneToOne
-    @Column(name = "general_work_journal_common_info")
     protected GeneralWorkJournalCommonInfo generalWorkJournalCommonInfo;
 
     /**
@@ -172,6 +165,12 @@ public class GeneralWorkJournal implements Serializable {
      */
     @Column(name = "supervisory_authority_registration_mark_id")
     protected UUID supervisoryAuthorityRegistrationMarkId;
+
+    /*
+    Сведения об изменениях в записях Титульного листа общего журнала работ
+    Необязательный элемент
+    TODO: Список generalWorkJournalTitleChange (native query)
+     */
 
     /**
      * Список ID инженерно-технического персонала лица, осуществляющего строительство,
@@ -188,5 +187,18 @@ public class GeneralWorkJournal implements Serializable {
     @Column(name = "engineering_and_technical_persons_ids_set")
     protected Set<UUID> engineeringAndTechnicalPersonsIdsSet = new HashSet<>();
 
+    /*
+    Перечень специальных журналов, в которых ведется учет выполнения работ,
+    а также журналов авторского надзора лица, осуществляющего подготовку проектной документации
+    Обязательный элемент
+    TODO: Список specialJournal (native query)
+     */
+
+    /*
+    Сведения о выполнении работ в процессе строительства, реконструкции,
+    капитального ремонта объекта капитального строительства (id)
+    Обязательный элемент
+    TODO: Список worksPerformingInfo (native query)
+     */
 
 }

@@ -51,7 +51,5 @@ public class SpecialJournal implements Serializable {
      * Отношение к общему журналу работ
      */
     @ManyToOne
-    @Column(nullable = false,
-            updatable = false)
     protected GeneralWorkJournal generalWorkJournal;
 }

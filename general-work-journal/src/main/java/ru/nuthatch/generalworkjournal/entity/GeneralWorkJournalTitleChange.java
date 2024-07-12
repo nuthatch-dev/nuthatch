@@ -69,7 +69,5 @@ public class GeneralWorkJournalTitleChange implements Serializable {
      * Отношение записи об изменении к журналу
      */
     @ManyToOne
-    @Column(nullable = false,
-            updatable = false)
     protected GeneralWorkJournal generalWorkJournal;
 }

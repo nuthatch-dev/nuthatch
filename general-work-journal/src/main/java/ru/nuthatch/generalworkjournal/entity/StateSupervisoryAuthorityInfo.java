@@ -37,7 +37,5 @@ public class StateSupervisoryAuthorityInfo implements Serializable {
      * Обязательный элемент
      */
     @ManyToOne
-    @Column(name = "supervisory_authority_official_person",
-            nullable = false)
     protected ExecutiveGovernmentAgencyRepresentative supervisoryAuthorityOfficialPerson;
 }
