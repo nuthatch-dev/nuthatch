@@ -2,6 +2,7 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import ru.nuthatch.generalworkjournal.common.WorkLocation;
 
 import java.io.Serializable;
 import java.util.UUID;
