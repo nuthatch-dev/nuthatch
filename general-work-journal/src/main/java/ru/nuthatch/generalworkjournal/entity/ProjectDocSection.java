@@ -5,19 +5,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.DocInfo;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Описание комплексного типа: projectDocSection
  * Раздел проектной документации (сокр.)
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "project_doc_section")
-public class ProjectDocSection implements Serializable {
+public class ProjectDocSection extends CommonEntity implements Serializable {
 
     /**
      * Идентификатор документа (наименование, номер)
@@ -27,15 +29,4 @@ public class ProjectDocSection implements Serializable {
             nullable = false)
     protected DocInfo docInfo;
 
-    /**
-     * Id раздела
-     * Необязательный элемент
-     * Строгий формат:
-     * хххххххх-хххх-хххх-хххх-хххххххххххх
-     * Наложенные ограничения
-     * [0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
-     */
-    @Id
-    @Column(name = "project_doc_section_uuid")
-    protected UUID projectDocSectionUUID;
 }

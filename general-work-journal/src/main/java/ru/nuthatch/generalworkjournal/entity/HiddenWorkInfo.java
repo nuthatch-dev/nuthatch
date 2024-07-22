@@ -53,6 +53,7 @@ public class HiddenWorkInfo {
      * Список
      */
     @ManyToMany
+    @JoinTable(name = "hidden_work_work_method")
     protected Set<WorkMethod> workMethodSet = new HashSet<>();
 
 }

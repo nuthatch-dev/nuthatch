@@ -2,6 +2,8 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -11,9 +13,10 @@ import java.util.UUID;
  * Объект капительного строительства
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "permanent_object_info")
-public class PermanentObjectInfo implements Serializable {
+public class PermanentObjectInfo extends CommonEntity implements Serializable {
 
     /**
      * Наименование объекта (этапа)
@@ -32,20 +35,5 @@ public class PermanentObjectInfo implements Serializable {
     @Column(name = "permanent_object_address",
             nullable = false)
     protected PostalOrConstructionSiteAddress permanentObjectAddress;
-
-    /**
-     * UUID объекта капитального строительства
-     * Обязательный элемент
-     * Строгий формат:
-     * хххххххх-хххх-хххx-хххx-хххххххххххх
-     * Наложенные ограничения
-     * [0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
-     */
-    @Id
-    @GeneratedValue
-    @Column(name = "permanent_object_uuid",
-            nullable = false,
-            updatable = false)
-    protected UUID permanentObjectUUID;
 
 }

@@ -2,22 +2,20 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Описание комплексного типа WorkMethod
  * Метод выполнения работы
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "work_method")
-public class WorkMethod implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class WorkMethod extends CommonEntity implements Serializable {
 
     /**
      * Наименование метода

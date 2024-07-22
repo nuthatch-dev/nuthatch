@@ -2,6 +2,8 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -14,13 +16,10 @@ import java.util.UUID;
  * капитальном ремонте объекта капитального строительства
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "state_supervision_info")
-public class StateSupervisionInfo implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class StateSupervisionInfo extends CommonEntity implements Serializable {
 
     /**
      * Id записей сведений о государственном строительном надзоре

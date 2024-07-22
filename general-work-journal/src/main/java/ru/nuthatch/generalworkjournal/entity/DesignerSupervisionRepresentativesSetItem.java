@@ -2,6 +2,8 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.OrganizationWithOptionalSroAndId;
 
 import java.io.Serializable;
@@ -14,13 +16,10 @@ import java.util.*;
  * и его представители (id)
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "designer_supervision_representatives_list_item")
-public class DesignerSupervisionRepresentativesSetItem implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class DesignerSupervisionRepresentativesSetItem extends CommonEntity implements Serializable {
 
     /**
      * Уполномоченные представители лица, осуществляющего подготовку проектной документации,
@@ -52,5 +51,6 @@ public class DesignerSupervisionRepresentativesSetItem implements Serializable {
      * Список
      */
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "designer_project_doc_section")
     protected Set<ProjectDocSection> projectDocSectionsSet = new HashSet<>();
 }

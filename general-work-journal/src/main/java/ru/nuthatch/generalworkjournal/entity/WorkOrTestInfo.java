@@ -2,6 +2,8 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.WorkLocation;
 
 import java.io.Serializable;
@@ -13,13 +15,10 @@ import java.util.UUID;
  * строительства/реконструкции/капитального ремонта объекта капитального строительства
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "work_or_test_info")
-public class WorkOrTestInfo implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class WorkOrTestInfo extends CommonEntity implements Serializable {
 
     /**
      * Тип, содержащий в себе описание работы

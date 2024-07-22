@@ -2,24 +2,18 @@ package ru.nuthatch.generalworkjournal.common;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Информация о представителе (ФИО, должность, ID сотрудника)
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "representative")
-public class Representative implements Serializable {
-
-    /**
-     * id сотрудника
-     */
-    @Id
-    @GeneratedValue
-    protected UUID personId;
+public class Representative extends CommonEntity implements Serializable {
 
     @Embedded
     protected FullNameGroup fullNameGroup;

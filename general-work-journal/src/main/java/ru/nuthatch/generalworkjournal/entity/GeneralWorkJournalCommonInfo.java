@@ -2,6 +2,8 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,21 +15,10 @@ import java.util.UUID;
  */
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "general_work_journal_common_info")
-public class GeneralWorkJournalCommonInfo implements Serializable {
-
-    /**
-     * ID подписываемой части (информация об общем журнале работ)
-     * Обязательный элемент
-     * Строгий формат:
-     * _хххххххх-хххх-хххх-хххх-хххххххххххх
-     * Наложенные ограничения
-     * _[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
-     */
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class GeneralWorkJournalCommonInfo extends CommonEntity implements Serializable {
 
     /**
      * Объём журнала

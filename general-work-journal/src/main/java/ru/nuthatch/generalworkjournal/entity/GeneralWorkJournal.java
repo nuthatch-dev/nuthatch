@@ -100,6 +100,7 @@ public class GeneralWorkJournal implements Serializable {
      * Список
      */
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "general_journal_designer_representative")
     protected Set<DesignerSupervisionRepresentativesSetItem> designerSupervisionRepresentativesSet = new HashSet<>();
 
     /**
@@ -230,5 +231,6 @@ public class GeneralWorkJournal implements Serializable {
      * Список
      */
     @ManyToMany
+    @JoinTable(name = "general_journal_extra_parameter")
     protected Set<ExtraParameter> extraParameterSet = new HashSet<>();
 }

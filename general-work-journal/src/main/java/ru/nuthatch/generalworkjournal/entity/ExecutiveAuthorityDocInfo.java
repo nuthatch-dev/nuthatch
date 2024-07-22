@@ -2,8 +2,12 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
+import ru.nuthatch.generalworkjournal.common.DocInfo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -11,17 +15,31 @@ import java.util.UUID;
  * Сведения о документе, выданном органом власти
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "executive_authority_doc_info")
-public class ExecutiveAuthorityDocInfo implements Serializable {
+public class ExecutiveAuthorityDocInfo extends CommonEntity implements Serializable {
 
     /**
      * Реквизиты документа, со сроком действия и датой изменения
      * Обязательный элемент
      */
-    @Id
-    @Column(name = "doc_details")
-    protected UUID docDetails;
+    @Embedded
+    protected DocInfo docInfo;
+
+    /**
+     Срок действия документа
+     Необязательный элемент
+     Дата в формате <ГГГГ-ММ-ДД> (год-месяц-день)
+     */
+    protected Date expirationDate;
+
+    /**
+     Дата внесения изменений или исправлений
+     Необязательный элемент
+     Дата в формате <ГГГГ-ММ-ДД> (год-месяц-день)
+     */
+    protected Date docChangedate;
 
     /**
      * ID органа (организации)

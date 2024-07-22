@@ -2,6 +2,8 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,13 +15,10 @@ import java.util.UUID;
  * Тип, содержащий в себе информацию о материале
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "used_material")
-public class UsedMaterial implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class UsedMaterial extends CommonEntity implements Serializable {
 
     /**
      * Наименование материала (изделия), его маркировка

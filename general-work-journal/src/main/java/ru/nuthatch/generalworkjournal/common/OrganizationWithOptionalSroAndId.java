@@ -2,6 +2,7 @@ package ru.nuthatch.generalworkjournal.common;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -11,23 +12,10 @@ import java.util.UUID;
  * Организация (ЮЛ/ИП) с необязательным СРО и ID организации
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "organization_with_optional_sro_and_id")
-public class OrganizationWithOptionalSroAndId implements Serializable {
-
-    /**
-     * ID участника
-     * Обязательный элемент
-     * Строгий формат:
-     * хххххххх-хххх-хххх-хххх-хххххххххххх
-     * Наложенные ограничения
-     * [0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
-     */
-    @Id
-    @GeneratedValue
-    @Column(name = "participant_id",
-            nullable = false)
-    protected UUID participantId;
+public class OrganizationWithOptionalSroAndId extends CommonEntity implements Serializable {
 
     /**
      * Информация о юридическом лице

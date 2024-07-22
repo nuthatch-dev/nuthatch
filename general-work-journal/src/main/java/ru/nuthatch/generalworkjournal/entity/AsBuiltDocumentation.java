@@ -2,6 +2,8 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.DocInfo;
 import ru.nuthatch.generalworkjournal.common.Representative;
 
@@ -9,7 +11,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Описание комплексного типа: AsBuiltDocumentation
@@ -17,13 +18,10 @@ import java.util.UUID;
  * капитальном ремонте объекта капитального строительства
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "as_built_documentation")
-public class AsBuiltDocumentation implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class AsBuiltDocumentation extends CommonEntity implements Serializable {
 
     /**
      * Дата документа
@@ -44,6 +42,7 @@ public class AsBuiltDocumentation implements Serializable {
      * Список
      */
     @ManyToMany
+    @JoinTable(name = "as_built_doc_representative")
     protected Set<Representative> docSignatoriesSet = new HashSet<>();
 
     /**

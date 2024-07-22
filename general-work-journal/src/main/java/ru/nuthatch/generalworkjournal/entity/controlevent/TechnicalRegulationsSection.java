@@ -2,19 +2,17 @@ package ru.nuthatch.generalworkjournal.entity.controlevent;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.DocInfo;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "technical_regulations_section")
-public class TechnicalRegulationsSection implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class TechnicalRegulationsSection extends CommonEntity implements Serializable {
 
     /**
      * Структурная единица технического регламента, иного нормативно-правового акта
