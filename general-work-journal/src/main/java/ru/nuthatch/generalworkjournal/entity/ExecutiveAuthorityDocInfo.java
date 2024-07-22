@@ -3,7 +3,6 @@ package ru.nuthatch.generalworkjournal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -15,9 +14,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "executive_authority_doc_info")
 public class ExecutiveAuthorityDocInfo implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * Реквизиты документа, со сроком действия и датой изменения

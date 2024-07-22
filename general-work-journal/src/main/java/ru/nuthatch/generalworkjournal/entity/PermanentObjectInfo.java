@@ -3,7 +3,6 @@ package ru.nuthatch.generalworkjournal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -15,9 +14,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "permanent_object_info")
 public class PermanentObjectInfo implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * Наименование объекта (этапа)

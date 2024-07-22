@@ -2,12 +2,8 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import ru.nuthatch.generalworkjournal.common.BaseDocument;
-import ru.nuthatch.generalworkjournal.common.ConstructionTypeName;
-import ru.nuthatch.generalworkjournal.common.DocInfo;
-import ru.nuthatch.generalworkjournal.common.OrganizationWithOptionalSroAndId;
+import ru.nuthatch.generalworkjournal.common.*;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -19,9 +15,6 @@ import java.util.*;
 @Entity
 @Table(name = "general_work_journal")
 public class GeneralWorkJournal implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * Информация об UUID и редакции документа, UUID объекта капитального строительства, версии схемы
@@ -201,4 +194,41 @@ public class GeneralWorkJournal implements Serializable {
     TODO: Список worksPerformingInfo (native query)
      */
 
+    /*
+    Сведения о строительном контроле в процессе строительства, реконструкции,
+    капитального ремонта объекта капитального строительства (список)
+    Необязательный элемент
+    TODO: Список controlEventInfo (native query)
+     */
+
+    /*
+    Сведения о строительном контроле лица, осуществляющего строительство,
+    в процессе строительства, реконструкции, капитального ремонта объекта
+    капитального строительства (список)
+    Необязательный элемент
+    TODO: Список controlEventInfo (native query)
+     */
+
+    /*
+    Перечень исполнительной документации при строительстве, реконструкции,
+    капитальном ремонте объекта капитального строительства
+    Обязательный элемент
+    TODO: Список asBuiltDocumentation (native query)
+     */
+
+    /**
+     * Сведения о государственном строительном надзоре при строительстве,
+     * реконструкции, капитальном ремонте объекта капитального строительства
+     * Необязательный элемент
+     */
+    @OneToOne
+    protected StateSupervisionInfo stateSupervisionInfo;
+
+    /**
+     * Список дополнительных параметров
+     * Необязательный элемент
+     * Список
+     */
+    @ManyToMany
+    protected Set<ExtraParameter> extraParameterSet = new HashSet<>();
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import ru.nuthatch.generalworkjournal.common.OrganizationWithOptionalSroAndId;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -18,9 +17,6 @@ import java.util.*;
 @Entity
 @Table(name = "designer_supervision_representatives_list_item")
 public class DesignerSupervisionRepresentativesSetItem implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue

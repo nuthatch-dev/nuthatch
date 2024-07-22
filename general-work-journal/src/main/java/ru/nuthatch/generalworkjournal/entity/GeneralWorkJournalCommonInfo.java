@@ -3,7 +3,6 @@ package ru.nuthatch.generalworkjournal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
@@ -17,9 +16,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "general_work_journal_common_info")
 public class GeneralWorkJournalCommonInfo implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * ID подписываемой части (информация об общем журнале работ)

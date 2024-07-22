@@ -1,4 +1,4 @@
-package ru.nuthatch.generalworkjournal.entity.controlevent;
+package ru.nuthatch.generalworkjournal.common;
 
 import jakarta.persistence.*;
 import lombok.Data;

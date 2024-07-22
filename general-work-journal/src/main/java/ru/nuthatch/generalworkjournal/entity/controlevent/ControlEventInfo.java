@@ -2,6 +2,7 @@ package ru.nuthatch.generalworkjournal.entity.controlevent;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import ru.nuthatch.generalworkjournal.common.ExtraParameter;
 import ru.nuthatch.generalworkjournal.entity.GeneralWorkJournal;
 
 import java.io.Serializable;

@@ -3,7 +3,6 @@ package ru.nuthatch.generalworkjournal.common;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -15,9 +14,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "organization_with_optional_sro_and_id")
 public class OrganizationWithOptionalSroAndId implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * ID участника

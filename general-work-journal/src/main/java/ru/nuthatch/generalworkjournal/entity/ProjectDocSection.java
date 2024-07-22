@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import ru.nuthatch.generalworkjournal.common.DocInfo;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -19,9 +18,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "project_doc_section")
 public class ProjectDocSection implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * Идентификатор документа (наименование, номер)
