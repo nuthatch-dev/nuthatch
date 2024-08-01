@@ -33,6 +33,7 @@ public class DesignerSupervisionRepresentativesSetItem extends CommonEntity impl
      */
     @ElementCollection
     @Column(name = "representatives_ids_set")
+    @JoinTable(name = "designer_supervision_representative")
     protected Set<UUID> representativesIdsSet = new HashSet<>();
 
     /**

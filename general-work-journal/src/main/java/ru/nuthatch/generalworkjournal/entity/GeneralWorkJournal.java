@@ -3,6 +3,7 @@ package ru.nuthatch.generalworkjournal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import ru.nuthatch.generalworkjournal.common.*;
+import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
 
 import java.io.Serializable;
 import java.util.*;
@@ -11,6 +12,29 @@ import java.util.*;
  * Описание комплексного типа: generalWorkJournal
  * Общий журнал работ
  */
+
+/*
+Запрос на получение изменений титульного листа ОЖР
+ */
+@NamedNativeQuery(name = "GeneralWorkJournal.findAllGeneralWorkJournalTitleChanges_Named",
+        query = "SELECT uuid, change_date, change_description_with_basis_basis, " +
+                "change_description_with_basis_description, responsible_representative, sequence_number " +
+                "FROM general_work_journal_title_change " +
+                "WHERE general_work_journal_base_document_uuid = :uuid " +
+                "AND general_work_journal_base_document_edition = :ed " +
+                "AND general_work_journal_schema_version = :ver",
+        resultSetMapping = "Mapping.TitleChangeDto")
+@SqlResultSetMapping(name = "Mapping.TitleChangingDto",
+        classes = @ConstructorResult(targetClass = TitleChangeDto.class,
+                columns = {
+                        @ColumnResult(name = "uuid"),
+                        @ColumnResult(name = "sequence_number", type = Integer.class),
+                        @ColumnResult(name = "change_date", type = Date.class),
+                        @ColumnResult(name = "change_description_with_basis_basis"),
+                        @ColumnResult(name = "change_description_with_basis_description"),
+                        @ColumnResult(name = "responsible_representative")
+                }))
+
 @Data
 @Entity
 @Table(name = "general_work_journal")
@@ -108,7 +132,7 @@ public class GeneralWorkJournal implements Serializable {
      * предусмотренных статьей 49 Градостроительного кодекса Российской Федерации
      * Необязательный элемент
      */
-    @Column(name = "projectDocumentation_examination_details")
+    @Column(name = "project_documentation_examination_details")
     protected ProjectDocumentationExaminationDetails projectDocumentationExaminationDetails;
 
     /**
@@ -163,7 +187,7 @@ public class GeneralWorkJournal implements Serializable {
     /*
     Сведения об изменениях в записях Титульного листа общего журнала работ
     Необязательный элемент
-    TODO: Список generalWorkJournalTitleChange (native query)
+    Список generalWorkJournalTitleChange (native query)
      */
 
     /**
@@ -233,4 +257,9 @@ public class GeneralWorkJournal implements Serializable {
     @ManyToMany
     @JoinTable(name = "general_journal_extra_parameter")
     protected Set<ExtraParameter> extraParameterSet = new HashSet<>();
+
+    /**
+     * Журнал находится в архиве
+     */
+    protected boolean archived = false;
 }

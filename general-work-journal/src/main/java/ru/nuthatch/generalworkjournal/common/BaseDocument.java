@@ -1,7 +1,9 @@
 package ru.nuthatch.generalworkjournal.common;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -12,6 +14,8 @@ import java.util.UUID;
  * версии схемы
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 @AttributeOverrides({
         @AttributeOverride(name = "schema_version",
