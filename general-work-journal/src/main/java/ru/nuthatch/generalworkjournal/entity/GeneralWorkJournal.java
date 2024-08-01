@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import ru.nuthatch.generalworkjournal.common.*;
 import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
+import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
 
 import java.io.Serializable;
 import java.util.*;
@@ -13,17 +14,61 @@ import java.util.*;
  * Общий журнал работ
  */
 
-/*
-Запрос на получение изменений титульного листа ОЖР
- */
-@NamedNativeQuery(name = "GeneralWorkJournal.findAllGeneralWorkJournalTitleChanges_Named",
-        query = "SELECT uuid, change_date, change_description_with_basis_basis, " +
-                "change_description_with_basis_description, responsible_representative, sequence_number " +
-                "FROM general_work_journal_title_change " +
-                "WHERE general_work_journal_base_document_uuid = :uuid " +
-                "AND general_work_journal_base_document_edition = :ed " +
-                "AND general_work_journal_schema_version = :ver",
-        resultSetMapping = "Mapping.TitleChangeDto")
+@NamedNativeQueries({
+        /*
+        Запрос на получение изменений титульного листа ОЖР
+         */
+        @NamedNativeQuery(name = "GeneralWorkJournal.findAllGeneralWorkJournalTitleChanges_Named",
+                query = "SELECT uuid, change_date, change_description_with_basis_basis, " +
+                        "change_description_with_basis_description, responsible_representative, sequence_number " +
+                        "FROM general_work_journal_title_change " +
+                        "WHERE general_work_journal_base_document_uuid = :uuid " +
+                        "AND general_work_journal_base_document_edition = :ed " +
+                        "AND general_work_journal_schema_version = :ver",
+                resultSetMapping = "Mapping.TitleChangeDto"),
+
+        /*
+        Запрос на получение списка специальных журналов
+         */
+        @NamedNativeQuery(name = "GeneralWorkJournal.findAllSpecialJournals_Named",
+                query = "SELECT * FROM special_journal " +
+                        "WHERE general_work_journal_base_document_uuid = :uuid " +
+                        "AND general_work_journal_base_document_edition = :ed " +
+                        "AND general_work_journal_schema_version = :ver",
+                resultClass = SpecialJournal.class),
+
+        /*
+        Запрос на получение списка сведений о выполненных работах
+         */
+        @NamedNativeQuery(name = "GeneralWorkJournal.findAllWorksPerformingInfos_Named",
+                query = "SELECT * FROM works_performing_info " +
+                        "WHERE general_work_journal_base_document_uuid = :uuid " +
+                        "AND general_work_journal_base_document_edition = :ed " +
+                        "AND general_work_journal_schema_version = :ver",
+                resultClass = WorksPerformingInfo.class),
+
+        /*
+        Запрос сведений о строительном контроле
+         */
+        @NamedNativeQuery(name = "GeneralWorkJournal.findAllControlEventInfos_Named",
+                query = "SELECT * FROM control_event_info " +
+                        "WHERE general_work_journal_base_document_uuid = :uuid " +
+                        "AND general_work_journal_base_document_edition = :ed " +
+                        "AND general_work_journal_schema_version = :ver",
+                resultClass = ControlEventInfo.class),
+
+        /*
+        Запрос на получение перечня исполнительной документации
+         */
+        @NamedNativeQuery(name = "GeneralWorkJournal.findAllAsBuiltDocumentation_Named",
+                query = "SELECT * FROM as_built_documentation " +
+                        "WHERE general_work_journal_base_document_uuid = :uuid " +
+                        "AND general_work_journal_base_document_edition = :ed " +
+                        "AND general_work_journal_schema_version = :ver",
+                resultClass = AsBuiltDocumentation.class)
+
+})
+
 @SqlResultSetMapping(name = "Mapping.TitleChangingDto",
         classes = @ConstructorResult(targetClass = TitleChangeDto.class,
                 columns = {
@@ -209,21 +254,21 @@ public class GeneralWorkJournal implements Serializable {
     Перечень специальных журналов, в которых ведется учет выполнения работ,
     а также журналов авторского надзора лица, осуществляющего подготовку проектной документации
     Обязательный элемент
-    TODO: Список specialJournal (native query)
+    Список specialJournal (native query)
      */
 
     /*
     Сведения о выполнении работ в процессе строительства, реконструкции,
     капитального ремонта объекта капитального строительства (id)
     Обязательный элемент
-    TODO: Список worksPerformingInfo (native query)
+    Список worksPerformingInfo (native query)
      */
 
     /*
     Сведения о строительном контроле в процессе строительства, реконструкции,
     капитального ремонта объекта капитального строительства (список)
     Необязательный элемент
-    TODO: Список controlEventInfo (native query)
+    Список controlEventInfo (native query)
      */
 
     /*
@@ -231,14 +276,15 @@ public class GeneralWorkJournal implements Serializable {
     в процессе строительства, реконструкции, капитального ремонта объекта
     капитального строительства (список)
     Необязательный элемент
-    TODO: Список controlEventInfo (native query)
+    Список controlEventInfo (native query)
+    TODO: Списки разные!!!
      */
 
     /*
     Перечень исполнительной документации при строительстве, реконструкции,
     капитальном ремонте объекта капитального строительства
     Обязательный элемент
-    TODO: Список asBuiltDocumentation (native query)
+    Список asBuiltDocumentation (native query)
      */
 
     /**

@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nuthatch.generalworkjournal.common.BaseDocument;
 import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
+import ru.nuthatch.generalworkjournal.entity.AsBuiltDocumentation;
 import ru.nuthatch.generalworkjournal.entity.GeneralWorkJournal;
+import ru.nuthatch.generalworkjournal.entity.SpecialJournal;
+import ru.nuthatch.generalworkjournal.entity.WorksPerformingInfo;
+import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
 import ru.nuthatch.generalworkjournal.repository.GeneralWorkJournalRepository;
 
 import java.util.Collection;
@@ -61,4 +65,37 @@ public class GeneralWorkJournalService {
                 document.getEdition(),
                 document.getSchemaVersion());
     }
+
+    // Получение списка специальных журналов
+    public Collection<SpecialJournal> findSpecialJournals(BaseDocument document) {
+        return repository.findAllSpecialJournals_Named(
+                document.getUuid(),
+                document.getEdition(),
+                document.getSchemaVersion());
+    }
+
+    // Получение списка сведений о выполненных работах
+    public Collection<WorksPerformingInfo> findWorksPerformingInfos(BaseDocument document) {
+        return repository.findAllWorksPerformingInfos_Named(
+                document.getUuid(),
+                document.getEdition(),
+                document.getSchemaVersion());
+    }
+
+    // Получение списка сведений о строительном контроле
+    public Collection<ControlEventInfo> findControlEventInfos(BaseDocument document) {
+        return repository.findAllControlEventInfos_Named(
+                document.getUuid(),
+                document.getEdition(),
+                document.getSchemaVersion());
+    }
+
+    // Получение перечня исполнительной документации
+    public Collection<AsBuiltDocumentation> findAsBuiltDocumentation(BaseDocument document) {
+        return repository.findAllAsBuiltDocumentation_Named(
+                document.getUuid(),
+                document.getEdition(),
+                document.getSchemaVersion());
+    }
+
 }

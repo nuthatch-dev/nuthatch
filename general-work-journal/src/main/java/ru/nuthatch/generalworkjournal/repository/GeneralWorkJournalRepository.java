@@ -8,7 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.nuthatch.generalworkjournal.common.BaseDocument;
 import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
+import ru.nuthatch.generalworkjournal.entity.AsBuiltDocumentation;
 import ru.nuthatch.generalworkjournal.entity.GeneralWorkJournal;
+import ru.nuthatch.generalworkjournal.entity.SpecialJournal;
+import ru.nuthatch.generalworkjournal.entity.WorksPerformingInfo;
+import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -19,6 +23,34 @@ public interface GeneralWorkJournalRepository extends JpaRepository<GeneralWorkJ
     // Получить все изменения титульного листа ОЖР
     @Query(nativeQuery = true)
     Collection<TitleChangeDto> findAllGeneralWorkJournalTitleChanges_Named(
+            @Param(value = "uuid") UUID uuid,
+            @Param(value = "ed") int edition,
+            @Param(value = "ver") String version);
+
+    // Получение списка специальных журналов
+    @Query(nativeQuery = true)
+    Collection<SpecialJournal> findAllSpecialJournals_Named(
+            @Param(value = "uuid") UUID uuid,
+            @Param(value = "ed") int edition,
+            @Param(value = "ver") String version);
+
+    // Получение списка сведений о выполненных работах
+    @Query(nativeQuery = true)
+    Collection<WorksPerformingInfo> findAllWorksPerformingInfos_Named(
+            @Param(value = "uuid") UUID uuid,
+            @Param(value = "ed") int edition,
+            @Param(value = "ver") String version);
+
+    // Получение списка сведений о строительном контроле
+    @Query(nativeQuery = true)
+    Collection<ControlEventInfo> findAllControlEventInfos_Named(
+            @Param(value = "uuid") UUID uuid,
+            @Param(value = "ed") int edition,
+            @Param(value = "ver") String version);
+
+    // Получение перечня исполнительной документации
+    @Query(nativeQuery = true)
+    Collection<AsBuiltDocumentation> findAllAsBuiltDocumentation_Named(
             @Param(value = "uuid") UUID uuid,
             @Param(value = "ed") int edition,
             @Param(value = "ver") String version);
