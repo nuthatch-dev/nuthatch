@@ -1,25 +1,21 @@
 package ru.nuthatch.generalworkjournal.common;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 /**
  * Описание комплексного типа: WorkLocation
  * Тип, содержащий в себе информацию о местоположении
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "work_location")
-public class WorkLocation {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class WorkLocation extends CommonEntity implements Serializable {
 
     // Оси
     protected String axes;

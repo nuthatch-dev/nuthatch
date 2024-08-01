@@ -2,10 +2,11 @@ package ru.nuthatch.generalworkjournal.entity.controlevent;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.DateTimeInterval;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Описание комплексного типа: controlEventRecord
@@ -13,28 +14,16 @@ import java.util.UUID;
  * выявленных в ходе её проведения
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "control_event_record")
-public class ControlEventRecord implements Serializable {
+public class ControlEventRecord extends CommonEntity implements Serializable {
 
     /**
      * Отношение к ControlEventInfo
      */
     @ManyToOne
     protected ControlEventInfo controlEventInfo;
-
-    /**
-     * id записи о выполнении контрольного мероприятия
-     * Обязательный элемент
-     * Строгий формат:
-     * хххххххх-хххх-хххх-хххх-хххххххххххх
-     * Наложенные ограничения
-     * [0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
-     */
-    @Id
-    @GeneratedValue
-    @Column(name = "control_event_record_id")
-    protected UUID controlEventRecordId;
 
     /**
      * Сроки проведения контрольного мероприятия

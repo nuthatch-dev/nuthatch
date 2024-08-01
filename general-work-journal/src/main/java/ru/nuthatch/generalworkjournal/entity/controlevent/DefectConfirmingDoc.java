@@ -2,22 +2,20 @@ package ru.nuthatch.generalworkjournal.entity.controlevent;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.nuthatch.generalworkjournal.common.AttachedDocument;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Документ, подтверждающий факт нарушения
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "defect_confirming_doc")
-public class DefectConfirmingDoc implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class DefectConfirmingDoc extends CommonEntity implements Serializable {
 
     /**
      * Исполнительная схема или чертёж

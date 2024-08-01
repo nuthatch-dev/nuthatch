@@ -2,13 +2,14 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.nuthatch.generalworkjournal.common.AttachedDocument;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.DocInfo;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Описание комплексного типа: examResult
@@ -16,13 +17,10 @@ import java.util.UUID;
  * проведенных в процессе строительного контроля
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "exam_result")
-public class ExamResult implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class ExamResult extends CommonEntity implements Serializable {
 
     @Embedded
     protected DocInfo docInfo;
@@ -40,6 +38,7 @@ public class ExamResult implements Serializable {
      * Обязательный элемент
      */
     @ManyToMany
+    @JoinTable(name = "exam_result_attached_document")
     protected Set<AttachedDocument> attachedDocumentSet = new HashSet<>();
 
     /**

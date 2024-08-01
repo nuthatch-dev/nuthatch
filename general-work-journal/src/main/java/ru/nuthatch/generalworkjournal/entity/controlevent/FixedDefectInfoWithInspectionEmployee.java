@@ -2,27 +2,22 @@ package ru.nuthatch.generalworkjournal.entity.controlevent;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.Representative;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Информация о недостатке (предмет контроля,
  * описание недостатка, плановая дата его устранения, атрибуты)
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "fixed_defect_info_with_inspection_employee")
-public class FixedDefectInfoWithInspectionEmployee implements Serializable {
-
-    /**
-     * ID записи о выявленном недостатке результатов работ
-     */
-    @Id
-    @GeneratedValue
-    protected UUID defectRecordId;
+public class FixedDefectInfoWithInspectionEmployee extends CommonEntity implements Serializable {
 
     /**
      * Дата внесения записи о недостатке

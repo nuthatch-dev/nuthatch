@@ -2,12 +2,9 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import ru.nuthatch.generalworkjournal.common.BaseDocument;
-import ru.nuthatch.generalworkjournal.common.ConstructionTypeName;
-import ru.nuthatch.generalworkjournal.common.DocInfo;
-import ru.nuthatch.generalworkjournal.common.OrganizationWithOptionalSroAndId;
+import ru.nuthatch.generalworkjournal.common.*;
+import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -15,13 +12,33 @@ import java.util.*;
  * Описание комплексного типа: generalWorkJournal
  * Общий журнал работ
  */
+
+/*
+Запрос на получение изменений титульного листа ОЖР
+ */
+@NamedNativeQuery(name = "GeneralWorkJournal.findAllGeneralWorkJournalTitleChanges_Named",
+        query = "SELECT uuid, change_date, change_description_with_basis_basis, " +
+                "change_description_with_basis_description, responsible_representative, sequence_number " +
+                "FROM general_work_journal_title_change " +
+                "WHERE general_work_journal_base_document_uuid = :uuid " +
+                "AND general_work_journal_base_document_edition = :ed " +
+                "AND general_work_journal_schema_version = :ver",
+        resultSetMapping = "Mapping.TitleChangeDto")
+@SqlResultSetMapping(name = "Mapping.TitleChangingDto",
+        classes = @ConstructorResult(targetClass = TitleChangeDto.class,
+                columns = {
+                        @ColumnResult(name = "uuid"),
+                        @ColumnResult(name = "sequence_number", type = Integer.class),
+                        @ColumnResult(name = "change_date", type = Date.class),
+                        @ColumnResult(name = "change_description_with_basis_basis"),
+                        @ColumnResult(name = "change_description_with_basis_description"),
+                        @ColumnResult(name = "responsible_representative")
+                }))
+
 @Data
 @Entity
 @Table(name = "general_work_journal")
 public class GeneralWorkJournal implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * Информация об UUID и редакции документа, UUID объекта капитального строительства, версии схемы
@@ -107,6 +124,7 @@ public class GeneralWorkJournal implements Serializable {
      * Список
      */
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "general_journal_designer_representative")
     protected Set<DesignerSupervisionRepresentativesSetItem> designerSupervisionRepresentativesSet = new HashSet<>();
 
     /**
@@ -114,7 +132,7 @@ public class GeneralWorkJournal implements Serializable {
      * предусмотренных статьей 49 Градостроительного кодекса Российской Федерации
      * Необязательный элемент
      */
-    @Column(name = "projectDocumentation_examination_details")
+    @Column(name = "project_documentation_examination_details")
     protected ProjectDocumentationExaminationDetails projectDocumentationExaminationDetails;
 
     /**
@@ -169,7 +187,7 @@ public class GeneralWorkJournal implements Serializable {
     /*
     Сведения об изменениях в записях Титульного листа общего журнала работ
     Необязательный элемент
-    TODO: Список generalWorkJournalTitleChange (native query)
+    Список generalWorkJournalTitleChange (native query)
      */
 
     /**
@@ -201,4 +219,47 @@ public class GeneralWorkJournal implements Serializable {
     TODO: Список worksPerformingInfo (native query)
      */
 
+    /*
+    Сведения о строительном контроле в процессе строительства, реконструкции,
+    капитального ремонта объекта капитального строительства (список)
+    Необязательный элемент
+    TODO: Список controlEventInfo (native query)
+     */
+
+    /*
+    Сведения о строительном контроле лица, осуществляющего строительство,
+    в процессе строительства, реконструкции, капитального ремонта объекта
+    капитального строительства (список)
+    Необязательный элемент
+    TODO: Список controlEventInfo (native query)
+     */
+
+    /*
+    Перечень исполнительной документации при строительстве, реконструкции,
+    капитальном ремонте объекта капитального строительства
+    Обязательный элемент
+    TODO: Список asBuiltDocumentation (native query)
+     */
+
+    /**
+     * Сведения о государственном строительном надзоре при строительстве,
+     * реконструкции, капитальном ремонте объекта капитального строительства
+     * Необязательный элемент
+     */
+    @OneToOne
+    protected StateSupervisionInfo stateSupervisionInfo;
+
+    /**
+     * Список дополнительных параметров
+     * Необязательный элемент
+     * Список
+     */
+    @ManyToMany
+    @JoinTable(name = "general_journal_extra_parameter")
+    protected Set<ExtraParameter> extraParameterSet = new HashSet<>();
+
+    /**
+     * Журнал находится в архиве
+     */
+    protected boolean archived = false;
 }

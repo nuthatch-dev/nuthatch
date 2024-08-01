@@ -2,8 +2,9 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -12,16 +13,10 @@ import java.util.UUID;
  * Уполномоченное лицо органа (организации), осуществляющего выдачу разрешения
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "executive_government_agency_representative")
-public class ExecutiveGovernmentAgencyRepresentative implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class ExecutiveGovernmentAgencyRepresentative extends CommonEntity implements Serializable {
 
     /**
      * Представитель

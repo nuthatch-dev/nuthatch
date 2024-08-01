@@ -2,8 +2,9 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -13,24 +14,10 @@ import java.util.UUID;
  * капитального ремонта объекта капитального строительства (id)
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "works_performing_info")
-public class WorksPerformingInfo implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Id подписываемой части
-     * Обязательный элемент
-     * Строгий формат:
-     * _хххххххх-хххх-хххх-хххх-хххххххххххх
-     * Наложенные ограничения
-     * _[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
-     */
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class WorksPerformingInfo extends CommonEntity implements Serializable {
 
     /**
      * Идентификатор записи

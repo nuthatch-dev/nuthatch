@@ -1,34 +1,21 @@
 package ru.nuthatch.generalworkjournal.common;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Описание комплексного типа: AttachedDocument
  * Информация о файле, загруженном в хранилище
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "attached_document")
-public class AttachedDocument implements Serializable {
-
-    /**
-     * Id файла в хранилище
-     * Обязательный элемент
-     * Строгий формат:
-     * хххххххх-хххх-хххх-хххх-хххххххххххх
-     * Наложенные ограничения
-     * [0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
-     */
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class AttachedDocument extends CommonEntity implements Serializable {
 
     /**
      * Имя файла

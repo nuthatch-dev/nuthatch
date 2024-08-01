@@ -2,21 +2,19 @@ package ru.nuthatch.generalworkjournal.entity.controlevent;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.generalworkjournal.common.CommonEntity;
 import ru.nuthatch.generalworkjournal.common.DocInfo;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 // TODO: Повторение нормативно-технической документации (вынести в отдельный сервис)
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "technical_regulation")
-public class TechnicalRegulations implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class TechnicalRegulations extends CommonEntity implements Serializable {
 
     /**
      * Идентификатор документа (наименование, номер)

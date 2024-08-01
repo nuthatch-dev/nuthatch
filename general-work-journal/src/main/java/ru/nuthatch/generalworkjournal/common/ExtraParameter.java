@@ -1,22 +1,19 @@
-package ru.nuthatch.generalworkjournal.entity.controlevent;
+package ru.nuthatch.generalworkjournal.common;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Дополнительный параметр
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "extra_parameter")
-public class ExtraParameter implements Serializable {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
+public class ExtraParameter extends CommonEntity implements Serializable {
 
     @Column(name = "parameter_name",
             nullable = false)
