@@ -6,7 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nuthatch.generalworkjournal.common.BaseDocument;
 import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
+import ru.nuthatch.generalworkjournal.entity.AsBuiltDocumentation;
 import ru.nuthatch.generalworkjournal.entity.GeneralWorkJournal;
+import ru.nuthatch.generalworkjournal.entity.SpecialJournal;
+import ru.nuthatch.generalworkjournal.entity.WorksPerformingInfo;
+import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
 import ru.nuthatch.generalworkjournal.service.GeneralWorkJournalService;
 
 import java.util.Collection;
@@ -45,16 +49,6 @@ public class GeneralWorkJournalController {
         return new ResponseEntity<>(service.findAllArchived(), HttpStatus.OK);
     }
 
-    // Получить все изменения титульного листа ОЖР
-    @GetMapping(value = "/title-changes")
-    public ResponseEntity<Collection<TitleChangeDto>> findTitleChanges(@RequestBody BaseDocument document) {
-        Collection<TitleChangeDto> result = service.findTitleChanges(document);
-        if (result.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     /*
     Внесение изменений в титульный лист журнала работ выполняется только внесением специальной записи
     об изменениях (GeneralWorkJournalTitleChange).
@@ -69,4 +63,41 @@ public class GeneralWorkJournalController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    // Получить все изменения титульного листа ОЖР
+    @GetMapping(value = "/title-changes")
+    public ResponseEntity<Collection<TitleChangeDto>> findTitleChanges(@RequestBody BaseDocument document) {
+        Collection<TitleChangeDto> result = service.findTitleChanges(document);
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    // Получение списка специальных журналов
+    @GetMapping(value = "/special-journals")
+    public ResponseEntity<Collection<SpecialJournal>> findSpecialJournals(@RequestBody BaseDocument document) {
+        return new ResponseEntity<>(service.findSpecialJournals(document), HttpStatus.OK);
+    }
+
+    // Получение списка сведений о выполненных работах
+    @GetMapping(value = "/performing-infos")
+    public ResponseEntity<Collection<WorksPerformingInfo>> findWorksPerformingInfos(
+            @RequestBody BaseDocument document) {
+        return new ResponseEntity<>(service.findWorksPerformingInfos(document), HttpStatus.OK);
+    }
+
+    // Получение списка сведений о строительном контроле
+    @GetMapping(value = "/control-events")
+    public ResponseEntity<Collection<ControlEventInfo>> findControlEventInfos(@RequestBody BaseDocument document) {
+        return new ResponseEntity<>(service.findControlEventInfos(document), HttpStatus.OK);
+    }
+
+    // Получение перечня исполнительной документации
+    @GetMapping(value = "/as-built-docs")
+    public ResponseEntity<Collection<AsBuiltDocumentation>> findAsBuiltDocumentation(
+            @RequestBody BaseDocument document) {
+        return new ResponseEntity<>(service.findAsBuiltDocumentation(document), HttpStatus.OK);
+    }
+
 }
