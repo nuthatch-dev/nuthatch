@@ -1,3 +1,5 @@
-export class PermanentObjectCommonInfo {
-
+export interface PermanentObjectCommonInfo {
+  projectCharacteristics: string;
+  constructionStartDate: Date;
+  constructionEndDate: Date;
 }

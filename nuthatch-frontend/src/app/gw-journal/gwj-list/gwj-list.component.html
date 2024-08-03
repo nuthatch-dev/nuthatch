@@ -1,1 +1,59 @@
-<p>gwj-list works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-10 my-3">
+      <h4>Перечень Общих Журналов Работ (ОЖР) по объектам</h4>
+      <table *ngIf="generalWorkJournalList.length != 0; else unset"
+             class="table table-sm table-stripped table-bordered my-3">
+        <thead>
+        <tr class="text-md-center">
+          <th>uuid</th>
+          <th>Номер</th>
+          <th>Наименование объекта</th>
+          <th>Адрес объекта</th>
+          <th>Краткая проектная характеристика</th>
+          <th>Дата начала строительства</th>
+          <th>Дата окончания строительства</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <tr *ngFor="let generalWorkJournal of generalWorkJournalList">
+          <td>{{ generalWorkJournal.uuid }}</td>
+          <td>{{ generalWorkJournal.docInfo.number}}</td>
+          <td>{{ generalWorkJournal.permanentObjectInfo.permanentObjectName}}</td>
+          <td>
+            <p>Почтовый: <br>
+              {{ generalWorkJournal.permanentObjectInfo.permanentObjectAddress.postalAddress}}</p>
+            <p>Строительный: <br>
+              {{ generalWorkJournal.permanentObjectInfo.permanentObjectAddress.constructionSiteAddress}}</p>
+          </td>
+          <td>{{ generalWorkJournal.permanentObjectCommonInfo.projectCharacteristics }}</td>
+          <td>{{ generalWorkJournal.permanentObjectCommonInfo.constructionStartDate | date }}</td>
+          <td>{{ generalWorkJournal.permanentObjectCommonInfo.constructionEndDate | date }}</td>
+          <td>
+            <button (click)="generalWorkJournalDetails(generalWorkJournal.uuid)"
+                    name="gwj_details"
+                    class="btn btn-outline-primary btn-sm">
+              Выбрать
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <ng-template #unset>
+        <div>
+          Данные по объектам отсутствуют. В системе не создано Общих журналов работ, либо они перемещены в архив.
+        </div>
+      </ng-template>
+
+      <hr>
+      <h6 class="mb-3">Создать новый Общий журнал работ</h6>
+      <a class="btn btn-primary btn-sm" href="/gwj-create" role="button">Добавить объект</a>
+
+    </div>
+    <div class="col-2 my-3 text-center">
+      <h4>Фильтры и сортировка</h4>
+    </div>
+  </div>
+
+</div>

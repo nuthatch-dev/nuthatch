@@ -39,7 +39,7 @@ public class ExecutiveAuthorityDocInfo extends CommonEntity implements Serializa
      Необязательный элемент
      Дата в формате <ГГГГ-ММ-ДД> (год-месяц-день)
      */
-    protected Date docChangedate;
+    protected Date docChangeDate;
 
     /**
      * ID органа (организации)

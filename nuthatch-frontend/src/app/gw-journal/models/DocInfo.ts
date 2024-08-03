@@ -1,7 +1,4 @@
-export class DocInfo {
-  constructor(
-    name: string = "",
-    number: string = ""
-  ) {
-  }
+export interface DocInfo {
+    name: string;
+    number: string;
 }

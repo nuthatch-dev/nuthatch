@@ -32,7 +32,7 @@ public class GeneralWorkJournalController {
     }
 
     @GetMapping(value = "/get-by-id")
-    public ResponseEntity<GeneralWorkJournal> findByPK(@RequestParam(name = "uuid") UUID uuid) {
+    public ResponseEntity<GeneralWorkJournal> findById(@RequestParam(name = "id") UUID uuid) {
         return service
                 .findById(uuid)
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
@@ -55,8 +55,8 @@ public class GeneralWorkJournalController {
     Удаление Общего Журнала Работ не предусматривается.
     В качестве update/delete операции предусматривается установка аттрибута "архивный" для ОЖР
      */
-    @PutMapping(value = "/set-archived")
-    public ResponseEntity<Boolean> ChangeArchivedAttribute(@RequestParam(name = "uuid") UUID uuid) {
+    @PatchMapping(value = "/set-archived")
+    public ResponseEntity<Boolean> ChangeArchivedAttribute(@RequestBody UUID uuid) {
         Boolean result = service.ChangeArchivedAttribute(uuid);
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.OK);
