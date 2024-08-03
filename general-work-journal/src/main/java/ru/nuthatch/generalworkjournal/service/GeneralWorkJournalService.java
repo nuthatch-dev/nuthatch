@@ -1,8 +1,6 @@
 package ru.nuthatch.generalworkjournal.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.nuthatch.generalworkjournal.common.BaseDocument;
 import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
 import ru.nuthatch.generalworkjournal.entity.AsBuiltDocumentation;
 import ru.nuthatch.generalworkjournal.entity.GeneralWorkJournal;
@@ -12,27 +10,13 @@ import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
 import ru.nuthatch.generalworkjournal.repository.GeneralWorkJournalRepository;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
-public class GeneralWorkJournalService {
+public class GeneralWorkJournalService extends CommonService<GeneralWorkJournal, GeneralWorkJournalRepository> {
 
-    private final GeneralWorkJournalRepository repository;
-
-    @Autowired
     public GeneralWorkJournalService(GeneralWorkJournalRepository repository) {
-        this.repository = repository;
-    }
-
-    /*
-    CRUD methods
-     */
-    public GeneralWorkJournal save(GeneralWorkJournal journal) {
-        return repository.save(journal);
-    }
-
-    public Optional<GeneralWorkJournal> findByPK(BaseDocument document) {
-        return repository.findById(document);
+        super(repository);
     }
 
     public Collection<GeneralWorkJournal> findAllNotArchived() {
@@ -47,11 +31,11 @@ public class GeneralWorkJournalService {
      Изменить признак "в архиве" для ОЖР.
      Триггер, при выполнении аттрибут "archived" сменяется на противоположный
      */
-    public Boolean ChangeArchivedAttribute(BaseDocument pk) {
+    public Boolean ChangeArchivedAttribute(UUID uuid) {
         return repository
-                .findById(pk)
+                .findById(uuid)
                 .map(value -> repository.ChangeArchivedAttribute(
-                                value.getBaseDocument().getUuid(),
+                                value.getUuid(),
                                 !value.isArchived()
                         )
                 )
@@ -59,43 +43,28 @@ public class GeneralWorkJournalService {
     }
 
     // Получить все изменения титульного листа ОЖР
-    public Collection<TitleChangeDto> findTitleChanges(BaseDocument document) {
-        return repository.findAllGeneralWorkJournalTitleChanges_Named(
-                document.getUuid(),
-                document.getEdition(),
-                document.getSchemaVersion());
+    public Collection<TitleChangeDto> findTitleChanges(UUID uuid) {
+        return repository.findAllGeneralWorkJournalTitleChanges_Named(uuid);
     }
 
     // Получение списка специальных журналов
-    public Collection<SpecialJournal> findSpecialJournals(BaseDocument document) {
-        return repository.findAllSpecialJournals_Named(
-                document.getUuid(),
-                document.getEdition(),
-                document.getSchemaVersion());
+    public Collection<SpecialJournal> findSpecialJournals(UUID uuid) {
+        return repository.findAllSpecialJournals_Named(uuid);
     }
 
     // Получение списка сведений о выполненных работах
-    public Collection<WorksPerformingInfo> findWorksPerformingInfos(BaseDocument document) {
-        return repository.findAllWorksPerformingInfos_Named(
-                document.getUuid(),
-                document.getEdition(),
-                document.getSchemaVersion());
+    public Collection<WorksPerformingInfo> findWorksPerformingInfos(UUID uuid) {
+        return repository.findAllWorksPerformingInfos_Named(uuid);
     }
 
     // Получение списка сведений о строительном контроле
-    public Collection<ControlEventInfo> findControlEventInfos(BaseDocument document) {
-        return repository.findAllControlEventInfos_Named(
-                document.getUuid(),
-                document.getEdition(),
-                document.getSchemaVersion());
+    public Collection<ControlEventInfo> findControlEventInfos(UUID uuid) {
+        return repository.findAllControlEventInfos_Named(uuid);
     }
 
     // Получение перечня исполнительной документации
-    public Collection<AsBuiltDocumentation> findAsBuiltDocumentation(BaseDocument document) {
-        return repository.findAllAsBuiltDocumentation_Named(
-                document.getUuid(),
-                document.getEdition(),
-                document.getSchemaVersion());
+    public Collection<AsBuiltDocumentation> findAsBuiltDocumentation(UUID uuid) {
+        return repository.findAllAsBuiltDocumentation_Named(uuid);
     }
 
 }

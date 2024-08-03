@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.nuthatch.generalworkjournal.common.BaseDocument;
 import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
 import ru.nuthatch.generalworkjournal.entity.AsBuiltDocumentation;
 import ru.nuthatch.generalworkjournal.entity.GeneralWorkJournal;
@@ -14,6 +13,7 @@ import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
 import ru.nuthatch.generalworkjournal.service.GeneralWorkJournalService;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/general-work-journal")
@@ -31,10 +31,10 @@ public class GeneralWorkJournalController {
         return new ResponseEntity<>(service.save(journal), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/get-by-pk")
-    public ResponseEntity<GeneralWorkJournal> findByPK(@RequestBody BaseDocument document) {
+    @GetMapping(value = "/get-by-id")
+    public ResponseEntity<GeneralWorkJournal> findById(@RequestParam(name = "id") UUID uuid) {
         return service
-                .findByPK(document)
+                .findById(uuid)
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -55,9 +55,9 @@ public class GeneralWorkJournalController {
     Удаление Общего Журнала Работ не предусматривается.
     В качестве update/delete операции предусматривается установка аттрибута "архивный" для ОЖР
      */
-    @PutMapping(value = "/set-archived")
-    public ResponseEntity<Boolean> ChangeArchivedAttribute(@RequestBody BaseDocument document) {
-        Boolean result = service.ChangeArchivedAttribute(document);
+    @PatchMapping(value = "/set-archived")
+    public ResponseEntity<Boolean> ChangeArchivedAttribute(@RequestBody UUID uuid) {
+        Boolean result = service.ChangeArchivedAttribute(uuid);
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
@@ -66,8 +66,8 @@ public class GeneralWorkJournalController {
 
     // Получить все изменения титульного листа ОЖР
     @GetMapping(value = "/title-changes")
-    public ResponseEntity<Collection<TitleChangeDto>> findTitleChanges(@RequestBody BaseDocument document) {
-        Collection<TitleChangeDto> result = service.findTitleChanges(document);
+    public ResponseEntity<Collection<TitleChangeDto>> findTitleChanges(@RequestParam(name = "uuid") UUID uuid) {
+        Collection<TitleChangeDto> result = service.findTitleChanges(uuid);
         if (result.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -76,28 +76,28 @@ public class GeneralWorkJournalController {
 
     // Получение списка специальных журналов
     @GetMapping(value = "/special-journals")
-    public ResponseEntity<Collection<SpecialJournal>> findSpecialJournals(@RequestBody BaseDocument document) {
-        return new ResponseEntity<>(service.findSpecialJournals(document), HttpStatus.OK);
+    public ResponseEntity<Collection<SpecialJournal>> findSpecialJournals(@RequestParam(name = "uuid") UUID uuid) {
+        return new ResponseEntity<>(service.findSpecialJournals(uuid), HttpStatus.OK);
     }
 
     // Получение списка сведений о выполненных работах
     @GetMapping(value = "/performing-infos")
     public ResponseEntity<Collection<WorksPerformingInfo>> findWorksPerformingInfos(
-            @RequestBody BaseDocument document) {
-        return new ResponseEntity<>(service.findWorksPerformingInfos(document), HttpStatus.OK);
+            @RequestParam(name = "uuid") UUID uuid) {
+        return new ResponseEntity<>(service.findWorksPerformingInfos(uuid), HttpStatus.OK);
     }
 
     // Получение списка сведений о строительном контроле
     @GetMapping(value = "/control-events")
-    public ResponseEntity<Collection<ControlEventInfo>> findControlEventInfos(@RequestBody BaseDocument document) {
-        return new ResponseEntity<>(service.findControlEventInfos(document), HttpStatus.OK);
+    public ResponseEntity<Collection<ControlEventInfo>> findControlEventInfos(@RequestParam(name = "uuid") UUID uuid) {
+        return new ResponseEntity<>(service.findControlEventInfos(uuid), HttpStatus.OK);
     }
 
     // Получение перечня исполнительной документации
     @GetMapping(value = "/as-built-docs")
     public ResponseEntity<Collection<AsBuiltDocumentation>> findAsBuiltDocumentation(
-            @RequestBody BaseDocument document) {
-        return new ResponseEntity<>(service.findAsBuiltDocumentation(document), HttpStatus.OK);
+            @RequestParam(name = "uuid") UUID uuid) {
+        return new ResponseEntity<>(service.findAsBuiltDocumentation(uuid), HttpStatus.OK);
     }
 
 }

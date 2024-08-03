@@ -1,4 +1,3 @@
-import {BaseDocument} from "./BaseDocument";
 import {DocInfo} from "./DocInfo";
 import {PermanentObjectInfo} from "./PermanentObjectInfo";
 import {ConstructionTypeName} from "./ConstructionTypeName";
@@ -12,76 +11,75 @@ import {GeneralWorkJournalCommonInfo} from "./GeneralWorkJournalCommonInfo";
 import {StateSupervisionInfo} from "./StateSupervisionInfo";
 import {ExtraParameter} from "./ExtraParameter";
 
-export class GeneralWorkJournal {
-  constructor(
+export interface GeneralWorkJournal {
     // Информация об UUID и редакции документа, UUID объекта капитального строительства, версии схемы
-    baseDocument: BaseDocument,
+    uuid: string;
+    schemaVersion: string;
+    edition: number;
 
     // Идентификатор документа
-    docInfo: DocInfo,
+    docInfo: DocInfo;
 
     // Объект капитального строительства
-    permanentObjectInfo: PermanentObjectInfo,
+    permanentObjectInfo: PermanentObjectInfo;
 
     // Наименование вида строительства
-    constructionTypeName: ConstructionTypeName,
+    constructionTypeName: ConstructionTypeName;
 
     // Застройщик и его представители
-    developerWithRepresentatives: string = "",
+    developerWithRepresentatives: string;
 
     // Лицо, ответственное за эксплуатацию здания/сооружения и его представители
-    operatingPersonWithRepresentatives: string = "",
+    operatingPersonWithRepresentatives: string;
 
     // Региональный оператор и его представители
-    regionalOperatorWithRepresentatives: string = "",
+    regionalOperatorWithRepresentatives: string;
 
     // Технический заказчик и его представители
-    technicalCustomerWithRepresentatives: string = "",
+    technicalCustomerWithRepresentatives: string;
 
     // Сведения о разрешении на строительство
-    permissionToConstructionRoot: ExecutiveAuthorityDocInfo,
+    permissionToConstructionRoot: ExecutiveAuthorityDocInfo;
 
     // Лицо, осуществляющее подготовку проектной документации
-    projectDocumentationContractor: OrganizationWithOptionalSroAndId,
+    projectDocumentationContractor: OrganizationWithOptionalSroAndId;
 
     /*
     Лица, осуществляющие подготовку проектной документации, выполняющие проверку
     соответствия выполняемых работ проектной документации (авторский надзор) и их представители (id)
      */
-    designerSupervisionRepresentativesSet: DesignerSupervisionRepresentativesSetItem[],
+    designerSupervisionRepresentativesSet: DesignerSupervisionRepresentativesSetItem[];
 
     // Сведения о государственной экспертизе проектной документации
-    projectDocumentationExaminationDetails: ProjectDocumentationExaminationDetails,
+    projectDocumentationExaminationDetails: ProjectDocumentationExaminationDetails;
 
     // Лицо, осуществляющее строительство и его представители
-    buildingContractorWithRepresentatives: string = "",
+    buildingContractorWithRepresentatives: string;
 
     // Другие лица, осуществляющие строительство, их уполномоченные представители
-    otherDevelopersRepresentativesSet: string[],
+    otherDevelopersRepresentativesSet: string[];
 
     // Сведения о государственном строительном надзоре
-    stateSupervisoryAuthorityInfo: StateSupervisoryAuthorityInfo,
+    stateSupervisoryAuthorityInfo: StateSupervisoryAuthorityInfo;
 
     // Общие сведения об объекте капитального строительства
-    permanentObjectCommonInfo: PermanentObjectCommonInfo,
+    permanentObjectCommonInfo: PermanentObjectCommonInfo;
 
     // Общие сведения об общем журнале работ
-    generalWorkJournalCommonInfo: GeneralWorkJournalCommonInfo,
+    generalWorkJournalCommonInfo: GeneralWorkJournalCommonInfo;
 
     // Регистрационная надпись органа государственного строительного надзора
-    supervisoryAuthorityRegistrationMarkId: string = "",
+    supervisoryAuthorityRegistrationMarkId: string;
 
     // Список ID инженерно-технического персонала лица, осуществляющего строительство
-    engineeringAndTechnicalPersonsIdsSet: string[],
+    engineeringAndTechnicalPersonsIdsSet: string[];
 
     // Сведения о государственном строительном надзоре при строительстве
-    stateSupervisionInfo: StateSupervisionInfo,
+    stateSupervisionInfo: StateSupervisionInfo;
 
     // Список дополнительных параметров
-    extraParameterSet: ExtraParameter[],
+    extraParameterSet: ExtraParameter[];
 
     // Журнал находится в архиве
-    archived: boolean = false
-  ) {
-  }
+    archived: boolean;
 }
