@@ -2,6 +2,7 @@ package ru.nuthatch.generalworkjournal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.nuthatch.generalworkjournal.common.*;
 import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
 import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
@@ -22,9 +23,7 @@ import java.util.*;
                 query = "SELECT uuid, change_date, change_description_with_basis_basis, " +
                         "change_description_with_basis_description, responsible_representative, sequence_number " +
                         "FROM general_work_journal_title_change " +
-                        "WHERE general_work_journal_base_document_uuid = :uuid " +
-                        "AND general_work_journal_base_document_edition = :ed " +
-                        "AND general_work_journal_schema_version = :ver",
+                        "WHERE general_work_journal_uuid = :uuid",
                 resultSetMapping = "Mapping.TitleChangeDto"),
 
         /*
@@ -32,9 +31,7 @@ import java.util.*;
          */
         @NamedNativeQuery(name = "GeneralWorkJournal.findAllSpecialJournals_Named",
                 query = "SELECT * FROM special_journal " +
-                        "WHERE general_work_journal_base_document_uuid = :uuid " +
-                        "AND general_work_journal_base_document_edition = :ed " +
-                        "AND general_work_journal_schema_version = :ver",
+                        "WHERE general_work_journal_uuid = :uuid",
                 resultClass = SpecialJournal.class),
 
         /*
@@ -42,9 +39,7 @@ import java.util.*;
          */
         @NamedNativeQuery(name = "GeneralWorkJournal.findAllWorksPerformingInfos_Named",
                 query = "SELECT * FROM works_performing_info " +
-                        "WHERE general_work_journal_base_document_uuid = :uuid " +
-                        "AND general_work_journal_base_document_edition = :ed " +
-                        "AND general_work_journal_schema_version = :ver",
+                        "WHERE general_work_journal_uuid = :uuid",
                 resultClass = WorksPerformingInfo.class),
 
         /*
@@ -52,9 +47,7 @@ import java.util.*;
          */
         @NamedNativeQuery(name = "GeneralWorkJournal.findAllControlEventInfos_Named",
                 query = "SELECT * FROM control_event_info " +
-                        "WHERE general_work_journal_base_document_uuid = :uuid " +
-                        "AND general_work_journal_base_document_edition = :ed " +
-                        "AND general_work_journal_schema_version = :ver",
+                        "WHERE general_work_journal_uuid = :uuid",
                 resultClass = ControlEventInfo.class),
 
         /*
@@ -62,9 +55,7 @@ import java.util.*;
          */
         @NamedNativeQuery(name = "GeneralWorkJournal.findAllAsBuiltDocumentation_Named",
                 query = "SELECT * FROM as_built_documentation " +
-                        "WHERE general_work_journal_base_document_uuid = :uuid " +
-                        "AND general_work_journal_base_document_edition = :ed " +
-                        "AND general_work_journal_schema_version = :ver",
+                        "WHERE general_work_journal_uuid = :uuid",
                 resultClass = AsBuiltDocumentation.class)
 
 })
@@ -81,16 +72,26 @@ import java.util.*;
                 }))
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "general_work_journal")
-public class GeneralWorkJournal implements Serializable {
+public class GeneralWorkJournal extends CommonEntity implements Serializable {
 
     /**
-     * Информация об UUID и редакции документа, UUID объекта капитального строительства, версии схемы
-     * Обязательный элемент
+     * Версия схемы
+     * Обязательный элемент, заполняется шиной
      */
-    @EmbeddedId
-    protected BaseDocument baseDocument;
+    @Column(nullable = false,
+            updatable = false)
+    protected String schemaVersion;
+
+    /**
+     * Редакция документа (версия)
+     * Обязательный элемент, заполняется ИС
+     */
+    @Column(nullable = false,
+            updatable = false)
+    protected int edition;
 
     /**
      * Идентификатор документа
