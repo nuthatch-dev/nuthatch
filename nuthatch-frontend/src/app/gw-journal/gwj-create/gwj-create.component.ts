@@ -1,13 +1,20 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {GeneralWorkJournal} from "../models/GeneralWorkJournal";
 import {ConstructionTypeName} from "../models/ConstructionTypeName";
+import {GwJournalService} from "../gw-journal.service";
+import {Router} from "@angular/router";
+import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-gwj-create',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    NgForOf,
+    KeyValuePipe
   ],
   templateUrl: './gwj-create.component.html',
   styleUrl: './gwj-create.component.css'
@@ -15,97 +22,154 @@ import {ConstructionTypeName} from "../models/ConstructionTypeName";
 export class GwjCreateComponent {
 
   createForm: FormGroup;
+  submitted: boolean = false;
+  constructionTypes: Array<string> = Object.keys(ConstructionTypeName).filter(key => isNaN(+key));
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private service: GwJournalService,
+              private router: Router) {
+
     this.createForm = this.fb.group({
-
+      schemaVersion: ['', Validators.required],
+      edition: [null, Validators.required, Validators.min(1)],
+      gwj_DocInfoName: ['', Validators.required],
+      gwj_DocInfoNumber: ['', Validators.required],
+      permanentObjectName: ['', Validators.required],
+      postalAddress: [''],
+      constructionSiteAddress: [''],
+      constructionTypeName: [null, Validators.required],
+      developerWithRepresentatives: [''], // TODO: representatives service
+      operatingPersonWithRepresentatives: [''],
+      regionalOperatorWithRepresentatives: [''],
+      technicalCustomerWithRepresentatives: [''],
+      permission_DocInfoName: ['', Validators.required],
+      permission_DocInfoNumber: ['', Validators.required],
+      permission_ExpirationDate: [null],
+      permission_DocChangeDate: [null],
+      permission_ExecutiveAuthorityId: ['', Validators.required],
+      permission_ExecutiveAuthorityTitle: ['', Validators.required],
+      contractor_LegalEntity: [''], // TODO: выбор между ЮЛ и ИП
+      contractor_IndividualEntrepreneur: [''],
+      contractor_Sro: [''],
+      designerSupervisionRepresentativesSet: [null],
+      projectExamination_SequenceNumber: [null],
+      projectExamination_Requisites: [''],
+      projectExamination_AuthorityName: [''],
+      buildingContractorWithRepresentatives: [''],
+      otherDevelopersRepresentativesSet: [null],
+      supervisoryAuthority: [''],
+      supervisory_Representative: [''],
+      supervisory_AdministrativeDocument: [''],
+      projectCharacteristics: [''],
+      constructionStartDate: [null],
+      constructionEndDate: [null],
+      commonInfo_JournalVolumeValue: [null],
+      commonInfo_JournalVolumeUnit: [''],
+      commonInfo_BeginDate: [null],
+      commonInfo_EndDate: [null],
+      commonInfo_DeveloperRepresentative: [''],
+      supervisoryAuthorityRegistrationMarkId: [''],
+      engineeringAndTechnicalPersonsIdsSet: [null],
+      stateSupervisionRecordsIdsSet: [null],
+      extraParameterSet: [null],
     });
   }
 
-  createGeneralWorkJournal() {
-
+  get f() {
+    return this.createForm.controls;
   }
 
-  /*
-  ОЖР модель
-   */
+  onSubmit() {
+    this.submitted = true;
+    if (this.createForm.invalid) {
+      return;
+    }
 
-  private gwj: GeneralWorkJournal = {
-    uuid: '',
-    schemaVersion: '',
-    edition: 1,
-    docInfo: {
-      name: '',
-      number: '',
-    },
-    permanentObjectInfo: {
-      permanentObjectName: '',
-      permanentObjectAddress: {
-        postalAddress: '',
-        constructionSiteAddress: '',
-      },
-    },
-    constructionTypeName: ConstructionTypeName.BUILDING,
-    developerWithRepresentatives: '',
-    operatingPersonWithRepresentatives: '',
-    regionalOperatorWithRepresentatives: '',
-    technicalCustomerWithRepresentatives: '',
-    permissionToConstructionRoot: {
+    let gwj: GeneralWorkJournal = {
       uuid: '',
+      schemaVersion: this.f['schemaVersion'].value,
+      edition: this.f['edition'].value,
       docInfo: {
-        name: '',
-        number: '',
+        name: this.f['gwj_DocInfoName'].value,
+        number: this.f['gwj_DocInfoNumber'].value,
       },
-      expirationDate: new Date(), // TODO: ???????
-      docChangeDate: new Date(), // TODO: ???????
-      executiveAuthorityId: '',
-      executiveAuthorityTitle: '',
-    },
-    projectDocumentationContractor: {
-      uuid: '',
-      legalEntity: '',
-      individualEntrepreneur: '',
-      sro: '',
-    },
-    designerSupervisionRepresentativesSet: [],
-    projectDocumentationExaminationDetails: {
-      sequenceNumber: -1,
-      expertiseConclusionRequisites: '',
-      executiveAuthorityName: '',
-    },
-    buildingContractorWithRepresentatives: '',
-    otherDevelopersRepresentativesSet: [],
-    stateSupervisoryAuthorityInfo: {
-      uuid: '',
-      supervisoryAuthority: '',
-      supervisoryAuthorityOfficialPerson: {
+      permanentObjectInfo: {
+        permanentObjectName: this.f['permanentObjectName'].value,
+        permanentObjectAddress: {
+          postalAddress: this.f['postalAddress'].value,
+          constructionSiteAddress: this.f['constructionSiteAddress'].value,
+        },
+      },
+      constructionTypeName: this.f['constructionTypeName'].value,
+      developerWithRepresentatives: this.f['developerWithRepresentatives'].value,
+      operatingPersonWithRepresentatives: this.f['operatingPersonWithRepresentatives'].value,
+      regionalOperatorWithRepresentatives: this.f['regionalOperatorWithRepresentatives'].value,
+      technicalCustomerWithRepresentatives: this.f['technicalCustomerWithRepresentatives'].value,
+      permissionToConstructionRoot: {
         uuid: '',
-        representative: '',
-        administrativeDocument: '',
-      }
-    },
-    permanentObjectCommonInfo: {
-      projectCharacteristics: '',
-      constructionStartDate: new Date(), // TODO: ???????
-      constructionEndDate: new Date(), // TODO: ???????
-    },
-    generalWorkJournalCommonInfo: {
-      uuid: '',
-      journalVolumeValue: -1,
-      journalVolumeUnit: '',
-      beginDate: new Date(), // TODO: ???????
-      endDate: new Date(), // TODO: ???????
-      developerRepresentative: '',
-    },
-    supervisoryAuthorityRegistrationMarkId: '',
-    engineeringAndTechnicalPersonsIdsSet: [],
-    stateSupervisionInfo: {
-      uuid: '',
-      stateSupervisionRecordsIdsSet: [],
-    },
-    extraParameterSet: [],
-    archived: false,
+        docInfo: {
+          name: this.f['permission_DocInfoName'].value,
+          number: this.f['permission_DocInfoNumber'].value,
+        },
+        expirationDate: this.f['permission_ExpirationDate'].value,
+        docChangeDate: this.f['permission_DocChangeDate'].value,
+        executiveAuthorityId: this.f['permission_ExecutiveAuthorityId'].value,
+        executiveAuthorityTitle: this.f['permission_ExecutiveAuthorityTitle'].value,
+      },
+      projectDocumentationContractor: {
+        uuid: '',
+        legalEntity: this.f['contractor_LegalEntity'].value,
+        individualEntrepreneur: this.f['contractor_IndividualEntrepreneur'].value,
+        sro: this.f['contractor_Sro'].value,
+      },
+      designerSupervisionRepresentativesSet: this.f['designerSupervisionRepresentativesSet'].value,
+      projectDocumentationExaminationDetails: {
+        sequenceNumber: this.f['projectExamination_SequenceNumber'].value,
+        expertiseConclusionRequisites: this.f['projectExamination_Requisites'].value,
+        executiveAuthorityName: this.f['projectExamination_AuthorityName'].value,
+      },
+      buildingContractorWithRepresentatives: this.f['buildingContractorWithRepresentatives'].value,
+      otherDevelopersRepresentativesSet: this.f['otherDevelopersRepresentativesSet'].value,
+      stateSupervisoryAuthorityInfo: {
+        uuid: '',
+        supervisoryAuthority: this.f['supervisoryAuthority'].value,
+        supervisoryAuthorityOfficialPerson: {
+          uuid: '',
+          representative: this.f['supervisory_Representative'].value,
+          administrativeDocument: this.f['supervisory_AdministrativeDocument'].value,
+        }
+      },
+      permanentObjectCommonInfo: {
+        projectCharacteristics: this.f['projectCharacteristics'].value,
+        constructionStartDate: this.f['constructionStartDate'].value,
+        constructionEndDate: this.f['constructionEndDate'].value,
+      },
+      generalWorkJournalCommonInfo: {
+        uuid: '',
+        journalVolumeValue: this.f['commonInfo_JournalVolumeValue'].value,
+        journalVolumeUnit: this.f['commonInfo_JournalVolumeUnit'].value,
+        beginDate: this.f['commonInfo_BeginDate'].value,
+        endDate: this.f['commonInfo_EndDate'].value,
+        developerRepresentative: this.f['commonInfo_DeveloperRepresentative'].value,
+      },
+      supervisoryAuthorityRegistrationMarkId: this.f['supervisoryAuthorityRegistrationMarkId'].value,
+      engineeringAndTechnicalPersonsIdsSet: this.f['engineeringAndTechnicalPersonsIdsSet'].value,
+      stateSupervisionInfo: {
+        uuid: '',
+        stateSupervisionRecordsIdsSet: this.f['stateSupervisionRecordsIdsSet'].value,
+      },
+      extraParameterSet: this.f['extraParameterSet'].value,
+      archived: false,
+    }
+
+    this.service.createGeneralWorkJournal(gwj).subscribe({
+      next: value => {
+        this.router.navigate(['/gwj-details', value.uuid]);
+      },
+      error: err => console.log(err),
+      complete: () => console.info('complete')
+    });
   }
 
-
+  protected readonly ConstructionTypeName = ConstructionTypeName;
 }
