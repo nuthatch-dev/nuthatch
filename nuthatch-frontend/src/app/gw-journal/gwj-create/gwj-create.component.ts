@@ -30,11 +30,11 @@ export class GwjCreateComponent {
               private router: Router) {
 
     this.createForm = this.fb.group({
-      schemaVersion: ['', Validators.required],
-      edition: [null, Validators.required, Validators.min(1)],
-      gwj_DocInfoName: ['', Validators.required],
-      gwj_DocInfoNumber: ['', Validators.required],
-      permanentObjectName: ['', Validators.required],
+      schemaVersion: [''],
+      edition: [null],
+      gwj_DocInfoName: [''],
+      gwj_DocInfoNumber: ['', Validators.required, Validators.min(1)],
+      permanentObjectName: ['', Validators.required, Validators.minLength(1)],
       postalAddress: [''],
       constructionSiteAddress: [''],
       constructionTypeName: [null, Validators.required],
@@ -42,12 +42,12 @@ export class GwjCreateComponent {
       operatingPersonWithRepresentatives: [''],
       regionalOperatorWithRepresentatives: [''],
       technicalCustomerWithRepresentatives: [''],
-      permission_DocInfoName: ['', Validators.required],
-      permission_DocInfoNumber: ['', Validators.required],
+      permission_DocInfoName: [''],
+      permission_DocInfoNumber: [''],
       permission_ExpirationDate: [null],
       permission_DocChangeDate: [null],
-      permission_ExecutiveAuthorityId: ['', Validators.required],
-      permission_ExecutiveAuthorityTitle: ['', Validators.required],
+      permission_ExecutiveAuthorityId: [''],
+      permission_ExecutiveAuthorityTitle: [''],
       contractor_LegalEntity: [''], // TODO: выбор между ЮЛ и ИП
       contractor_IndividualEntrepreneur: [''],
       contractor_Sro: [''],
