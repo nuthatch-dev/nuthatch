@@ -1,6 +1,656 @@
 <div class="container my-3">
-  <h4 class="my-3">Создание нового Общего журнала работ для объекта</h4>
-  <form (ngSubmit)="createGeneralWorkJournal()">
+  <h4 class="my-4 text-center">Общий журнал работ, в котором ведется учет выполнения работ
+    по строительству, реконструкции, капитальному ремонту
+    объекта капитального строительства</h4>
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <div class="input-group">
+        <span class="input-group-text">№</span>
+        <input formControlName="gwj_DocInfoNumber" type="text" class="form-control"
+               id="gwj_DocInfoNumber" aria-describedby="gwjNumberHelp">
+      </div>
+      <div id="gwjNumberHelp" class="form-text">Номер журнала</div>
+      <div *ngIf="submitted && createForm.controls['gwj_DocInfoNumber'].errors" class="error">
+        <div *ngIf="submitted && createForm.controls['gwj_DocInfoNumber'].errors?.['required']"
+             class="text-danger">
+          Поле обязательно для заполнения
+        </div>
+      </div>
+
+      <div class="input-group mt-3">
+        <span class="input-group-text">по</span>
+        <select class="form-select" formControlName="constructionTypeName" name="constructionTypeSelect">
+          <option [ngValue]="null">Выберите тип</option>
+          <option *ngFor="let itemType of constructionTypes | keyvalue" [ngValue]="itemType.key" id="item_type">
+            {{ itemType.value }}
+          </option>
+        </select>
+      </div>
+      <div id="constructionTypeNameHelp" class="form-text">
+        Указать строительство, реконструкция, капитальный ремонт
+      </div>
+      <div *ngIf="submitted && createForm.controls['constructionTypeName'].errors" class="error">
+        <div *ngIf="submitted && createForm.controls['constructionTypeName'].errors?.['required']"
+             class="text-danger">
+          Поле обязательно для заполнения
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">Наименование объекта капитального строительства, его почтовый или строительный
+          адрес</h5>
+        <label class="form-label" for="permanentObjectName">Наименование объекта капитального строительства</label>
+        <input formControlName="permanentObjectName" type="text" class="form-control"
+               id="permanentObjectName" aria-describedby="permanentObjectNameHelp">
+        <div id="permanentObjectNameHelp" class="form-text">Наименование объекта</div>
+        <div *ngIf="submitted && createForm.controls['permanentObjectName'].errors" class="error">
+          <div *ngIf="submitted && createForm.controls['permanentObjectName'].errors?.['required']"
+               class="text-danger">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <h6>Почтовый или строительный адрес</h6>
+        <div class="row my-3">
+          <div class="col-6">
+            <label for="postalAddress" class="form-label">Почтовый адрес</label>
+            <input formControlName="postalAddress" type="text" class="form-control"
+                   id="postalAddress" aria-describedby="postalAddressHelp">
+            <div id="postalAddressHelp" class="form-text">
+              Задайте почтовый адрес объекта капитального строительства
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label for="constructionSiteAddress" class="form-label">Строительный адрес</label>
+            <input formControlName="constructionSiteAddress" type="text" class="form-control"
+                   id="constructionSiteAddress" aria-describedby="constructionSiteAddressHelp">
+            <div id="constructionSiteAddressHelp" class="form-text">
+              Задайте строительный адрес объекта капитального строительства
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">Застройщик</h5>
+        <label class="form-label" for="developerWithRepresentatives">Застройщик</label>
+        <input formControlName="developerWithRepresentatives" type="text" class="form-control"
+               id="developerWithRepresentatives" aria-describedby="developerWithRepresentativesHelp">
+        <div id="developerWithRepresentativesHelp" class="form-text mb-3">
+          Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального
+          предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,
+          телефон/факс, адрес электронной почты (при наличии)фамилия, имя, отчество (последнее - при наличии),
+          паспортные данные, адрес места жительства, телефон/факс, адрес электронной почты (при наличии) - для
+          физических лиц, не являющихся индивидуальными предпринимателями
+        </div>
+        <label class="form-label" for="r_o_none">Саморегулируемая организация</label>  <!--TODO: СРО-->
+        <input formControlName="r_o_none" type="text" class="form-control"
+               id="r_o_none" aria-describedby="r_o_none_Help">
+        <div id="r_o_none_Help" class="form-text">
+          Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой является
+          указанное юридическое лицо или индивидуальный предприниматель (за исключением случаев, когда членство в
+          саморегулируемых организациях в области инженерных изысканий, архитектурно-строительного проектирования,
+          строительства, реконструкции, капитального ремонта объектов капитального строительства не требуется
+        </div>
+
+        <div class="mt-4">
+          <h5 class="text-center">Уполномоченный представитель застройщика</h5>
+          <table class="table table-sm table-stripped table-bordered my-3">
+            <thead>
+            <tr class="text-md-center align-top">
+              <th style="width: 5%">№ п/п</th>
+              <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
+              <th style="width: 25%">Должность (при наличии)</th>
+              <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+              <th style="width: 20%">
+                Идентификационный номер в национальном реестре специалистов в области строительства *
+              </th>
+            </tr>
+            <tr class="text-md-center">
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="form-text">
+            * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных
+            изысканий, архитектурно- строительного проектирования, строительства, реконструкции, капитального
+            ремонта объектов капитального строительства не требуется
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">Технический заказчик</h5>
+        <label class="form-label" for="technicalCustomerWithRepresentatives">Технический заказчик</label>
+        <input formControlName="technicalCustomerWithRepresentatives" type="text" class="form-control"
+               id="technicalCustomerWithRepresentatives" aria-describedby="technicalCustomerWithRepresentativesHelp">
+        <div id="technicalCustomerWithRepresentativesHelp" class="form-text mb-3">
+          Полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица, телефон/факс, адрес
+          электронной почты (при наличии)
+        </div>
+        <label class="form-label" for="t_c_none">Саморегулируемая организация</label>  <!--TODO: СРО-->
+        <input formControlName="t_c_none" type="text" class="form-control"
+               id="t_c_none" aria-describedby="t_c_none_Help">
+        <div id="t_c_none_Help" class="form-text">
+          Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой является
+          указанное юридическое лицо (за исключением случаев, когда членство в саморегулируемых организациях в
+          области инженерных изысканий, архитектурно-строительного проектирования, строительства, реконструкции,
+          капитального ремонта объектов капитального строительства не требуется
+        </div>
+
+        <div class="mt-4">
+          <h5 class="text-center">Уполномоченный представитель технического заказчика</h5>
+          <table class="table table-sm table-stripped table-bordered my-3">
+            <thead>
+            <tr class="text-md-center align-top">
+              <th style="width: 5%">№ п/п</th>
+              <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
+              <th style="width: 25%">Должность (при наличии)</th>
+              <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+              <th style="width: 20%">
+                Идентификационный номер в национальном реестре специалистов в области строительства *
+              </th>
+            </tr>
+            <tr class="text-md-center">
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="form-text">
+            * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных
+            изысканий, архитектурно- строительного проектирования, строительства, реконструкции, капитального
+            ремонта объектов капитального строительства не требуется
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">Лицо, ответственное за эксплуатацию здания, сооружения, или региональный оператор</h5>
+        <div class="form-text mb-3">
+          Заполняется в случае, если договор строительного подряда заключается с лицом, ответственным за
+          эксплуатацию здания, сооружения, или региональным оператором
+        </div>
+        <label class="form-label" for="operatingPersonWithRepresentatives">
+          Лицо, ответственное за эксплуатацию здания, сооружения
+        </label>
+        <input formControlName="operatingPersonWithRepresentatives" type="text" class="form-control"
+               id="operatingPersonWithRepresentatives" aria-describedby="operatingHelp">
+        <label class="form-label" for="regionalOperatorWithRepresentatives">Региональный оператор</label>
+        <input formControlName="regionalOperatorWithRepresentatives" type="text" class="form-control"
+               id="regionalOperatorWithRepresentatives" aria-describedby="operatingHelp">
+
+        <div id="operatingHelp" class="form-text">
+          Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального
+          предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,
+          телефон/факс, адрес электронной почты (при наличии), <br>
+          фамилия, имя, отчество (последнее - при наличии), паспортные данные, адрес места жительства, телефон/факс,
+          адрес электронной почты (при наличии) - для физических лиц, не являющихся индивидуальными предпринимателями
+        </div>
+
+        <div class="mt-4">
+          <h5 class="text-center">
+            Уполномоченный представитель лица, ответственного за эксплуатацию здания,
+            сооружения, или регионального оператора
+          </h5>
+          <table class="table table-sm table-stripped table-bordered my-3">
+            <thead>
+            <tr class="text-md-center align-top">
+              <th style="width: 5%">№ п/п</th>
+              <th style="width: 40%">Фамилия, имя, отчество (последнее при наличии)</th>
+              <th style="width: 30%">Должность (при наличии)</th>
+              <th style="width: 25%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+            </tr>
+            <tr class="text-md-center">
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">
+          Сведения о выданном разрешении на строительство *
+        </h5>
+        <div class="form-text mb-3">
+          * заполняется в случае, если разрешение на строительство требуется в соответствии со статьей 51
+          Градостроительного кодекса Российской Федерации (Собрание законодательства Российской Федерации,
+          2005, № 1, ст. 16; 2022, № 29, ст. 5317)
+        </div>
+        <label class="form-label" for="permission_DocInfoNumber">Номер</label>
+        <input formControlName="permission_DocInfoNumber" type="text" class="form-control"
+               id="permission_DocInfoNumber" aria-describedby="permission_DocInfoNumberHelp">
+        <div id="permission_DocInfoNumberHelp" class="form-text">
+          Номер разрешения
+        </div>
+        <div class="row my-3">
+          <div class="col-6">
+            <label class="form-label" for="permission_DocChangeDate">Дата выдачи</label>
+            <input formControlName="permission_DocChangeDate" type="date" class="form-control"
+                   id="permission_DocChangeDate">
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="permission_ExpirationDate">Действительно до:</label>
+            <input formControlName="permission_ExpirationDate" type="date" class="form-control"
+                   id="permission_ExpirationDate">
+          </div>
+        </div>
+        <label class="form-label" for="permission_ExecutiveAuthorityTitle">
+          Наименование органа исполнительной власти, государственной корпорации или органа местного самоуправления,
+          выдавших разрешение
+        </label>
+        <input formControlName="permission_ExecutiveAuthorityTitle" type="text" class="form-control"
+               id="permission_ExecutiveAuthorityTitle">
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">Лицо, осуществляющее подготовку проектной документации</h5>
+        <div class="row mt-3">
+          <div class="col-6">
+            <label class="form-label" for="contractor_LegalEntity">Юридическое лицо</label>
+            <input class="form-control" formControlName="contractor_LegalEntity" id="contractor_LegalEntity">
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="contractor_IndividualEntrepreneur">Индивидуальный предприниматель</label>
+            <input class="form-control" formControlName="contractor_IndividualEntrepreneur"
+                   id="contractor_IndividualEntrepreneur">
+          </div>
+        </div>
+        <div class="form-text mb-3">
+          Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального
+          предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,
+          телефон/факс, адрес электронной почты (при наличии)
+        </div>
+        <label class="form-label" for="contractor_Sro">Саморегулируемая организация</label>
+        <input formControlName="contractor_Sro" type="text" class="form-control"
+               id="contractor_Sro" aria-describedby="contractor_SroHelp">
+        <div id="contractor_SroHelp" class="form-text">
+          Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой
+          является указанное юридическое лицо или индивидуальный предприниматель (за исключением случаев,
+          когда членство в саморегулируемых организациях в области инженерных изысканий, архитектурно-строительного
+          проектирования, строительства, реконструкции, капитального ремонта объектов капитального строительства
+          не требуется)
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">
+          Уполномоченный представитель лица, осуществляющего подготовку проектной документации, по вопросам
+          проверки соответствия выполняемых работ проектной документации (далее - авторский надзор)
+        </h5>
+        <table class="table table-sm table-stripped table-bordered my-3">
+          <thead>
+          <tr class="text-md-center align-top">
+            <th style="width: 5%">№ п/п</th>
+            <th style="width: 30%">
+              Полное и (или) сокращенное наименование или фамилия, имя, отчество (последнее - при наличии)
+              лица, осуществляющего подготовку проектной документации, сведения о разделах проектной документации,
+              подготовленных этим лицом
+            </th>
+            <th style="width: 25%">Фамилия, имя, отчество (последнее - при наличии), должность (при наличии)</th>
+            <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+            <th style="width: 20%">
+              Идентификационный номер в национальном реестре специалистов в области строительства *
+            </th>
+          </tr>
+          <tr class="text-md-center">
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+          </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="form-text">
+          * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных изысканий,
+          архитектурно- строительного проектирования, строительства, реконструкции, капитального ремонта объектов
+          капитального строительства не требуется
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">Сведения о положительном заключении экспертизы проектной документации *</h5>
+        <div class="form-text mb-3">
+          * заполняется в случае, если при строительстве, реконструкции объекта капитального строительства в
+          соответствии со статьей 49 Градостроительного кодекса Российской Федерации (Собрание законодательства
+          Российской Федерации, 2005, № 1, ст. 16; 2022, № 29, ст. 5317) проводится экспертиза проектной документации
+        </div>
+        <label class="form-label" for="projectExamination_SequenceNumber">Порядковый номер</label>
+        <input formControlName="projectExamination_SequenceNumber" type="number" class="form-control"
+               id="projectExamination_SequenceNumber">
+        <div class="form-text mb-3">
+          Порядковый номер
+        </div>
+        <label class="form-label" for="projectExamination_Requisites">Реквизиты заключения</label>
+        <input formControlName="projectExamination_Requisites" type="text" class="form-control"
+               id="projectExamination_Requisites">
+        <div class="form-text mb-3">
+          Реквизиты заключения экспертизы проектной документации и результатов инженерных изысканий
+        </div>
+        <label class="form-label" for="projectExamination_AuthorityName">Наименование органа</label>
+        <input formControlName="projectExamination_AuthorityName" type="text" class="form-control"
+               id="projectExamination_AuthorityName">
+        <div class="form-text">
+          Наименование органа исполнительной власти или органа местного самоуправления (организации),
+          выдавшего документ
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">Лицо, осуществляющее строительство, реконструкцию, капитальный ремонт</h5>
+        <label class="form-label" for="buildingContractorWithRepresentatives">Наименование</label>
+        <input formControlName="buildingContractorWithRepresentatives" type="text" class="form-control"
+               id="buildingContractorWithRepresentatives" aria-describedby="buildingContractorWithRepresentativesHelp">
+        <div id="buildingContractorWithRepresentativesHelp" class="form-text mb-3">
+          Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП,
+          ИНН индивидуального предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место
+          нахождения юридического лица, телефон/факс, адрес электронной почты (при наличии)
+        </div>
+        <label class="form-label" for="b_c_none">Саморегулируемая организация</label>  <!--TODO: СРО-->
+        <input formControlName="b_c_none" type="text" class="form-control"
+               id="b_c_none" aria-describedby="b_c_none_Help">
+        <div id="b_c_none_Help" class="form-text">
+          Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой
+          является указанное юридическое лицо или индивидуальный предприниматель (за исключением случаев, когда
+          членство в саморегулируемых организациях в области инженерных изысканий, архитектурно-строительного
+          проектирования, строительства, реконструкции, капитального ремонта объектов капитального
+          строительства не требуется)
+        </div>
+
+        <div class="mt-4">
+          <h5 class="text-center">
+            Уполномоченный представитель лица, осуществляющего строительство, реконструкцию, капитальный ремонт
+          </h5>
+          <table class="table table-sm table-stripped table-bordered my-3">
+            <thead>
+            <tr class="text-md-center align-top">
+              <th style="width: 5%">№ п/п</th>
+              <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
+              <th style="width: 25%">Должность (при наличии)</th>
+              <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+              <th style="width: 20%">
+                Идентификационный номер в национальном реестре специалистов в области строительства *
+              </th>
+            </tr>
+            <tr class="text-md-center">
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="form-text">
+            * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных
+            изысканий, архитектурно- строительного проектирования, строительства, реконструкции, капитального
+            ремонта объектов капитального строительства не требуется
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">
+          Уполномоченный представитель застройщика или технического заказчика по вопросам строительного контроля
+        </h5>
+        <table class="table table-sm table-stripped table-bordered my-3">
+          <thead>
+          <tr class="text-md-center align-top">
+            <th style="width: 5%">№ п/п</th>
+            <th style="width: 40%">Фамилия, имя, отчество (последнее при наличии)</th>
+            <th style="width: 30%">Должность (при наличии)</th>
+            <th style="width: 25%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+          </tr>
+          <tr class="text-md-center">
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+          </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">
+          Уполномоченный представитель лица, ответственного за эксплуатацию здания, сооружения, и (или)
+          регионального оператора по вопросам строительного контроля
+        </h5>
+        <table class="table table-sm table-stripped table-bordered my-3">
+          <thead>
+          <tr class="text-md-center align-top">
+            <th style="width: 5%">№ п/п</th>
+            <th style="width: 40%">Фамилия, имя, отчество (последнее при наличии)</th>
+            <th style="width: 30%">Должность (при наличии)</th>
+            <th style="width: 25%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+          </tr>
+          <tr class="text-md-center">
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+          </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">
+          Уполномоченный представитель лица, осуществляющего строительство, реконструкцию, капитальный ремонт,
+          по вопросам строительного контроля
+        </h5>
+        <table class="table table-sm table-stripped table-bordered my-3">
+          <thead>
+          <tr class="text-md-center align-top">
+            <th style="width: 5%">№ п/п</th>
+            <th style="width: 40%">Фамилия, имя, отчество (последнее при наличии)</th>
+            <th style="width: 30%">Должность (при наличии)</th>
+            <th style="width: 25%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+          </tr>
+          <tr class="text-md-center">
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+          </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="text-center">
+          Другие лица, осуществляющие строительство, их уполномоченные представители
+        </h5>
+        <table class="table table-sm table-stripped table-bordered my-3">
+          <thead>
+          <tr class="text-md-center align-top">
+            <th style="width: 5%">№ п/п</th>
+            <th style="width: 40%">
+              Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН-для
+              индивидуальных предпринимателей, полное и (или) сокращенное наименование, ОГРН, ИНН, место
+              нахождения - для юридических лиц, фамилия, имя, отчество (последнее - при наличии) паспортные данные,
+              адрес места жительства - для физических лиц, не являющихся индивидуальными предпринимателями
+            </th>
+            <th style="width: 30%">
+              Фамилия, имя, отчество (последнее - при наличии), должность (при наличии) уполномоченного
+              представителя лица, осуществляющего строительство, реконструкцию, капитальный ремонт, наименование,
+              дата, номер документа, подтверждающего полномочие
+            </th>
+            <th style="width: 25%">
+              Выполняемые работы по строительству, реконструкции, капитальному ремонту объекта
+              капитального строительства
+            </th>
+          </tr>
+          <tr class="text-md-center">
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+          </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="my-4">
+        <h5 class="text-center">Сведения о государственном строительном надзоре</h5>
+        <label class="form-label" for="supervisoryAuthority">Наименование органа</label>
+        <input formControlName="supervisoryAuthority" type="text" class="form-control" id="supervisoryAuthority">
+        <div class="form-text mb-3">
+          Наименование органа государственного строительного надзора, почтовые реквизиты, телефон/факс,
+          адрес электронной почты (при наличии)
+        </div>
+        <label class="form-label" for="supervisory_Representative">Должностное лицо</label>
+        <input formControlName="supervisory_Representative" type="text" class="form-control"
+               id="supervisory_Representative">
+        <div class="form-text mb-3">
+          Фамилия, имя, отчество (последнее - при наличии), должность должностного лица
+        </div>
+        <label class="form-label" for="supervisory_AdministrativeDocument">
+          Документ, подтверждающий полномочие
+        </label>
+        <input formControlName="supervisory_AdministrativeDocument" type="text" class="form-control"
+               id="supervisory_AdministrativeDocument">
+        <div class="form-text">
+          Номер, дата приказа (распоряжения) о назначении должностного лица ответственным за осуществление
+          государственного строительного надзора на объекте капитального строительства
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="mt-4">
+        <label class="form-label" for="projectCharacteristics">Общие сведения об объекте капитального
+          строительства
+        </label>
+        <input formControlName="projectCharacteristics" type="text" class="form-control" id="projectCharacteristics">
+        <div class="form-text">
+          Наименование объекта капитального строительства, краткие проектные характеристики объекта
+          капитального строительства
+        </div>
+        <label class="form-label mt-3" for="constructionStartDate">
+          Начало строительства, реконструкции, капитального ремонта объекта капитального строительства
+        </label>
+        <input formControlName="constructionStartDate" type="date" class="form-control" id="constructionStartDate">
+        <label class="form-label mt-3" for="constructionEndDate">
+          Окончание строительства, реконструкции, капитального ремонта объекта капитального строительства
+        </label>
+        <input formControlName="constructionEndDate" type="date" class="form-control" id="constructionEndDate">
+
+        <label class="form-label mt-3">В журнале содержится учет выполнения работ в период</label>
+        <div class="input-group">
+          <span class="input-group-text">с:</span>
+          <input formControlName="commonInfo_BeginDate" type="date" class="form-control">
+          <span class="input-group-text">по:</span>
+          <input formControlName="commonInfo_EndDate" type="date" class="form-control">
+        </div>
+        <div class="form-text">
+          Заполняется в случае, если в процессе строительства, реконструкции, капитального ремонта велось
+          несколько журналов
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <label class="form-label" for="supervisoryAuthorityRegistrationMarkId">
+          Регистрационная надпись органа государственного строительного надзора
+        </label>
+        <input formControlName="supervisoryAuthorityRegistrationMarkId" type="text" class="form-control"
+               id="supervisoryAuthorityRegistrationMarkId">
+      </div>
+
+    </div>
+
+    <hr>
     <button class="btn btn-success btn-sm" type="submit">Сохранить</button>
   </form>
 </div>
