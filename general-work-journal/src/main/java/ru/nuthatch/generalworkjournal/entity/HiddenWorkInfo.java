@@ -13,12 +13,6 @@ import java.util.UUID;
  */
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "work_id",
-                column = @Column(name = "hidden_work_info_work_id")),
-        @AttributeOverride(name = "work_name",
-                column = @Column(name = "hidden_work_info_work_name"))
-})
 public class HiddenWorkInfo {
 
     /**
@@ -29,6 +23,7 @@ public class HiddenWorkInfo {
      * Наложенные ограничения
      * [0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
      */
+    @Column(name = "work_id")
     protected UUID workId;
 
     /**
@@ -36,7 +31,7 @@ public class HiddenWorkInfo {
      * Обязательный элемент
      * Минимум 1 символ
      */
-    @Column(nullable = false)
+    @Column(name = "work_name", nullable = false)
     protected String workName;
 
     /**

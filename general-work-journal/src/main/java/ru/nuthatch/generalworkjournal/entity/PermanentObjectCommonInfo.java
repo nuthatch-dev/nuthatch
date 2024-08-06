@@ -1,7 +1,5 @@
 package ru.nuthatch.generalworkjournal.entity;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -14,14 +12,6 @@ import java.util.Date;
  */
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "project_characteristics",
-                column = @Column(name = "permanent_object_common_info_project_characteristics")),
-        @AttributeOverride(name = "construction_start_date",
-                column = @Column(name = "permanent_object_common_info_construction_start_date")),
-        @AttributeOverride(name = "construction_end_date",
-                column = @Column(name = "permanent_object_common_info_construction_end_date")),
-})
 public class PermanentObjectCommonInfo {
 
     /**
@@ -29,6 +19,7 @@ public class PermanentObjectCommonInfo {
      * Обязательный элемент
      * Минимум 1 символ
      */
+    @Column(name = "project_characteristics", nullable = false)
     protected String projectCharacteristics;
 
     /**
@@ -37,6 +28,7 @@ public class PermanentObjectCommonInfo {
      * Обязательный элемент
      * Дата в формате <ГГГГ-ММ-ДД> (год-месяц-день)
      */
+    @Column(name = "construction_start_date", nullable = false)
     protected Date constructionStartDate;
 
     /**
@@ -45,5 +37,6 @@ public class PermanentObjectCommonInfo {
      * Необязательный элемент
      * Дата в формате <ГГГГ-ММ-ДД> (год-месяц-день)
      */
+    @Column(name = "construction_end_date")
     protected Date constructionEndDate;
 }

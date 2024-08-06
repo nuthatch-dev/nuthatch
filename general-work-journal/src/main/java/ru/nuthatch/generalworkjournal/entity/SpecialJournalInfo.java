@@ -10,14 +10,6 @@ import java.util.UUID;
 
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "name",
-                column = @Column(name = "special_journal_info_name")),
-        @AttributeOverride(name = "date",
-                column = @Column(name = "special_journal_info_date")),
-        @AttributeOverride(name = "journal_keepers_set",
-                column = @Column(name = "special_journal_info_journal_keepers_set"))
-})
 public class SpecialJournalInfo {
 
     /**

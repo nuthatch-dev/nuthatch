@@ -1,7 +1,5 @@
 package ru.nuthatch.generalworkjournal.entity;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -15,12 +13,6 @@ import java.util.UUID;
  */
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "general_work_journal_record_id",
-                column = @Column(name = "work_record_info_general_work_journal_record_id")),
-        @AttributeOverride(name = "work_completion_date",
-                column = @Column(name = "work_record_info_work_completion_date"))
-})
 public class WorkRecordInfo {
 
     /**
@@ -31,7 +23,8 @@ public class WorkRecordInfo {
      * Наложенные ограничения
      * [0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}
      */
-    @Column(nullable = false,
+    @Column(name = "general_work_journal_record_id",
+            nullable = false,
             updatable = false)
     protected UUID generalWorkJournalRecordId;
 
@@ -40,7 +33,8 @@ public class WorkRecordInfo {
      * Обязательный элемент
      * Дата в формате <ГГГГ-ММ-ДД> (год-месяц-день)
      */
-    @Column(nullable = false,
+    @Column(name = "work_completion_date",
+            nullable = false,
             updatable = false)
     protected Date workCompletionDate;
 }
