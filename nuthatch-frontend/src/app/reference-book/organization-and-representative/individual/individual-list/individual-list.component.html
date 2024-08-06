@@ -1,0 +1,46 @@
+<div class="container my-3">
+  <h4 class="text-center">Физические лица</h4>
+  <table class="table table-sm table-stripped table-bordered my-3">
+    <thead>
+    <tr class="text-md-center align-top">
+      <th style="width: 15%">Фамилия</th>
+      <th style="width: 15%">Имя</th>
+      <th style="width: 15%">Отчество</th>
+      <th style="width: 20%">Адрес</th>
+      <th style="width: 25%">Паспортные данные (иной документ для иностранных граждан)</th>
+      <th style="width: 10%"></th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let individual of individualList">
+      <td>{{ individual.fullNameGroup.lastName }}</td>
+      <td>{{ individual.fullNameGroup.firstName }}</td>
+      <td>{{ individual.fullNameGroup.middleName }}</td>
+      <td>{{ individual.address }}</td>
+      <td>
+        <div *ngIf="individual.passportDetails.passportDetailsRussianFederation; else unset">
+          паспорт: <br>
+          серия {{ individual.passportDetails.passportDetailsRussianFederation.series }} <br>
+          номер {{ individual.passportDetails.passportDetailsRussianFederation.number }} <br>
+          дата выдачи {{ individual.passportDetails.passportDetailsRussianFederation.dateIssue | date }}
+        </div>
+        <ng-template #unset>
+          <div *ngIf="individual.passportDetails.documentDetailsForeign">
+            наименование документа: {{ individual.passportDetails.documentDetailsForeign.docName }} <br>
+            серия {{ individual.passportDetails.documentDetailsForeign.series }} <br>
+            номер {{ individual.passportDetails.documentDetailsForeign.number }} <br>
+            дата выдачи {{ individual.passportDetails.documentDetailsForeign.dateIssue | date }}
+          </div>
+        </ng-template>
+      </td>
+      <td>
+        <button (click)="individualDetails(individual.uuid)"
+                name="individual_details"
+                class="btn btn-outline-primary btn-sm">
+          Просмотреть
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

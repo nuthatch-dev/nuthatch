@@ -2,17 +2,14 @@ package ru.nuthatch.organization.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Описание комплексного типа: PassportDetails.
  * Паспортные данные
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "passport_details")
-public class PassportDetails extends CommonEntity {
+@Embeddable
+public class PassportDetails {
 
     /**
      * Паспортные данные гражданина РФ

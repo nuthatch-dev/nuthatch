@@ -4,6 +4,9 @@ import {FooterComponent} from "./footer/footer.component";
 import {GwjListComponent} from "./gw-journal/gwj-list/gwj-list.component";
 import {GwjDetailsComponent} from "./gw-journal/gwj-details/gwj-details.component";
 import {GwjCreateComponent} from "./gw-journal/gwj-create/gwj-create.component";
+import {
+  IndividualListComponent
+} from "./reference-book/organization-and-representative/individual/individual-list/individual-list.component";
 
 export const routes: Routes = [
   {path: '', outlet: 'header', component: HeaderComponent},
@@ -12,4 +15,7 @@ export const routes: Routes = [
   {path: 'gwj-list', component: GwjListComponent},
   {path: 'gwj-details/:id', component: GwjDetailsComponent},
   {path: 'gwj-create', component: GwjCreateComponent},
+
+  {path: 'individual-list', component: IndividualListComponent},
+
 ];

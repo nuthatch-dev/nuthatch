@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nuthatch.organization.entity.Individual;
+import ru.nuthatch.organization.entity.Role;
 import ru.nuthatch.organization.service.IndividualService;
 
 import java.util.Collection;
@@ -32,6 +33,11 @@ public class IndividualController {
                 .findById(uuid)
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping(value = "/all-by-role-id")
+    public ResponseEntity<Collection<Individual>> findAllByRoleSetContains(@RequestParam(name = "id") UUID uuid) {
+        return new ResponseEntity<>(service.findAllByRoleUuid(uuid), HttpStatus.OK);
     }
 
     @GetMapping(value = "/all")

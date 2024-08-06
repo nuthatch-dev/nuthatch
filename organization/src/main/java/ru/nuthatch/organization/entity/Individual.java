@@ -39,7 +39,7 @@ public class Individual extends CommonEntity {
     /**
      * Данные паспорта. Обязательный элемент
      */
-    @OneToOne
+    @Embedded
     protected PassportDetails passportDetails;
 
     /**
