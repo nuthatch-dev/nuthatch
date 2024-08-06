@@ -1,7 +1,5 @@
 package ru.nuthatch.generalworkjournal.entity;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -15,14 +13,6 @@ import java.util.UUID;
  */
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "sequence_number",
-                column = @Column(name = "project_documentation_examination_details_sequence_number")),
-        @AttributeOverride(name = "expertise_conclusion_requisites",
-                column = @Column(name = "project_documentation_examination_details_expertise_conclusion_requisites")),
-        @AttributeOverride(name = "executive_authority_name",
-                column = @Column(name = "project_documentation_examination_details_executive_authority_name"))
-})
 public class ProjectDocumentationExaminationDetails {
 
     /**
@@ -30,6 +20,7 @@ public class ProjectDocumentationExaminationDetails {
      * Обязательный элемент
      * Целое положительное число
      */
+    @Column(name = "sequence_number")
     protected int sequenceNumber;
 
     /**
@@ -37,6 +28,7 @@ public class ProjectDocumentationExaminationDetails {
      * результатов инженерных изысканий
      * Обязательный элемент
      */
+    @Column(name = "expertise_conclusion_requisites")
     protected UUID expertiseConclusionRequisites;
 
     /**
@@ -45,5 +37,6 @@ public class ProjectDocumentationExaminationDetails {
      * Обязательный элемент
      * Минимум 1 символ
      */
+    @Column(name = "executive_authority_name")
     protected String executiveAuthorityName;
 }

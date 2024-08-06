@@ -1,7 +1,5 @@
 package ru.nuthatch.generalworkjournal.entity;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -12,12 +10,6 @@ import lombok.Data;
  */
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "value",
-                column = @Column(name = "journal_volume_value")),
-        @AttributeOverride(name = "unit",
-                column = @Column(name = "journal_volume_unit"))
-})
 public class JournalVolume {
 
     /**

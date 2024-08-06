@@ -1,7 +1,5 @@
 package ru.nuthatch.generalworkjournal.entity;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -14,23 +12,19 @@ import java.util.UUID;
  */
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "postal_address",
-                column = @Column(name = "postal_or_construction_site_address_postal_address")),
-        @AttributeOverride(name = "construction_site_address",
-                column = @Column(name = "postal_or_construction_site_address_construction_site_address"))
-})
 public class PostalOrConstructionSiteAddress {
 
     /**
      * Информация о почтовом адресе
      * Обязательный элемент, если не заполнен строительный адрес
      */
+    @Column(name = "postal_address")
     protected UUID postalAddress;
 
     /**
      * Информация о строительном адресе
      * Обязательный элемент, если не заполнен почтовый адрес
      */
+    @Column(name = "construction_site_address")
     protected UUID constructionSiteAddress;
 }
