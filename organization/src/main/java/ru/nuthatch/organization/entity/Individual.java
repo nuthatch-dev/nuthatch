@@ -34,7 +34,7 @@ public class Individual extends CommonEntity {
      */
     @Column(name = "is_russian_federation_citizen",
             nullable = false)
-    protected boolean isRussianFederationCitizen = true;
+    protected boolean isaRussianFederationCitizen = true;
 
     /**
      * Данные паспорта. Обязательный элемент
