@@ -18,29 +18,223 @@
       <td>{{ individual.fullNameGroup.middleName }}</td>
       <td>{{ individual.address }}</td>
       <td>
-        <div *ngIf="individual.passportDetails.passportDetailsRussianFederation; else unset">
-          паспорт: <br>
-          серия {{ individual.passportDetails.passportDetailsRussianFederation.series }} <br>
-          номер {{ individual.passportDetails.passportDetailsRussianFederation.number }} <br>
-          дата выдачи {{ individual.passportDetails.passportDetailsRussianFederation.dateIssue | date }}
-        </div>
-        <ng-template #unset>
-          <div *ngIf="individual.passportDetails.documentDetailsForeign">
+        @if (individual.isaRussianFederationCitizen) {
+          <div>
+            паспорт: <br>
+            серия {{ individual.passportDetails.passportDetailsRussianFederation.series }} <br>
+            номер {{ individual.passportDetails.passportDetailsRussianFederation.number }} <br>
+            дата выдачи {{ individual.passportDetails.passportDetailsRussianFederation.dateIssue | date }}
+          </div>
+        } @else {
+          <div>
             наименование документа: {{ individual.passportDetails.documentDetailsForeign.docName }} <br>
             серия {{ individual.passportDetails.documentDetailsForeign.series }} <br>
             номер {{ individual.passportDetails.documentDetailsForeign.number }} <br>
             дата выдачи {{ individual.passportDetails.documentDetailsForeign.dateIssue | date }}
           </div>
-        </ng-template>
+        }
       </td>
       <td>
-        <button (click)="individualDetails(individual.uuid)"
-                name="individual_details"
-                class="btn btn-outline-primary btn-sm">
+        <button type="button" class="btn btn-outline-primary btn-sm"
+                data-bs-toggle="modal" data-bs-target="#individualDetails"
+                (click)="individualDetails(individual.uuid)">
           Просмотреть
         </button>
       </td>
     </tr>
     </tbody>
   </table>
+
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createIndividual">
+    Добавить
+  </button>
 </div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="individualDetails" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="individualDetailsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="individualDetailsLabel">Подробная информация о физическом лице</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <h6>Фамилия, имя, отчество</h6>
+        <p>
+          {{ individual.fullNameGroup.lastName }}
+          {{ individual.fullNameGroup.firstName }}
+          {{ individual.fullNameGroup.middleName }}
+        </p>
+        <h6>Адрес</h6>
+        <p>
+          {{ individual.address }}
+        </p>
+        <h6>Паспортные данные</h6>
+        @if (individual.isaRussianFederationCitizen) {
+          <div class="mb-3">
+            паспорт:
+            серия {{ individual.passportDetails.passportDetailsRussianFederation.series }}
+            номер {{ individual.passportDetails.passportDetailsRussianFederation.number }} <br>
+            дата выдачи {{ individual.passportDetails.passportDetailsRussianFederation.dateIssue | date }}
+          </div>
+        } @else {
+          <div class="mb-3">
+            наименование документа: {{ individual.passportDetails.documentDetailsForeign.docName }} <br>
+            серия {{ individual.passportDetails.documentDetailsForeign.series }} <br>
+            номер {{ individual.passportDetails.documentDetailsForeign.number }} <br>
+            дата выдачи {{ individual.passportDetails.documentDetailsForeign.dateIssue | date }}
+          </div>
+        }
+
+        <h6>Роли, в качестве которых может выступать данное физическое лицо</h6>
+        <div *ngFor="let role of individual.roleSet">
+          * {{ role.roleName }}
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateIndividual"
+                (click)="onUpdateClick()">
+          Редактировать
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                (click)="createIndividual()">
+          Удалить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateIndividual" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="updateIndividualLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateIndividualLabel">Редактирование</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="updateForm">
+
+          <label class="form-label">Ф.И.О</label>
+          <div class="input-group">
+            <span class="input-group-text">Фамилия</span>
+            <input formControlName="lastName" type="text" class="form-control" id="lastName">
+          </div>
+          <div *ngIf="submitted && updateForm.controls['lastName'].errors" class="error">
+            <div *ngIf="submitted && updateForm.controls['lastName'].errors?.['required']"
+                 class="text-danger">
+              Поле обязательно для заполнения
+            </div>
+          </div>
+          <div class="input-group mt-3">
+            <span class="input-group-text">Имя</span>
+            <input formControlName="firstName" type="text" class="form-control" id="firstName">
+          </div>
+          <div *ngIf="submitted && updateForm.controls['firstName'].errors" class="error">
+            <div *ngIf="submitted && updateForm.controls['firstName'].errors?.['required']"
+                 class="text-danger">
+              Поле обязательно для заполнения
+            </div>
+          </div>
+          <div class="input-group mt-3">
+            <span class="input-group-text">Отчество</span>
+            <input formControlName="middleName" type="text" class="form-control" id="middleName">
+          </div>
+
+          <div class="mt-3">
+            <label class="form-label">Адрес</label>
+            <input formControlName="address" type="text" class="form-control" id="address"
+                   aria-describedby="addressHelp">
+            <div id="addressHelp" class="form-text">Почтовый адрес</div>
+          </div>
+          <div *ngIf="submitted && updateForm.controls['address'].errors" class="error">
+            <div *ngIf="submitted && updateForm.controls['address'].errors?.['required']"
+                 class="text-danger">
+              Поле обязательно для заполнения
+            </div>
+          </div>
+
+          <div class="mt-3">
+            @if (individual.isaRussianFederationCitizen) {
+              <label class="form-label">Паспортные данные</label>
+              <div class="input-group">
+                <span class="input-group-text">Паспорт серия</span>
+                <input formControlName="ru_series" type="text" class="form-control" id="ru_series">
+                <span class="input-group-text">номер</span>
+                <input formControlName="ru_number" type="text" class="form-control" id="ru_number">
+                <span class="input-group-text">дата выдачи</span>
+                <input formControlName="ru_dateIssue" type="date" class="form-control" id="ru_dateIssue">
+              </div>
+            } @else {
+              <div>
+                <label class="form-label">Наименование документа (для иностранных граждан)</label>
+                <input formControlName="foreign_docName" type="text" class="form-control" id="foreign_docName">
+                <div class="input-group mt-3">
+                  <span class="input-group-text">серия</span>
+                  <input formControlName="foreign_series" type="text" class="form-control" id="foreign_series">
+                  <span class="input-group-text">номер</span>
+                  <input formControlName="foreign_number" type="text" class="form-control" id="foreign_number">
+                  <span class="input-group-text">дата выдачи</span>
+                  <input formControlName="foreign_dateIssue" type="date" class="form-control" id="foreign_dateIssue">
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="mt-3">
+            <label class="form-label">Роли, в качестве которых может выступать данное физическое лицо</label>
+            <select multiple class="form-select" formControlName="roleSet">
+              <option *ngFor="let item of roleList" [ngValue]="item">
+                {{item.roleName}}
+              </option>
+            </select>
+          </div>
+
+
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                (click)="updateIndividual()">
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createIndividual" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="createIndividualLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createIndividualLabel">Новое физическое лицо</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                (click)="createIndividual()">
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

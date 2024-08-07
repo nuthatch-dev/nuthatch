@@ -6,7 +6,7 @@ export interface Individual {
   uuid: string;
   fullNameGroup: FullNameGroup;
   address: string;
-  isRussianFederationCitizen: boolean;
+  isaRussianFederationCitizen: boolean;
   passportDetails: PassportDetails;
   roleSet: Role[];
 }

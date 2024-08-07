@@ -171,5 +171,4 @@ export class GwjCreateComponent {
     });
   }
 
-  protected readonly ConstructionTypeName = ConstructionTypeName;
 }
