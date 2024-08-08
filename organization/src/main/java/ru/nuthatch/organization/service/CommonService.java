@@ -30,7 +30,9 @@ public abstract class CommonService <E extends CommonEntity, R extends CommonRep
     }
 
     public Optional<E> update(E entity) {
-        return repository.findById(entity.getUuid()).map(repository::save);
+        return repository.existsById(entity.getUuid())?
+                Optional.of(repository.save(entity)) :
+                Optional.empty();
     }
 
     public void deleteById(UUID uuid) {

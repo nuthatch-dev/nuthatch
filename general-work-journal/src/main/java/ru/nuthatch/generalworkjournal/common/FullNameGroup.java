@@ -8,14 +8,6 @@ import lombok.Data;
 
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "last_name",
-                column = @Column(name = "full_name_group_last_name")),
-        @AttributeOverride(name = "first_name",
-                column = @Column(name = "full_name_group_first_name")),
-        @AttributeOverride(name = "middle_name",
-                column = @Column(name = "full_name_group_middle_name"))
-})
 public class FullNameGroup {
 
     // Фамилия
