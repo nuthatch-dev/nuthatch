@@ -12,7 +12,7 @@
     </tr>
     </thead>
     <tbody class="table-group-divider">
-    <tr *ngFor="let individual of individualList">
+    <tr *ngFor="let individual of individualList"  class="text-md-center">
       <td>{{ individual.fullNameGroup.lastName }}</td>
       <td>{{ individual.fullNameGroup.firstName }}</td>
       <td>{{ individual.fullNameGroup.middleName }}</td>
@@ -21,20 +21,18 @@
         @if (individual.isaRussianFederationCitizen) {
           <div>
             паспорт: <br>
-            серия {{ individual.passportDetails.passportDetailsRussianFederation.series }} <br>
-            номер {{ individual.passportDetails.passportDetailsRussianFederation.number }} <br>
-            дата выдачи {{ individual.passportDetails.passportDetailsRussianFederation.dateIssue | date : "dd-MM-YYY" }}
+            серия {{ individual.passportDetails.passportDetailsRussianFederation.series }}
+            номер {{ individual.passportDetails.passportDetailsRussianFederation.number }}
           </div>
         } @else {
           <div>
             наименование документа: {{ individual.passportDetails.documentDetailsForeign.docName }} <br>
-            серия {{ individual.passportDetails.documentDetailsForeign.series }} <br>
-            номер {{ individual.passportDetails.documentDetailsForeign.number }} <br>
-            дата выдачи {{ individual.passportDetails.documentDetailsForeign.dateIssue | date : "dd-MM-YYY" }}
+            серия {{ individual.passportDetails.documentDetailsForeign.series }}
+            номер {{ individual.passportDetails.documentDetailsForeign.number }}
           </div>
         }
       </td>
-      <td>
+      <td class="align-middle">
         <button type="button" class="btn btn-outline-primary btn-sm"
                 data-bs-toggle="modal" data-bs-target="#individualDetails"
                 (click)="individualDetails(individual.uuid)">
@@ -45,6 +43,7 @@
     </tbody>
   </table>
 
+  <hr>
   <!-- Button trigger modal -->
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#saveIndividual"
           (click)="onCreateClick()">
@@ -78,14 +77,16 @@
             паспорт:
             серия {{ individual.passportDetails.passportDetailsRussianFederation.series }}
             номер {{ individual.passportDetails.passportDetailsRussianFederation.number }} <br>
-            дата выдачи {{ individual.passportDetails.passportDetailsRussianFederation.dateIssue | date : "dd-MM-YYY" }}
+            дата выдачи {{ individual.passportDetails.passportDetailsRussianFederation.dateIssue
+            | date : "dd.MM.YYYY" }}
           </div>
         } @else {
           <div class="mb-3">
             наименование документа: {{ individual.passportDetails.documentDetailsForeign.docName }} <br>
             серия {{ individual.passportDetails.documentDetailsForeign.series }} <br>
             номер {{ individual.passportDetails.documentDetailsForeign.number }} <br>
-            дата выдачи {{ individual.passportDetails.documentDetailsForeign.dateIssue | date : "dd-MM-YYY" }}
+            дата выдачи {{ individual.passportDetails.documentDetailsForeign.dateIssue
+            | date : "dd.MM.YYYY" }}
           </div>
         }
         <h6>Роли, в качестве которых может выступать данное физическое лицо</h6>
@@ -128,9 +129,9 @@
             <span class="input-group-text">Фамилия</span>
             <input formControlName="lastName" type="text" class="form-control" id="lastName">
           </div>
-          <div *ngIf="submitted && formGroup.controls['lastName'].errors" class="error">
-            <div *ngIf="submitted && formGroup.controls['lastName'].errors?.['required']"
-                 class="text-danger">
+          <div *ngIf="formGroup.controls['lastName'].errors" class="error">
+            <div *ngIf="formGroup.controls['lastName'].errors?.['required']"
+                 class="text-danger form-text">
               Поле обязательно для заполнения
             </div>
           </div>
@@ -138,9 +139,9 @@
             <span class="input-group-text">Имя</span>
             <input formControlName="firstName" type="text" class="form-control" id="firstName">
           </div>
-          <div *ngIf="submitted && formGroup.controls['firstName'].errors" class="error">
-            <div *ngIf="submitted && formGroup.controls['firstName'].errors?.['required']"
-                 class="text-danger">
+          <div *ngIf="formGroup.controls['firstName'].errors" class="error">
+            <div *ngIf="formGroup.controls['firstName'].errors?.['required']"
+                 class="text-danger form-text">
               Поле обязательно для заполнения
             </div>
           </div>
@@ -155,9 +156,9 @@
                    aria-describedby="addressHelp">
             <div id="addressHelp" class="form-text">Почтовый адрес</div>
           </div>
-          <div *ngIf="submitted && formGroup.controls['address'].errors" class="error">
-            <div *ngIf="submitted && formGroup.controls['address'].errors?.['required']"
-                 class="text-danger">
+          <div *ngIf="formGroup.controls['address'].errors" class="error">
+            <div *ngIf="formGroup.controls['address'].errors?.['required']"
+                 class="text-danger form-text">
               Поле обязательно для заполнения
             </div>
           </div>
@@ -220,7 +221,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+        <button type="button" [disabled]="formGroup.invalid" class="btn btn-success" data-bs-dismiss="modal"
                 (click)="saveIndividual()">
           Сохранить
         </button>

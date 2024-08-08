@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Renderer2} from '@angular/core';
 import {IndividualService} from "../individual.service";
-import {Router} from "@angular/router";
 import {Individual} from "../../models/Individual";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -24,7 +23,6 @@ export class IndividualListComponent implements OnInit {
   formGroup: FormGroup;
 
   constructor(private service: IndividualService,
-              private router: Router,
               private fb: FormBuilder) {
 
     this.formGroup = this.fb.group({
@@ -93,7 +91,6 @@ export class IndividualListComponent implements OnInit {
   }
 
   entityIsCreated: boolean = true;
-  submitted: boolean = false;
   roleList: Role[] = [];
 
   private getRoleList() {
@@ -141,10 +138,7 @@ export class IndividualListComponent implements OnInit {
   }
 
   saveIndividual() {
-    this.submitted = true;
-    if (this.formGroup.invalid) {
-      return;
-    }
+
     let individual: Individual = {
       uuid: this.entityIsCreated ? '' : this.individual.uuid,
       fullNameGroup: {
@@ -187,7 +181,6 @@ export class IndividualListComponent implements OnInit {
         error: err => console.log(err)
       });
     }
-    this.submitted = false;
   }
 
   onCreateClick() {
