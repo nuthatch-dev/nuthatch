@@ -4,7 +4,6 @@ import {Router} from "@angular/router";
 import {Individual} from "../../models/Individual";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {min} from "rxjs";
 import {Role} from "../../models/Role";
 
 @Component({
@@ -22,24 +21,25 @@ import {Role} from "../../models/Role";
 export class IndividualListComponent implements OnInit {
 
   individualList: Individual[] = [];
-  updateForm: FormGroup;
+  formGroup: FormGroup;
 
   constructor(private service: IndividualService,
               private router: Router,
               private fb: FormBuilder) {
 
-    this.updateForm = this.fb.group({
+    this.formGroup = this.fb.group({
       lastName: ["", Validators.required],
       firstName: ["", Validators.required],
       middleName: [""],
       address: ["", Validators.required],
+      isaRussianFederationCitizen: [true],
       ru_series: [""],
       ru_number: [""],
-      ru_dateIssue: [""],
+      ru_dateIssue: [null],
       foreign_docName: [""],
       foreign_series: [""],
       foreign_number: [""],
-      foreign_datIssue: [""],
+      foreign_dateIssue: [null],
       roleSet: [[]],
     });
 
@@ -92,18 +92,24 @@ export class IndividualListComponent implements OnInit {
     roleSet: []
   }
 
+  entityIsCreated: boolean = true;
   submitted: boolean = false;
   roleList: Role[] = [];
 
-  onUpdateClick() {
+  private getRoleList() {
     this.service.getRoleList().subscribe({
       next: value => {
         this.roleList = value;
       },
       error: err => console.log(err)
     });
+  }
 
-    this.updateForm.patchValue({
+  onUpdateClick() {
+    this.entityIsCreated = false;
+    this.getRoleList();
+
+    this.formGroup.patchValue({
       lastName: this.individual.fullNameGroup.lastName,
       firstName: this.individual.fullNameGroup.firstName,
       middleName: this.individual.fullNameGroup.middleName,
@@ -111,39 +117,45 @@ export class IndividualListComponent implements OnInit {
       roleSet: this.individual.roleSet,
     });
     if (this.individual.isaRussianFederationCitizen) {
-      this.updateForm.patchValue({
+      this.formGroup.patchValue({
         ru_series: this.individual.passportDetails.passportDetailsRussianFederation.series,
         ru_number: this.individual.passportDetails.passportDetailsRussianFederation.number,
-        ru_dateIssue: this.individual.passportDetails.passportDetailsRussianFederation.dateIssue,
+        ru_dateIssue: this.dateFormat(
+          this.individual.passportDetails.passportDetailsRussianFederation.dateIssue
+        ),
       });
     } else {
-        this.updateForm.patchValue({
-          foreign_docName: this.individual.passportDetails.documentDetailsForeign.docName,
-          foreign_series: this.individual.passportDetails.documentDetailsForeign.series,
-          foreign_number: this.individual.passportDetails.documentDetailsForeign.number,
-          foreign_datIssue: this.individual.passportDetails.documentDetailsForeign.dateIssue,
-        });
+      this.formGroup.patchValue({
+        foreign_docName: this.individual.passportDetails.documentDetailsForeign.docName,
+        foreign_series: this.individual.passportDetails.documentDetailsForeign.series,
+        foreign_number: this.individual.passportDetails.documentDetailsForeign.number,
+        foreign_dateIssue: this.dateFormat(
+          this.individual.passportDetails.documentDetailsForeign.dateIssue
+        ),
+      });
     }
   }
 
   get f() {
-    return this.updateForm.controls;
+    return this.formGroup.controls;
   }
 
-  updateIndividual() {
+  saveIndividual() {
     this.submitted = true;
-    if (this.updateForm.invalid) {
+    if (this.formGroup.invalid) {
       return;
     }
     let individual: Individual = {
-      uuid: this.individual.uuid,
+      uuid: this.entityIsCreated ? '' : this.individual.uuid,
       fullNameGroup: {
         lastName: this.f['lastName'].value,
         firstName: this.f['firstName'].value,
         middleName: this.f['middleName'].value
       },
       address: this.f['address'].value,
-      isaRussianFederationCitizen: this.individual.isaRussianFederationCitizen,
+      isaRussianFederationCitizen: this.entityIsCreated ?
+        this.f['isaRussianFederationCitizen'].value :
+        this.individual.isaRussianFederationCitizen,
       passportDetails: {
         passportDetailsRussianFederation: {
           series: this.f['ru_series'].value,
@@ -154,21 +166,54 @@ export class IndividualListComponent implements OnInit {
           docName: this.f['foreign_docName'].value,
           series: this.f['foreign_series'].value,
           number: this.f['foreign_number'].value,
-          dateIssue: this.f['foreign_datIssue'].value
+          dateIssue: this.f['foreign_dateIssue'].value
         }
       },
       roleSet: this.f['roleSet'].value
     }
-    this.service.createIndividual(individual).subscribe({
+
+    if (this.entityIsCreated) {
+      this.service.createIndividual(individual).subscribe({
+        next: value => {
+          this.getAllIndividuals();
+        },
+        error: err => console.log(err)
+      });
+    } else {
+      this.service.updateIndividual(individual).subscribe({
+        next: value => {
+          this.getAllIndividuals();
+        },
+        error: err => console.log(err)
+      });
+    }
+    this.submitted = false;
+  }
+
+  onCreateClick() {
+    this.entityIsCreated = true;
+    this.formGroup.reset()
+    this.formGroup.patchValue({
+      isaRussianFederationCitizen: true,
+    })
+    this.getRoleList();
+  }
+
+  deleteIndividual() {
+    this.service.deleteIndividualById(this.individual.uuid).subscribe({
       next: value => {
         this.getAllIndividuals();
-        console.log(value);
       },
       error: err => console.log(err)
     });
   }
 
-  createIndividual() {
+  private dateFormat(d: Date): string {
+    let date = new Date(d);
+    let year: string = date.getFullYear().toString();
+    let month: string = (date.getMonth() + 1).toString().padStart(2, '0');
+    let day: string = date.getDate().toString().padStart(2, '0');
+    return year + "-" + month + "-" + day
   }
 
 }
