@@ -17,14 +17,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "schema_version",
-                column = @Column(name = "base_document_schema_version")),
-        @AttributeOverride(name = "uuid",
-                column = @Column(name = "base_document_uuid")),
-        @AttributeOverride(name = "edition",
-                column = @Column(name = "base_document_edition"))
-})
 public class BaseDocument {
 
     /**

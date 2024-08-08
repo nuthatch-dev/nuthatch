@@ -12,12 +12,6 @@ import lombok.Data;
  */
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "document_name",
-                column = @Column(name = "doc_info_name")),
-        @AttributeOverride(name = "document_number",
-                column = @Column(name = "doc_info_number"))
-})
 public class DocInfo {
 
     /**

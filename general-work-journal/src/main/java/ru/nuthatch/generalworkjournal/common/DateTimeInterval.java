@@ -14,12 +14,6 @@ import java.util.Date;
  */
 @Data
 @Embeddable
-@AttributeOverrides({
-        @AttributeOverride(name = "begin_date",
-                column = @Column(name = "date_time_interval_begin_date")),
-        @AttributeOverride(name = "end_date",
-                column = @Column(name = "date_time_interval_end_date"))
-})
 public class DateTimeInterval {
 
     /**
