@@ -50,13 +50,8 @@ export class SroListComponent implements OnInit {
     ogrn: "",
   }
 
-  sroDetails(id: string) {
-    this.service.getSroById(id).subscribe({
-      next: value => {
-        this.sro = value;
-      },
-      error: err => console.log(err)
-    });
+  sroDetails(sro: Sro) {
+    this.sro = sro;
   }
 
   entityIsCreated: boolean = true;
@@ -85,15 +80,15 @@ export class SroListComponent implements OnInit {
 
     if (this.entityIsCreated) {
       this.service.createSro(sro).subscribe({
-        next: _ => {
-          this.getSroList();
+        next: value => {
+          this.sroList.unshift(value);
         },
         error: err => console.log(err)
       });
     } else {
       this.service.updateSro(sro).subscribe({
-        next: _ => {
-          this.getSroList();
+        next: value => {
+          this.sroList.splice(this.sroList.indexOf(value), 1, value);
         },
         error: err => console.log(err)
       });

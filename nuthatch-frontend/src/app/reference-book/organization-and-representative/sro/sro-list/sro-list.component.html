@@ -1,12 +1,12 @@
 <div class="container my-3">
   <h4 class="text-center">Саморегулируемые общества</h4>
-  <table class="table table-sm table-bordered my-3">
+  <table class="table table-sm table-striped my-3">
     <thead>
     <tr class="text-md-center align-top">
       <th style="width: 50%">Наименование</th>
       <th style="width: 20%">ИНН</th>
       <th style="width: 20%">ОГРН</th>
-      <th style="width: 10%"></th>
+      <th style="width: 10%">Подробно</th>
     </tr>
     </thead>
     <tbody class="table-group-divider">
@@ -16,7 +16,7 @@
       <td class="text-md-center">{{ sro.ogrn }}</td>
       <td class="align-middle text-md-center">
         <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                data-bs-target="#sroDetails" (click)="sroDetails(sro.uuid)">
+                data-bs-target="#sroDetails" (click)="sroDetails(sro)">
           Просмотреть
         </button>
       </td>

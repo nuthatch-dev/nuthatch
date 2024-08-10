@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IndividualService} from "../individual.service";
 import {Individual} from "../../models/Individual";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
@@ -56,13 +56,8 @@ export class IndividualListComponent implements OnInit {
     });
   }
 
-  individualDetails(id: string) {
-    this.service.getIndividualById(id).subscribe({
-      next: value => {
-        this.individual = value;
-      },
-      error: err => console.log(err)
-    });
+  individualDetails(individual: Individual) {
+    this.individual = individual;
   }
 
   individual: Individual = {
@@ -169,14 +164,14 @@ export class IndividualListComponent implements OnInit {
     if (this.entityIsCreated) {
       this.service.createIndividual(individual).subscribe({
         next: value => {
-          this.getAllIndividuals();
+          this.individualList.unshift(value);
         },
         error: err => console.log(err)
       });
     } else {
       this.service.updateIndividual(individual).subscribe({
         next: value => {
-          this.getAllIndividuals();
+          this.individualList.splice(this.individualList.indexOf(value), 1, value);
         },
         error: err => console.log(err)
       });
@@ -185,16 +180,16 @@ export class IndividualListComponent implements OnInit {
 
   onCreateClick() {
     this.entityIsCreated = true;
-    this.formGroup.reset()
+    this.formGroup.reset();
     this.formGroup.patchValue({
       isaRussianFederationCitizen: true,
-    })
+    });
     this.getRoleList();
   }
 
   deleteIndividual() {
     this.service.deleteIndividualById(this.individual.uuid).subscribe({
-      next: value => {
+      next: _ => {
         this.getAllIndividuals();
       },
       error: err => console.log(err)
