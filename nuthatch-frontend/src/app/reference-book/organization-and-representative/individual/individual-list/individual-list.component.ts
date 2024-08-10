@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {IndividualService} from "../individual.service";
-import {Router} from "@angular/router";
 import {Individual} from "../../models/Individual";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -24,7 +23,6 @@ export class IndividualListComponent implements OnInit {
   formGroup: FormGroup;
 
   constructor(private service: IndividualService,
-              private router: Router,
               private fb: FormBuilder) {
 
     this.formGroup = this.fb.group({
@@ -58,13 +56,8 @@ export class IndividualListComponent implements OnInit {
     });
   }
 
-  individualDetails(id: string) {
-    this.service.getIndividualById(id).subscribe({
-      next: value => {
-        this.individual = value;
-      },
-      error: err => console.log(err)
-    });
+  individualDetails(individual: Individual) {
+    this.individual = individual;
   }
 
   individual: Individual = {
@@ -93,7 +86,6 @@ export class IndividualListComponent implements OnInit {
   }
 
   entityIsCreated: boolean = true;
-  submitted: boolean = false;
   roleList: Role[] = [];
 
   private getRoleList() {
@@ -141,10 +133,7 @@ export class IndividualListComponent implements OnInit {
   }
 
   saveIndividual() {
-    this.submitted = true;
-    if (this.formGroup.invalid) {
-      return;
-    }
+
     let individual: Individual = {
       uuid: this.entityIsCreated ? '' : this.individual.uuid,
       fullNameGroup: {
@@ -175,33 +164,32 @@ export class IndividualListComponent implements OnInit {
     if (this.entityIsCreated) {
       this.service.createIndividual(individual).subscribe({
         next: value => {
-          this.getAllIndividuals();
+          this.individualList.unshift(value);
         },
         error: err => console.log(err)
       });
     } else {
       this.service.updateIndividual(individual).subscribe({
         next: value => {
-          this.getAllIndividuals();
+          this.individualList.splice(this.individualList.indexOf(value), 1, value);
         },
         error: err => console.log(err)
       });
     }
-    this.submitted = false;
   }
 
   onCreateClick() {
     this.entityIsCreated = true;
-    this.formGroup.reset()
+    this.formGroup.reset();
     this.formGroup.patchValue({
       isaRussianFederationCitizen: true,
-    })
+    });
     this.getRoleList();
   }
 
   deleteIndividual() {
     this.service.deleteIndividualById(this.individual.uuid).subscribe({
-      next: value => {
+      next: _ => {
         this.getAllIndividuals();
       },
       error: err => console.log(err)
