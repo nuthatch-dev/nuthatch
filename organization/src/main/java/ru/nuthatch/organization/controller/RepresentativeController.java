@@ -4,48 +4,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.nuthatch.organization.entity.Individual;
-import ru.nuthatch.organization.service.IndividualService;
+import ru.nuthatch.organization.entity.Representative;
+import ru.nuthatch.organization.service.RepresentativeService;
 
 import java.util.Collection;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/api/v1/individual")
-public class IndividualController {
-
-    private final IndividualService service;
+@RequestMapping(value = "/api/v1/representative")
+public class RepresentativeController {
+    
+    private final RepresentativeService service;
 
     @Autowired
-    public IndividualController(IndividualService service) {
+    public RepresentativeController(RepresentativeService service) {
         this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<Individual> save(@RequestBody Individual entity) {
+    public ResponseEntity<Representative> save(@RequestBody Representative entity) {
         return new ResponseEntity<>(service.save(entity), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<Individual> findById(@RequestParam(name = "id") UUID uuid) {
+    public ResponseEntity<Representative> findById(@RequestParam(name = "id") UUID uuid) {
         return service
                 .findById(uuid)
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(value = "/all-by-role-id")
-    public ResponseEntity<Collection<Individual>> findAllByRoleSetContains(@RequestParam(name = "id") UUID uuid) {
-        return new ResponseEntity<>(service.findAllByRoleUuid(uuid), HttpStatus.OK);
-    }
-
     @GetMapping(value = "/all")
-    public ResponseEntity<Collection<Individual>> findAll() {
+    public ResponseEntity<Collection<Representative>> findAll() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<Individual> update(@RequestBody Individual entity) {
+    public ResponseEntity<Representative> update(@RequestBody Representative entity) {
         return service
                 .update(entity)
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))

@@ -34,13 +34,13 @@ export class IndividualEntrepreneurListComponent implements OnInit {
       ogrnip: ["", Validators.required],
       inn: ["", Validators.required],
       sro: [null],
-      roleSet: [[]],
     });
 
   }
 
   ngOnInit() {
     this.getIeList();
+    this.getRoleList();
   }
 
   private getIeList() {
@@ -76,13 +76,10 @@ export class IndividualEntrepreneurListComponent implements OnInit {
     this.isSroMember = this.ie.sro != null;
   }
 
-  entityIsCreated: boolean = true;
+  /*
+  Методы для работы с ролями
+   */
   roleList: Role[] = [];
-  sroList: Sro[] = [];
-  isSroMember: boolean = false;
-  setSroSwitch(value: boolean) {
-    this.isSroMember = value;
-  }
 
   private getRoleList() {
     this.service.getRoleList().subscribe({
@@ -91,6 +88,46 @@ export class IndividualEntrepreneurListComponent implements OnInit {
       },
       error: err => console.log(err)
     });
+  }
+
+  /*
+  Массивы ролей определенных для сущности и доступных к добавлению.
+  Подготовка массива доступных ролей
+   */
+  freeRoleList: Role[] = [];
+  assignedRoleList: Role[] = [];
+
+  private prepareFreeRoleList() {
+    this.assignedRoleList = this.ie.roleSet;
+    this.freeRoleList = this.roleList.filter(role => {
+      for (let r of this.ie.roleSet) {
+        if (r.uuid == role.uuid) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+
+  /*
+  Изменение массивов ролей по действиям пользователя
+   */
+  onAddRoleClick(role: Role) {
+    this.assignedRoleList.push(role);
+    this.freeRoleList.splice(this.freeRoleList.indexOf(role), 1);
+  }
+
+  onDeleteRoleClick(role: Role) {
+    this.assignedRoleList.splice(this.assignedRoleList.indexOf(role), 1);
+    this.freeRoleList.push(role);
+  }
+
+  entityIsCreated: boolean = true;
+  sroList: Sro[] = [];
+  isSroMember: boolean = false;
+
+  setSroSwitch(value: boolean) {
+    this.isSroMember = value;
   }
 
   private getSroList() {
@@ -102,9 +139,12 @@ export class IndividualEntrepreneurListComponent implements OnInit {
     });
   }
 
+  /*
+  Настройка данных модального окна при редактировании записи
+   */
   onUpdateClick() {
     this.entityIsCreated = false;
-    this.getRoleList();
+    this.prepareFreeRoleList();
     this.isSroMember = (this.ie.sro != null);
     this.getSroList();
     this.formGroup.patchValue({
@@ -119,9 +159,13 @@ export class IndividualEntrepreneurListComponent implements OnInit {
     });
   }
 
+  /*
+  Настройка данных модального окна при создании новой записи
+   */
   onCreateClick() {
     this.entityIsCreated = true;
-    this.getRoleList();
+    this.freeRoleList = this.roleList;
+    this.assignedRoleList = [];
     this.isSroMember = false;
     this.getSroList();
     this.formGroup.reset();
@@ -132,7 +176,6 @@ export class IndividualEntrepreneurListComponent implements OnInit {
   }
 
   saveIndividualEntrepreneur() {
-
     let ie: IndividualEntrepreneur = {
       uuid: this.entityIsCreated ? "" : this.ie.uuid,
       fullNameGroup: {
@@ -144,9 +187,8 @@ export class IndividualEntrepreneurListComponent implements OnInit {
       ogrnip: this.f["ogrnip"].value,
       inn: this.f["inn"].value,
       sro: this.f["sro"].value,
-      roleSet: this.f["roleSet"].value
+      roleSet: this.assignedRoleList
     };
-
     if (this.entityIsCreated) {
       this.service.createIndividualEntrepreneur(ie).subscribe({
         next: value => {
@@ -156,8 +198,8 @@ export class IndividualEntrepreneurListComponent implements OnInit {
       });
     } else {
       this.service.updateIndividualEntrepreneur(ie).subscribe({
-        next: value => {
-          this.ieList.splice(this.ieList.indexOf(value), 1, value);
+        next: _ => {
+          this.getIeList();
         },
         error: err => console.log(err)
       });

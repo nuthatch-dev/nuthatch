@@ -31,7 +31,7 @@ export class LegalEntityListComponent implements OnInit {
       inn: ["", Validators.required],
       address: ["", Validators.required],
       phone: [""],
-      sro:  [null],
+      sro: [null],
     })
   }
 
@@ -71,8 +71,11 @@ export class LegalEntityListComponent implements OnInit {
     this.isSroMember = this.legalEntity.sro != null;
   }
 
-  // Role methods
+  /*
+  Методы для работы с ролями
+   */
   roleList: Role[] = [];
+
   private getRoleList() {
     this.service.getRoleList().subscribe({
       next: value => {
@@ -82,8 +85,13 @@ export class LegalEntityListComponent implements OnInit {
     });
   }
 
+  /*
+  Массивы ролей определенных для сущности и доступных к добавлению.
+  Подготовка массива доступных ролей
+   */
   freeRoleList: Role[] = [];
   assignedRoleList: Role[] = [];
+
   private prepareFreeRoleList() {
     this.assignedRoleList = this.legalEntity.roleSet;
     this.freeRoleList = this.roleList.filter(role => {
@@ -96,6 +104,9 @@ export class LegalEntityListComponent implements OnInit {
     });
   }
 
+  /*
+  Изменение массивов ролей по действиям пользователя
+   */
   onAddRoleClick(role: Role) {
     this.assignedRoleList.push(role);
     this.freeRoleList.splice(this.freeRoleList.indexOf(role), 1);
@@ -109,6 +120,7 @@ export class LegalEntityListComponent implements OnInit {
   entityIsCreated: boolean = true;
   sroList: Sro[] = [];
   isSroMember: boolean = false;
+
   setSroSwitch(value: boolean) {
     this.isSroMember = value;
   }
@@ -122,6 +134,9 @@ export class LegalEntityListComponent implements OnInit {
     });
   }
 
+  /*
+  Настройка данных модального окна при редактировании записи
+   */
   onUpdateClick() {
     this.entityIsCreated = false;
     this.prepareFreeRoleList();
@@ -139,6 +154,9 @@ export class LegalEntityListComponent implements OnInit {
     });
   }
 
+  /*
+  Настройка данных модального окна при создании новой записи
+   */
   onCreateClick() {
     this.entityIsCreated = true;
     this.freeRoleList = this.roleList;
@@ -154,7 +172,7 @@ export class LegalEntityListComponent implements OnInit {
 
   saveLegalEntity() {
     let legalEntity: LegalEntity = {
-      uuid: this.entityIsCreated? "" : this.legalEntity.uuid,
+      uuid: this.entityIsCreated ? "" : this.legalEntity.uuid,
       fullName: this.f["fullName"].value,
       shortName: this.f["shortName"].value,
       ogrn: this.f["ogrn"].value,
@@ -173,8 +191,8 @@ export class LegalEntityListComponent implements OnInit {
       });
     } else {
       this.service.updateLegalEntity(legalEntity).subscribe({
-        next: value => {
-          this.legalEntityList.splice(this.legalEntityList.indexOf(value), 1, value);
+        next: _ => {
+          this.getLegalEntityList();
         },
         error: err => console.log(err)
       });
