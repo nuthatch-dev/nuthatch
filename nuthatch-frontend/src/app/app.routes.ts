@@ -14,6 +14,10 @@ import {
   LegalEntityListComponent
 } from "./reference-book/organization-and-representative/legal-entity/legal-entity-list/legal-entity-list.component";
 import {SroListComponent} from "./reference-book/organization-and-representative/sro/sro-list/sro-list.component";
+import {RoleListComponent} from "./reference-book/organization-and-representative/role/role-list/role-list.component";
+import {
+  RepresentativeListComponent
+} from "./reference-book/organization-and-representative/representative/representative-list/representative-list.component";
 
 export const routes: Routes = [
   {path: '', outlet: 'header', component: HeaderComponent},
@@ -28,5 +32,7 @@ export const routes: Routes = [
   {path: 'individual-entrepreneur-list', component: IndividualEntrepreneurListComponent},
   {path: 'legal-entity-list', component: LegalEntityListComponent},
   {path: 'sro-list', component: SroListComponent},
+  {path: 'representative-list', component: RepresentativeListComponent},
+  {path: 'role-list', component: RoleListComponent},
 
 ];

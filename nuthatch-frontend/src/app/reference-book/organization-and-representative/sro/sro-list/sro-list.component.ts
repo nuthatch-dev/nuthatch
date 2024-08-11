@@ -87,8 +87,8 @@ export class SroListComponent implements OnInit {
       });
     } else {
       this.service.updateSro(sro).subscribe({
-        next: value => {
-          this.sroList.splice(this.sroList.indexOf(value), 1, value);
+        next: _ => {
+          this.getSroList();
         },
         error: err => console.log(err)
       });

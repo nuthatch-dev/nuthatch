@@ -27,7 +27,6 @@
     </tbody>
   </table>
 
-  <hr>
   <!-- Button trigger modal -->
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#saveLegalEntity"
           (click)="onCreateClick()">
@@ -74,7 +73,6 @@
           </div>
         </div>
       </div>
-
       <div class="modal-footer">
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#saveLegalEntity"
                 (click)="onUpdateClick()">
@@ -103,7 +101,6 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="formGroup">
-
           <div class="row">
             <div class="col-6">
               <div>
@@ -140,8 +137,6 @@
                   Поле обязательно для заполнения
                 </div>
               </div>
-
-
             </div>
 
             <div class="col-6">
@@ -229,10 +224,8 @@
               </table>
             </div>
           </div>
-
         </form>
       </div>
-
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
         <button type="button" [disabled]="formGroup.invalid" class="btn btn-success" data-bs-dismiss="modal"

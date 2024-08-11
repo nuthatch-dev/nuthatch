@@ -27,7 +27,6 @@
     </tbody>
   </table>
 
-  <hr>
   <!-- Button trigger modal -->
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#saveIe"
           (click)="onCreateClick()">
@@ -152,8 +151,10 @@
                   Поле обязательно для заполнения
                 </div>
               </div>
+            </div>
 
-              <div class="mt-3">
+            <div class="col-6">
+              <div>
                 <label class="form-label">ИНН</label>
                 <input formControlName="inn" type="text" class="form-control" id="inn">
               </div>
@@ -175,37 +176,66 @@
                 </div>
               </div>
             </div>
-            <div class="col-6">
-              <div class="mt-3">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="isSroMember"
-                         [checked]="isSroMember" (change)="setSroSwitch(!isSroMember)">
-                  <label class="form-check-label" for="isSroMember">
-                    Является членом Саморегулируемого общества
-                  </label>
-                </div>
-                @if (isSroMember) {
-                  <select class="form-select" formControlName="sro">
-                    @for (sro of sroList; track $index) {
-                      <option [ngValue]="sro" [selected]="ie.sro && sro.uuid == ie.sro.uuid">
-                        {{ sro.name }}
-                      </option>
-                    }
-                  </select>
-                }
+          </div>
 
-              </div>
-              <div class="mt-3">
-                <label class="form-label">
-                  Роли, в качестве которых может выступать данный индивидуальный предприниматель
-                </label>
-                <select multiple class="form-select" formControlName="roleSet">
-                  <option *ngFor="let item of roleList" [ngValue]="item">
-                    {{ item.roleName }}
+          <hr>
+
+          <div class="mt-3">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="isSroMember"
+                     [checked]="isSroMember" (change)="setSroSwitch(!isSroMember)">
+              <label class="form-check-label" for="isSroMember">
+                Является членом Саморегулируемого общества
+              </label>
+            </div>
+            @if (isSroMember) {
+              <select class="form-select" formControlName="sro">
+                @for (sro of sroList; track $index) {
+                  <option [ngValue]="sro" [selected]="ie.sro && sro.uuid == ie.sro.uuid">
+                    {{ sro.name }}
                   </option>
-                </select>
-              </div>
+                }
+              </select>
+            }
+          </div>
 
+          <hr>
+
+          <div class="row">
+            <label class="form-label">
+              Роли, в качестве которых может выступать данный индивидуальный предприниматель
+            </label>
+            <div class="col-6">
+              <div class="text-md-center mb-2">Доступные</div>
+              <table class="table table-sm table-borderless table-striped">
+                <tbody class="table-group-divider">
+                <tr *ngFor="let freeRole of freeRoleList">
+                  <td>{{ freeRole.roleName }}</td>
+                  <td style="width: 1%">
+                    <button class="btn btn-sm btn-outline-info"
+                            (click)="onAddRoleClick(freeRole)">
+                      Выбрать
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-6">
+              <div class="text-md-center mb-2">Выбранные</div>
+              <table class="table table-sm table-borderless table-striped">
+                <tbody class="table-group-divider">
+                <tr *ngFor="let assignedRole of assignedRoleList">
+                  <td>{{ assignedRole.roleName }}</td>
+                  <td style="width: 1%">
+                    <button class="btn btn-sm btn-outline-warning"
+                            (click)="onDeleteRoleClick(assignedRole)">
+                      Удалить
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 

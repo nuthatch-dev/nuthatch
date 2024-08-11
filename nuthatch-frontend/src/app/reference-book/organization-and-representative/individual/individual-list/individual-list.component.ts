@@ -38,13 +38,13 @@ export class IndividualListComponent implements OnInit {
       foreign_series: [""],
       foreign_number: [""],
       foreign_dateIssue: [null],
-      roleSet: [[]],
     });
 
   }
 
   ngOnInit(): void {
     this.getAllIndividuals();
+    this.getRoleList();
   }
 
   private getAllIndividuals() {
@@ -54,10 +54,6 @@ export class IndividualListComponent implements OnInit {
       },
       error: err => console.log(err)
     });
-  }
-
-  individualDetails(individual: Individual) {
-    this.individual = individual;
   }
 
   individual: Individual = {
@@ -85,7 +81,13 @@ export class IndividualListComponent implements OnInit {
     roleSet: []
   }
 
-  entityIsCreated: boolean = true;
+  individualDetails(individual: Individual) {
+    this.individual = individual;
+  }
+
+  /*
+  Методы для работы с ролями
+   */
   roleList: Role[] = [];
 
   private getRoleList() {
@@ -97,9 +99,46 @@ export class IndividualListComponent implements OnInit {
     });
   }
 
+  /*
+  Массивы ролей определенных для сущности и доступных к добавлению.
+  Подготовка массива доступных ролей
+   */
+  freeRoleList: Role[] = [];
+  assignedRoleList: Role[] = [];
+
+  private prepareFreeRoleList() {
+    this.assignedRoleList = this.individual.roleSet;
+    this.freeRoleList = this.roleList.filter(role => {
+      for (let r of this.individual.roleSet) {
+        if (r.uuid == role.uuid) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+
+  /*
+  Изменение массивов ролей по действиям пользователя
+   */
+  onAddRoleClick(role: Role) {
+    this.assignedRoleList.push(role);
+    this.freeRoleList.splice(this.freeRoleList.indexOf(role), 1);
+  }
+
+  onDeleteRoleClick(role: Role) {
+    this.assignedRoleList.splice(this.assignedRoleList.indexOf(role), 1);
+    this.freeRoleList.push(role);
+  }
+
+  entityIsCreated: boolean = true;
+
+  /*
+  Настройка данных модального окна при редактировании записи
+   */
   onUpdateClick() {
     this.entityIsCreated = false;
-    this.getRoleList();
+    this.prepareFreeRoleList();
 
     this.formGroup.patchValue({
       lastName: this.individual.fullNameGroup.lastName,
@@ -128,12 +167,24 @@ export class IndividualListComponent implements OnInit {
     }
   }
 
+  /*
+  Настройка данных модального окна при создании новой записи
+   */
+  onCreateClick() {
+    this.entityIsCreated = true;
+    this.freeRoleList = this.roleList;
+    this.assignedRoleList = [];
+    this.formGroup.reset();
+    this.formGroup.patchValue({
+      isaRussianFederationCitizen: true,
+    });
+  }
+
   get f() {
     return this.formGroup.controls;
   }
 
   saveIndividual() {
-
     let individual: Individual = {
       uuid: this.entityIsCreated ? '' : this.individual.uuid,
       fullNameGroup: {
@@ -158,9 +209,8 @@ export class IndividualListComponent implements OnInit {
           dateIssue: this.f['foreign_dateIssue'].value
         }
       },
-      roleSet: this.f['roleSet'].value
+      roleSet: this.assignedRoleList
     }
-
     if (this.entityIsCreated) {
       this.service.createIndividual(individual).subscribe({
         next: value => {
@@ -170,21 +220,12 @@ export class IndividualListComponent implements OnInit {
       });
     } else {
       this.service.updateIndividual(individual).subscribe({
-        next: value => {
-          this.individualList.splice(this.individualList.indexOf(value), 1, value);
+        next: _ => {
+          this.getAllIndividuals();
         },
         error: err => console.log(err)
       });
     }
-  }
-
-  onCreateClick() {
-    this.entityIsCreated = true;
-    this.formGroup.reset();
-    this.formGroup.patchValue({
-      isaRussianFederationCitizen: true,
-    });
-    this.getRoleList();
   }
 
   deleteIndividual() {
