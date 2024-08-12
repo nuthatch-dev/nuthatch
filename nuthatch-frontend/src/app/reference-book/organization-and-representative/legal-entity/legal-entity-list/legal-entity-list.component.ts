@@ -159,11 +159,11 @@ export class LegalEntityListComponent implements OnInit {
    */
   onCreateClick() {
     this.entityIsCreated = true;
+    this.formGroup.reset();
     this.freeRoleList = this.roleList;
     this.assignedRoleList = [];
     this.isSroMember = false;
     this.getSroList();
-    this.formGroup.reset();
   }
 
   get f() {
@@ -171,6 +171,15 @@ export class LegalEntityListComponent implements OnInit {
   }
 
   saveLegalEntity() {
+    /*
+    Удаляем данные по СРО при отключении isSroMember при редактировании записи
+     */
+    if (!this.isSroMember) {
+      this.formGroup.patchValue({
+        sro: null,
+      });
+    }
+
     let legalEntity: LegalEntity = {
       uuid: this.entityIsCreated ? "" : this.legalEntity.uuid,
       fullName: this.f["fullName"].value,
@@ -182,6 +191,7 @@ export class LegalEntityListComponent implements OnInit {
       sro: this.f["sro"].value,
       roleSet: this.assignedRoleList
     }
+
     if (this.entityIsCreated) {
       this.service.createLegalEntity(legalEntity).subscribe({
         next: value => {

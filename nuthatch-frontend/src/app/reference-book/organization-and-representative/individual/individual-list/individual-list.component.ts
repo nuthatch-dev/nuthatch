@@ -172,12 +172,12 @@ export class IndividualListComponent implements OnInit {
    */
   onCreateClick() {
     this.entityIsCreated = true;
-    this.freeRoleList = this.roleList;
-    this.assignedRoleList = [];
     this.formGroup.reset();
     this.formGroup.patchValue({
       isaRussianFederationCitizen: true,
     });
+    this.freeRoleList = this.roleList;
+    this.assignedRoleList = [];
   }
 
   get f() {

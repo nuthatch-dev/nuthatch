@@ -31,6 +31,7 @@ export class RepresentativeListComponent implements OnInit {
       lastName: ["", Validators.required],
       firstName: ["", Validators.required],
       middleName: [""],
+      isLegalEntityRepresentative: [true],
       legalEntity: [null],
       individualEntrepreneur: [null],
       position: ["", Validators.required],
@@ -87,6 +88,7 @@ export class RepresentativeListComponent implements OnInit {
       lastName: this.representative.fullNameGroup.lastName,
       firstName: this.representative.fullNameGroup.firstName,
       middleName: this.representative.fullNameGroup.middleName,
+      isLegalEntityRepresentative: !!this.representative.legalEntity,
       legalEntity: this.representative.legalEntity,
       individualEntrepreneur: this.representative.individualEntrepreneur,
       position: this.representative.position,
@@ -101,6 +103,9 @@ export class RepresentativeListComponent implements OnInit {
   onCreateClick() {
     this.entityIsCreated = true;
     this.formGroup.reset();
+    this.formGroup.patchValue({
+      isLegalEntityRepresentative: true,
+    });
   }
 
   get f() {
@@ -108,6 +113,19 @@ export class RepresentativeListComponent implements OnInit {
   }
 
   saveRepresentative() {
+    /*
+    Удаляем остатки информации об организации при смене ЮЛ->ИП / ИП->ЮЛ при редактировании
+     */
+    if (this.f['isLegalEntityRepresentative'].value) {
+      this.formGroup.patchValue({
+        individualEntrepreneur: null,
+      });
+    } else {
+      this.formGroup.patchValue({
+        legalEntity: null,
+      });
+    }
+
     let representative: Representative = {
       uuid: this.entityIsCreated? "" : this.representative.uuid,
       fullNameGroup: {

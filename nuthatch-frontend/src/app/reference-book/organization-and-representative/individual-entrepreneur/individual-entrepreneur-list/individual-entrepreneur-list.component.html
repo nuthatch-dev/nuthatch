@@ -81,7 +81,6 @@
           </div>
         </div>
       </div>
-
       <div class="modal-footer">
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#saveIe"
                 (click)="onUpdateClick()">
@@ -110,7 +109,6 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="formGroup">
-
           <div class="row">
             <div class="col-6">
               <label class="form-label">Ф.И.О</label>
@@ -190,10 +188,11 @@
             </div>
             @if (isSroMember) {
               <select class="form-select" formControlName="sro">
+                <option *ngIf="ie.sro" [defaultSelected]="true" [ngValue]="ie.sro" disabled>
+                  {{ ie.sro.name }}
+                </option>
                 @for (sro of sroList; track $index) {
-                  <option [ngValue]="sro" [selected]="ie.sro && sro.uuid == ie.sro.uuid">
-                    {{ sro.name }}
-                  </option>
+                  <option [ngValue]="sro">{{ sro.name }}</option>
                 }
               </select>
             }
@@ -238,10 +237,8 @@
               </table>
             </div>
           </div>
-
         </form>
       </div>
-
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
         <button type="button" [disabled]="formGroup.invalid" class="btn btn-success" data-bs-dismiss="modal"

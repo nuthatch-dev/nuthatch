@@ -176,10 +176,11 @@
             </div>
             @if (isSroMember) {
               <select class="form-select mt-2" formControlName="sro">
+                <option *ngIf="legalEntity.sro" [defaultSelected]="true" [ngValue]="legalEntity.sro" disabled>
+                  {{ legalEntity.sro.name }}
+                </option>
                 @for (sro of sroList; track $index) {
-                  <option [ngValue]="sro" [selected]="legalEntity.sro && sro.uuid == legalEntity.sro.uuid">
-                    {{ sro.name }}
-                  </option>
+                  <option [ngValue]="sro">{{ sro.name }}</option>
                 }
               </select>
             }

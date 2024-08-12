@@ -12,14 +12,22 @@
     </thead>
     <tbody class="table-group-divider">
     <tr *ngFor="let representative of representativeList" class="text-md-center">
-      <td>{{ representative.fullNameGroup.lastName }}
+      <td>
+        {{ representative.fullNameGroup.lastName }}
         {{ representative.fullNameGroup.firstName }}
         {{ representative.fullNameGroup.middleName }}
       </td>
-      <td>{{ representative.legalEntity.fullName }}</td>
-      <td>{{ representative.individualEntrepreneur.fullNameGroup.lastName }}
-        {{ representative.individualEntrepreneur.fullNameGroup.firstName }}
-        {{ representative.individualEntrepreneur.fullNameGroup.middleName }}
+      <td>
+        @if (representative.legalEntity) {
+          {{ representative.legalEntity.fullName }}
+        }
+      </td>
+      <td>
+        @if (representative.individualEntrepreneur) {
+          {{ representative.individualEntrepreneur.fullNameGroup.lastName }}
+          {{ representative.individualEntrepreneur.fullNameGroup.firstName }}
+          {{ representative.individualEntrepreneur.fullNameGroup.middleName }}
+        }
       </td>
       <td>{{ representative.position }}</td>
       <td class="align-middle">
@@ -62,7 +70,6 @@
               ИП {{ representative.individualEntrepreneur.fullNameGroup.lastName }}
               {{ representative.individualEntrepreneur.fullNameGroup.firstName }}
               {{ representative.individualEntrepreneur.fullNameGroup.middleName }}</p>
-
           </div>
           <div class="col-6">
             <h6>Должность</h6>
@@ -104,7 +111,6 @@
         <form [formGroup]="formGroup">
           <div class="row">
             <div class="col-6">
-
               <label class="form-label">ФИО</label>
               <div class="input-group">
                 <span class="input-group-text">Фамилия</span>
@@ -117,7 +123,7 @@
                 </div>
               </div>
 
-              <div class="input-group">
+              <div class="input-group mt-3">
                 <span class="input-group-text">Имя</span>
                 <input formControlName="firstName" type="text" class="form-control" id="firstName">
               </div>
@@ -128,57 +134,76 @@
                 </div>
               </div>
 
-              <div class="input-group">
+              <div class="input-group mt-3">
                 <span class="input-group-text">Отчество</span>
                 <input formControlName="middleName" type="text" class="form-control" id="middleName">
               </div>
 
+              <label class="form-label mt-3">Регистрационный номер в реестре специалистов</label>
+              <input formControlName="nostroyNumber" type="text" class="form-control" id="nostroyNumber">
 
-              <hr>
-
-              <label class="form-check-label">Является представителем</label>
-              <div class="mb-3">
-                <div class="form-check form-switch">
-                  <!--                  <input class="form-check-input" type="checkbox" role="switch" id="isSroMember"-->
-                  <!--                         [checked]="isSroMember" (change)="setSroSwitch(!isSroMember)">-->
-                  <label class="form-check-label">Юридического лица</label>
-                </div>
-                @if (true) {
-                  <select class="form-select mt-2" formControlName="legalEntity">
-                    @for (le of legalEntityList; track $index) {
-                      <option [ngValue]="le"
-                              [selected]="representative.legalEntity && le.uuid == representative.legalEntity.uuid">
-                        {{ le.fullName }}
-                      </option>
-                    }
-                  </select>
-                }
-              </div>
-
-              <hr>
-
-            </div>
-
-            <div class="col-6">
-
-              <div class="mt-3">
-                <label class="form-label">Должность</label>
-                <input formControlName="position" type="text" class="form-control" id="position">
-              </div>
+              <label class="form-label mt-3">Должность</label>
+              <input formControlName="position" type="text" class="form-control" id="position">
               <div *ngIf="formGroup.controls['position'].errors" class="error">
                 <div *ngIf="formGroup.controls['position'].errors?.['required']"
                      class="text-danger form-text">
                   Поле обязательно для заполнения
                 </div>
               </div>
+            </div>
 
-              <div class="mt-3">
-                <label class="form-label">Регистрационный номер в реестре специалистов</label>
-                <input formControlName="nostroyNumber" type="text" class="form-control" id="nostroyNumber">
+            <div class="col-6">
+              <label class="form-check-label">Является представителем</label>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="legalEntityRadio"
+                         formControlName="isLegalEntityRepresentative"
+                         [value]="true">
+                  <label class="form-check-label" for="legalEntityRadio">
+                    Юридического лица
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="ieRadio"
+                         formControlName="isLegalEntityRepresentative"
+                         [value]="false">
+                  <label class="form-check-label" for="ieRadio">
+                    Индивидуального предпринимателя
+                  </label>
+                </div>
+                @if (formGroup.controls["isLegalEntityRepresentative"].value) {
+                  <select class="form-select mt-2" formControlName="legalEntity">
+                    <option *ngIf="representative.legalEntity"
+                            [defaultSelected]="true"
+                            [ngValue]="representative.legalEntity" disabled>
+                      {{ representative.legalEntity.shortName }}
+                    </option>
+                    @for (le of legalEntityList; track $index) {
+                      <option [ngValue]="le">{{ le.shortName }}</option>
+                    }
+                  </select>
+                } @else {
+                  <select class="form-select mt-2" formControlName="individualEntrepreneur">
+                    <option *ngIf="representative.individualEntrepreneur"
+                            [defaultSelected]="true"
+                            [ngValue]="representative.individualEntrepreneur" disabled>
+                      {{ representative.individualEntrepreneur.fullNameGroup.lastName }}
+                      {{ representative.individualEntrepreneur.fullNameGroup.firstName }}
+                      {{ representative.individualEntrepreneur.fullNameGroup.middleName }}
+                    </option>
+                    @for (ie of individualEntrepreneurList; track $index) {
+                      <option [ngValue]="ie">
+                        {{ ie.fullNameGroup.lastName }}
+                        {{ ie.fullNameGroup.firstName }}
+                        {{ ie.fullNameGroup.middleName }}
+                      </option>
+                    }
+                  </select>
+                }
               </div>
 
               <div class="mt-3">
-                <label class="form-label">Документ, подтверждающий полномочия</label>
+                <label class="form-label">Документ, подтверждающий полномочие</label>
                 <input formControlName="administrativeDocument" type="text" class="form-control"
                        id="administrativeDocument">
               </div>
@@ -188,11 +213,8 @@
                   Поле обязательно для заполнения
                 </div>
               </div>
-
             </div>
-
           </div>
-
         </form>
       </div>
       <div class="modal-footer">
