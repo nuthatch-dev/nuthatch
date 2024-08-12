@@ -164,11 +164,11 @@ export class IndividualEntrepreneurListComponent implements OnInit {
    */
   onCreateClick() {
     this.entityIsCreated = true;
+    this.formGroup.reset();
     this.freeRoleList = this.roleList;
     this.assignedRoleList = [];
     this.isSroMember = false;
     this.getSroList();
-    this.formGroup.reset();
   }
 
   get f() {
@@ -176,6 +176,15 @@ export class IndividualEntrepreneurListComponent implements OnInit {
   }
 
   saveIndividualEntrepreneur() {
+    /*
+    Удаляем данные по СРО при отключении isSroMember при редактировании записи
+     */
+    if (!this.isSroMember) {
+      this.formGroup.patchValue({
+        sro: null,
+      });
+    }
+
     let ie: IndividualEntrepreneur = {
       uuid: this.entityIsCreated ? "" : this.ie.uuid,
       fullNameGroup: {
@@ -189,6 +198,7 @@ export class IndividualEntrepreneurListComponent implements OnInit {
       sro: this.f["sro"].value,
       roleSet: this.assignedRoleList
     };
+
     if (this.entityIsCreated) {
       this.service.createIndividualEntrepreneur(ie).subscribe({
         next: value => {
