@@ -12,7 +12,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "node")
-public class Node extends CommonEntity implements Serializable {
+public class Node extends CommonEntity {
     /*
     Наименование. Устанавливается как имя каталога при отсутствии
     присоединенного CustomDocument. Иначе устанавливается null

@@ -17,7 +17,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "custom_document")
-public class CustomDocument extends CommonEntity implements Serializable {
+public class CustomDocument extends CommonEntity {
     /*
     Группа, содержащая наименование документа и номер(код/шифр) документа
     Обязательный элемент

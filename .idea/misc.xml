@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/Organization/pom.xml" />
         <option value="$PROJECT_DIR$/organization/pom.xml" />
         <option value="$PROJECT_DIR$/documentation/pom.xml" />
+        <option value="$PROJECT_DIR$/project-documentation/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
