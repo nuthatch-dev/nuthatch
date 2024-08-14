@@ -15,7 +15,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "attached_file")
-public class AttachedFile extends CommonEntity implements Serializable {
+public class AttachedFile extends CommonEntity {
     /*
     Имя файла
     Обязательный элемент
