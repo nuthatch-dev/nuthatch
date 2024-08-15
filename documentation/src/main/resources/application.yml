@@ -8,11 +8,15 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: update
+    defer-datasource-initialization: true
   datasource:
     url: jdbc:postgresql://localhost:5432/nuthatch_db
     username: nuthatch_user
     password: secret_password
     driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always
 
 eureka:
   instance:

@@ -18,6 +18,9 @@ import {RoleListComponent} from "./reference-book/organization-and-representativ
 import {
   RepresentativeListComponent
 } from "./reference-book/organization-and-representative/representative/representative-list/representative-list.component";
+import {
+  DocumentListComponent
+} from "./reference-book/administrative-documentation/document-list/document-list.component";
 
 export const routes: Routes = [
   {path: '', outlet: 'header', component: HeaderComponent},
@@ -34,5 +37,8 @@ export const routes: Routes = [
   {path: 'sro-list', component: SroListComponent},
   {path: 'representative-list', component: RepresentativeListComponent},
   {path: 'role-list', component: RoleListComponent},
+
+  // Administrative documents rotes
+  {path: 'document-list', component: DocumentListComponent},
 
 ];
