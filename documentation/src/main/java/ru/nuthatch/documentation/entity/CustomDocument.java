@@ -38,7 +38,7 @@ public class CustomDocument extends CommonEntity {
     Необязательный элемент
     Дата в формате <ГГГГ-ММ-ДД> (год-месяц-день)
      */
-    protected Date beginingDate;
+    protected Date beginningDate;
 
     /*
     Срок действия

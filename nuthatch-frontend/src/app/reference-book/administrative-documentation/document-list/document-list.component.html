@@ -1,0 +1,164 @@
+<div class="container">
+  <h4>Административные документы</h4>
+  <div class="row">
+    <div class="col-8">
+      <table class="table table-sm table-borderless table-striped">
+        <thead>
+        <tr>
+          <th class="text-md-center">
+            Файлы
+          </th>
+          <th style="width: 1%"></th>
+          <th style="width: 1%"></th>
+          <th style="width: 1%"></th>
+        </tr>
+        </thead>
+        <tbody>
+
+          @for (node of nodeList; track $index) {
+            <tr>
+              @if (node.document) {
+                <td>
+                  <i class="bi-file-earmark-text mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+                  <span>
+                    {{ node.document.docInfoGroup.name }} №
+                    {{ node.document.docInfoGroup.number }} от
+                    {{ node.document.date | date }}
+                  </span>
+                </td>
+                <td></td>
+                <td>
+                  <button class="btn btn-sm" href="#">
+                    <i class="bi-pencil-square" style="font-size: 1.5rem; color: darkorange;"></i>
+                  </button>
+                </td>
+                <td>
+                  <button class="btn btn-sm" href="#">
+                    <i class="bi-trash" style="font-size: 1.5rem; color: firebrick;"></i>
+                  </button>
+                </td>
+              } @else {
+                <td>
+                  <i class="bi-folder2-open mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+                  <span>{{ node.name }}</span>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#createOrUpdateModal"
+                          (click)="onCreateClick(node)">
+                    <i class="bi-file-earmark-plus" style="font-size: 1.5rem; color: cornflowerblue;"></i>
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-sm">
+                    <i class="bi-folder-plus" style="font-size: 1.5rem; color: cornflowerblue;"></i>
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-sm">
+                    <i class="bi-trash" style="font-size: 1.5rem; color: firebrick;"></i>
+                  </button>
+                </td>
+              }
+            </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+    <div class="col-4">
+
+    </div>
+  </div>
+
+</div>
+
+<!--Create/update document modal-->
+<div class="modal fade" id="createOrUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="createOrUpdateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        @if (entityIsCreated) {
+          <h1 class="modal-title fs-5">Добавление нового документа</h1>
+        } @else {
+          <h1 class="modal-title fs-5">Редактирование</h1>
+        }
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formGroup">
+
+          <div class="row">
+            <div class="col-6">
+              <label class="form-label">Наименование документа</label>
+              <input formControlName="documentName" type="text" class="form-control" id="documentName"
+                     aria-describedby="documentNameHelp">
+              <div id="documentNameHelp" class="form-text">
+                Наименование документа (приказ, распоряжение и т.д.)
+              </div>
+              <div *ngIf="formGroup.controls['documentName'].errors" class="error">
+                <div *ngIf="formGroup.controls['documentName'].errors?.['required']"
+                     class="text-danger form-text">
+                  Поле обязательно для заполнения
+                </div>
+              </div>
+
+              <label class="form-label mt-3">Номер документа</label>
+              <input formControlName="documentNumber" type="text" class="form-control" id="documentNumber"
+                     aria-describedby="documentNumberHelp">
+              <div id="documentNumberHelp" class="form-text">
+                Номер/код/шифр документа
+              </div>
+
+              <label class="form-label mt-3">Дата документа</label>
+              <input formControlName="date" type="date" class="form-control" id="date"
+                     aria-describedby="dateHelp">
+              <div id="dateHelp" class="form-text">
+                Дата формирования документа
+              </div>
+              <div *ngIf="formGroup.controls['date'].errors" class="error">
+                <div *ngIf="formGroup.controls['date'].errors?.['required']"
+                     class="text-danger form-text">
+                  Поле обязательно для заполнения
+                </div>
+              </div>
+
+              <label class="form-label mt-3">Дата начала действия</label>
+              <input formControlName="beginningDate" type="date" class="form-control" id="beginningDate"
+                     aria-describedby="beginningDateHelp">
+              <div id="beginningDateHelp" class="form-text">
+                Заполняется, если дата начала действия отличается от даты формирования документа
+              </div>
+
+              <label class="form-label mt-3">Срок действия</label>
+              <input formControlName="expirationDate" type="date" class="form-control" id="expirationDate">
+
+            </div>
+            <div class="col-6">
+              <label class="form-label">Файл документа загружаемый в хранилище</label>
+              <div class="form-group">
+                <input class="form-control" type="file" (change)="onFileSelected($event)" id="formFile" accept=".csv">
+              </div>
+
+              <label class="form-label mt-3">Примечание к загружаемому файлу документа</label>
+              <textarea formControlName="fileDescription" type="text" class="form-control"
+                        id="fileDescription" rows="3">
+              </textarea>
+              <hr>
+
+              <label class="form-label">Теги документа</label>
+
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" [disabled]="formGroup.invalid" class="btn btn-success" data-bs-dismiss="modal"
+                (click)="saveDocument()">
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
