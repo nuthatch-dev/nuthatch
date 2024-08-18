@@ -9,10 +9,9 @@ import java.util.UUID;
 
 public abstract class CommonService <E extends CommonEntity, R extends CommonRepository<E>> {
 
-    protected final CommonRepository<E> repository;
+    protected final R repository;
 
-
-    protected CommonService(CommonRepository<E> repository) {
+    protected CommonService(R repository) {
         this.repository = repository;
     }
 

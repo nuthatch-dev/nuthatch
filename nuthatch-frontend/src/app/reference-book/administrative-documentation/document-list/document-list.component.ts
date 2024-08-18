@@ -21,6 +21,7 @@ export class DocumentListComponent implements OnInit {
 
   formGroup: FormGroup;
   nodeList: Node[] = [];
+  private ROOT_NODE_ID: string = "00000000-0000-0000-0000-000000000000"
 
   constructor(private service: DocumentationService,
               private fb: FormBuilder) {
@@ -36,11 +37,23 @@ export class DocumentListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getNodeList();
+    this.getParentNode(this.ROOT_NODE_ID);
+  }
+
+  parentNode: Node | null = null;
+
+  getParentNode(id: string) {
+    this.service.getNodeById(id).subscribe({
+      next: value => {
+        this.parentNode = value;
+        this.getNodeList();
+      },
+      error: err => console.log(err)
+    });
   }
 
   private getNodeList() {
-    this.service.getNodeList().subscribe({
+    this.service.getNodeListByParentNodeId(this.parentNode!.uuid).subscribe({
       next: value => {
         this.nodeList = value;
       },
@@ -50,20 +63,64 @@ export class DocumentListComponent implements OnInit {
 
   entityIsCreated: boolean = true;
 
-  onCreateClick(node: Node) {
+  onDocumentCreateClick() {
     this.entityIsCreated = true;
     this.formGroup.reset();
-    this.node.parentNode = node;
+    this.node.parentNode = this.parentNode!;
   }
 
-  onUpdateClick() {
+  onDocumentUpdateClick(document: CustomDocument) {
+    this.entityIsCreated = false;
+    this.document = document;
+    this.formGroup.patchValue({
+      documentName: this.document.docInfoGroup.name,
+      documentNumber: this.document.docInfoGroup.number,
+      date: this.document.date,
+      beginningDate: this.document.beginningDate,
+      expirationDate: this.document.expirationDate,
+      fileDescription: this.document.attachedFile?.description,
+      tagSet: this.document.tagSet,
+    });
   }
+
+  attachedFile: File | null = null;
 
   onFileSelected(event: any): void {
     let file: File = event.target.files[0];
     if (file && file.size > 0) {
-
+      this.attachedFile = file;
     }
+  }
+
+  uploadFile() {
+    this.service.uploadFile(this.attachedFile!).subscribe({
+      next: value => {
+        this.document.attachedFile = value;
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  folderName: string = "";
+
+  onFolderCreateClick() {
+    this.folderName = "";
+    this.node = {
+      uuid: "",
+      name: "",
+      document: null,
+      parentNode: this.parentNode!,
+    }
+  }
+
+  createFolder() {
+    this.node.name = this.folderName;
+    this.service.createNode(this.node).subscribe({
+      next: _ => {
+        this.getNodeList();
+      },
+      error: err => console.log(err)
+    });
   }
 
   get f() {
@@ -91,7 +148,12 @@ export class DocumentListComponent implements OnInit {
         error: err => console.log(err)
       });
     } else {
-// TODO
+      this.service.updateDocument(document).subscribe({
+        next: _ => {
+          this.getNodeList();
+        },
+        error: err => console.log(err)
+      });
     }
   }
 
