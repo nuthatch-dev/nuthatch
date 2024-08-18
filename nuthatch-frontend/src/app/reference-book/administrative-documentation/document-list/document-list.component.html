@@ -1,72 +1,73 @@
-<div class="container">
-  <h4>Административные документы</h4>
-  <div class="row">
-    <div class="col-8">
-      <table class="table table-sm table-borderless table-striped">
-        <thead>
-        <tr>
-          <th class="text-md-center">
-            Файлы
-          </th>
-          <th style="width: 1%"></th>
-          <th style="width: 1%"></th>
-          <th style="width: 1%"></th>
-        </tr>
-        </thead>
-        <tbody>
-
-          @for (node of nodeList; track $index) {
-            <tr>
-              @if (node.document) {
-                <td>
-                  <i class="bi-file-earmark-text mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
-                  <span>
+<div class="container my-3">
+  <h4 class="text-md-center">Административные документы</h4>
+  <div class="row my-3">
+    <div class="col-9">
+      <div class="text-bg-light px-1 py-2">
+        @if (parentNode?.parentNode) {
+          <a href="" (click)="$event.preventDefault(); getParentNode(parentNode!.parentNode!.uuid)">
+            <i class="bi-folder2-open mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+            <span>../</span>
+          </a>
+          <br>
+        }
+        <i class="bi-folder2-open mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+        <span>{{ parentNode?.name }}</span>
+      </div>
+      @for (node of nodeList; track $index) {
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start
+        border-bottom border-1">
+          @if (node.document) {
+            <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto">
+              <i class="bi-file-earmark-text ms-4 me-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+              <span>
                     {{ node.document.docInfoGroup.name }} №
-                    {{ node.document.docInfoGroup.number }} от
-                    {{ node.document.date | date }}
+                {{ node.document.docInfoGroup.number }} от
+                {{ node.document.date | date: "dd-MM-YYYY" }} г.
                   </span>
-                </td>
-                <td></td>
-                <td>
-                  <button class="btn btn-sm" href="#">
-                    <i class="bi-pencil-square" style="font-size: 1.5rem; color: darkorange;"></i>
-                  </button>
-                </td>
-                <td>
-                  <button class="btn btn-sm" href="#">
-                    <i class="bi-trash" style="font-size: 1.5rem; color: firebrick;"></i>
-                  </button>
-                </td>
-              } @else {
-                <td>
-                  <i class="bi-folder2-open mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
-                  <span>{{ node.name }}</span>
-                </td>
-                <td>
-                  <button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#createOrUpdateModal"
-                          (click)="onCreateClick(node)">
-                    <i class="bi-file-earmark-plus" style="font-size: 1.5rem; color: cornflowerblue;"></i>
-                  </button>
-                </td>
-                <td>
-                  <button type="button" class="btn btn-sm">
-                    <i class="bi-folder-plus" style="font-size: 1.5rem; color: cornflowerblue;"></i>
-                  </button>
-                </td>
-                <td>
-                  <button type="button" class="btn btn-sm">
-                    <i class="bi-trash" style="font-size: 1.5rem; color: firebrick;"></i>
-                  </button>
-                </td>
-              }
-            </tr>
+            </div>
+            <ul class="nav nav-pills text-end">
+              <li class="nav-item">
+                <a href="" (click)="$event.preventDefault(); onDocumentUpdateClick(node.document)"
+                   class="nav-link px-2 py-1">
+                  <i class="bi-pencil-square" style="font-size: 1.5rem; color: darkorange;"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" (click)="$event.preventDefault()" class="nav-link px-2 py-1">
+                  <i class="bi-trash" style="font-size: 1.5rem; color: firebrick;"></i>
+                </a>
+              </li>
+            </ul>
+          } @else {
+            <a href="" (click)="$event.preventDefault(); getParentNode(node.uuid)">
+              <i class="bi-folder2-open ms-4 me-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+              <span>{{ node.name }}</span>
+            </a>
           }
-
-        </tbody>
-      </table>
+        </div>
+      }
     </div>
-    <div class="col-4">
-
+    <div class="col-3 text-md-center">
+      <div class="mb-3">
+        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createOrUpdateModal"
+                (click)="onDocumentCreateClick()">
+          <i class="bi-file-earmark-plus" style="color: cornflowerblue;"></i>
+          Добавить документ
+        </button>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createFolderModal"
+                (click)="onFolderCreateClick()">
+          <i class="bi-folder-plus" style="color: cornflowerblue;"></i>
+          Добавить папку
+        </button>
+      </div>
+      <div class="mb-3">
+        <button type="button" class="btn btn-sm btn-outline-danger" [hidden]="nodeList.length != 0">
+          <i class="bi-trash" style="color: firebrick;"></i>
+          Удалить папку
+        </button>
+      </div>
     </div>
   </div>
 
@@ -122,8 +123,9 @@
                   Поле обязательно для заполнения
                 </div>
               </div>
-
-              <label class="form-label mt-3">Дата начала действия</label>
+            </div>
+            <div class="col-6">
+              <label class="form-label">Дата начала действия</label>
               <input formControlName="beginningDate" type="date" class="form-control" id="beginningDate"
                      aria-describedby="beginningDateHelp">
               <div id="beginningDateHelp" class="form-text">
@@ -132,30 +134,64 @@
 
               <label class="form-label mt-3">Срок действия</label>
               <input formControlName="expirationDate" type="date" class="form-control" id="expirationDate">
-
-            </div>
-            <div class="col-6">
-              <label class="form-label">Файл документа загружаемый в хранилище</label>
-              <div class="form-group">
-                <input class="form-control" type="file" (change)="onFileSelected($event)" id="formFile" accept=".csv">
-              </div>
-
-              <label class="form-label mt-3">Примечание к загружаемому файлу документа</label>
-              <textarea formControlName="fileDescription" type="text" class="form-control"
-                        id="fileDescription" rows="3">
-              </textarea>
-              <hr>
-
-              <label class="form-label">Теги документа</label>
-
             </div>
           </div>
+
+          <hr>
+
+          <label class="form-label">Файл документа загружаемый в хранилище</label>
+          <div class="input-group">
+            <input class="form-control" type="file" (change)="onFileSelected($event)" id="formFile" accept=".pdf">
+            <button class="btn btn-outline-primary" type="button" id="uploadButton"
+                    [disabled]="!attachedFile" (click)="uploadFile()">
+              Отправить
+            </button>
+          </div>
+
+          <label class="form-label mt-3">Примечание к загружаемому файлу документа</label>
+          <textarea formControlName="fileDescription" type="text" class="form-control"
+                    id="fileDescription" rows="2">
+              </textarea>
+
+          <label class="form-label mt-3">Теги документа</label>
+
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
         <button type="button" [disabled]="formGroup.invalid" class="btn btn-success" data-bs-dismiss="modal"
                 (click)="saveDocument()">
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Create folder modal-->
+<div class="modal fade" id="createFolderModal" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="createFolderModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Добавление новой папки</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label">Имя</label>
+        <input type="text" class="form-control" id="folderName" [(ngModel)]="folderName"
+               aria-describedby="documentNameHelp" required>
+        <div id="folderNameHelp" class="form-text">
+          Введите имя создаваемой папки
+        </div>
+        <div *ngIf="folderName == ''" class="error text-danger form-text">
+          Поле обязательно для заполнения
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" [disabled]="folderName == ''" class="btn btn-success" data-bs-dismiss="modal"
+                (click)="createFolder()">
           Сохранить
         </button>
       </div>

@@ -25,3 +25,10 @@ eureka:
     service-url:
       defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
 
+document:
+  service:
+    aws-access-key-id: accessKeyId
+    aws-secret-access-key: secretKey
+    aws-region: ru-central1
+    aws-uri: https://storage.yandexcloud.net
+    aws-bucket: awsBucket

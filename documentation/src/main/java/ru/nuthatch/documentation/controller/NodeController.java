@@ -34,6 +34,11 @@ public class NodeController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(value = "/all-by-parent")
+    public ResponseEntity<Collection<Node>> findAllByParentNodeUuid(@RequestParam(name = "id") UUID uuid) {
+        return new ResponseEntity<>(service.findAllByParentNodeUuid(uuid), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/all")
     public ResponseEntity<Collection<Node>> findAll() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
