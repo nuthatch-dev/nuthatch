@@ -4,6 +4,7 @@ import {Node} from "../models/Node";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {DatePipe, NgIf} from "@angular/common";
 import {CustomDocument} from "../models/CustomDocument";
+import {dateFormat} from "../../common/CommonMethod";
 
 @Component({
   selector: 'app-document-list',
@@ -75,9 +76,9 @@ export class DocumentListComponent implements OnInit {
     this.formGroup.patchValue({
       documentName: this.document.docInfoGroup.name,
       documentNumber: this.document.docInfoGroup.number,
-      date: this.document.date,
-      beginningDate: this.document.beginningDate,
-      expirationDate: this.document.expirationDate,
+      date: dateFormat(this.document.date),
+      beginningDate: dateFormat(this.document.beginningDate),
+      expirationDate: dateFormat(this.document.expirationDate),
       fileDescription: this.document.attachedFile?.description,
       tagSet: this.document.tagSet,
     });
@@ -159,6 +160,32 @@ export class DocumentListComponent implements OnInit {
 
   saveNode() {
     this.service.createNode(this.node).subscribe({
+      next: _ => {
+        this.getNodeList();
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  onDocumentDeleteClick(node: Node) {
+    this.node = node;
+  }
+
+  deleteNode() {
+    this.service.deleteNodeById(this.node.uuid).subscribe({
+      next: _ => {
+        if (this.node.document) {
+          this.deleteDocument();
+        } else {
+          this.getParentNode(this.parentNode!.parentNode!.uuid);
+        }
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  deleteDocument() {
+    this.service.deleteDocumentById(this.node.document!.uuid).subscribe({
       next: _ => {
         this.getNodeList();
       },

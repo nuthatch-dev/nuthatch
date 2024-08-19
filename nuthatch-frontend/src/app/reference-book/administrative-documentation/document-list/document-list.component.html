@@ -27,13 +27,16 @@
             </div>
             <ul class="nav nav-pills text-end">
               <li class="nav-item">
-                <a href="" (click)="$event.preventDefault(); onDocumentUpdateClick(node.document)"
+                <a href="" data-bs-toggle="modal" data-bs-target="#createOrUpdateModal"
+                   (click)="$event.preventDefault(); onDocumentUpdateClick(node.document)"
                    class="nav-link px-2 py-1">
                   <i class="bi-pencil-square" style="font-size: 1.5rem; color: darkorange;"></i>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" (click)="$event.preventDefault()" class="nav-link px-2 py-1">
+                <a href="" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                   (click)="$event.preventDefault(); onDocumentDeleteClick(node)"
+                   class="nav-link px-2 py-1">
                   <i class="bi-trash" style="font-size: 1.5rem; color: firebrick;"></i>
                 </a>
               </li>
@@ -63,14 +66,15 @@
         </button>
       </div>
       <div class="mb-3">
-        <button type="button" class="btn btn-sm btn-outline-danger" [hidden]="nodeList.length != 0">
+        <button type="button" class="btn btn-sm btn-outline-danger" [hidden]="nodeList.length != 0"
+                (click)="onDocumentDeleteClick(parentNode!)"
+                data-bs-toggle="modal" data-bs-target="#deleteModal">
           <i class="bi-trash" style="color: firebrick;"></i>
           Удалить папку
         </button>
       </div>
     </div>
   </div>
-
 </div>
 
 <!--Create/update document modal-->
@@ -193,6 +197,29 @@
         <button type="button" [disabled]="folderName == ''" class="btn btn-success" data-bs-dismiss="modal"
                 (click)="createFolder()">
           Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header text-bg-danger">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Подтвердите удаление</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Внимание! Данное действие приведет к полному удалению без возможности восстановления
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                (click)="deleteNode()">
+          Подтвердить
         </button>
       </div>
     </div>

@@ -4,6 +4,7 @@ import {Individual} from "../../models/Individual";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Role} from "../../models/Role";
+import {dateFormat} from "../../../common/CommonMethod";
 
 @Component({
   selector: 'app-individual-list',
@@ -151,7 +152,7 @@ export class IndividualListComponent implements OnInit {
       this.formGroup.patchValue({
         ru_series: this.individual.passportDetails.passportDetailsRussianFederation.series,
         ru_number: this.individual.passportDetails.passportDetailsRussianFederation.number,
-        ru_dateIssue: this.dateFormat(
+        ru_dateIssue: dateFormat(
           this.individual.passportDetails.passportDetailsRussianFederation.dateIssue
         ),
       });
@@ -160,7 +161,7 @@ export class IndividualListComponent implements OnInit {
         foreign_docName: this.individual.passportDetails.documentDetailsForeign.docName,
         foreign_series: this.individual.passportDetails.documentDetailsForeign.series,
         foreign_number: this.individual.passportDetails.documentDetailsForeign.number,
-        foreign_dateIssue: this.dateFormat(
+        foreign_dateIssue: dateFormat(
           this.individual.passportDetails.documentDetailsForeign.dateIssue
         ),
       });
@@ -235,14 +236,6 @@ export class IndividualListComponent implements OnInit {
       },
       error: err => console.log(err)
     });
-  }
-
-  private dateFormat(d: Date): string {
-    let date = new Date(d);
-    let year: string = date.getFullYear().toString();
-    let month: string = (date.getMonth() + 1).toString().padStart(2, '0');
-    let day: string = date.getDate().toString().padStart(2, '0');
-    return year + "-" + month + "-" + day
   }
 
 }
