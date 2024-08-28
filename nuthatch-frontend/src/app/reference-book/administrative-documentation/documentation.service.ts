@@ -50,6 +50,10 @@ export class DocumentationService {
     return this.http.put<CustomDocument>(`${this.DOCUMENT_BASE_URL}`, document);
   }
 
+  deleteDocumentById(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.DOCUMENT_BASE_URL}?id=${id}`);
+  }
+
   uploadFile(file: File): Observable<AttachedFile> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);

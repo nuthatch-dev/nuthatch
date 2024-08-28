@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {Representative} from "../models/Representative";
 import {IndividualEntrepreneur} from "../models/IndividualEntrepreneur";
 import {LegalEntity} from "../models/LegalEntity";
+import {Node} from "../../administrative-documentation/models/Node";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,8 @@ export class RepresentativeService {
     "/organization-and-representative/api/v1/individual-entrepreneur";
   private LEGAL_ENTITY_SERVICE_URL: string = environment.BASE_API_URL +
     "/organization-and-representative/api/v1/legal-entity";
+  private DOCUMENT_NODE_BASE_URL: string = environment.BASE_API_URL +
+    "/documentation-service/api/v1/node";
 
   constructor(private http: HttpClient) { }
 
@@ -50,6 +53,14 @@ export class RepresentativeService {
 
   getLegalEntityList(): Observable<LegalEntity[]> {
     return this.http.get<LegalEntity[]>(`${this.LEGAL_ENTITY_SERVICE_URL}/all`);
+  }
+
+  getNodeById(id: string): Observable<Node> {
+    return this.http.get<Node>(`${this.DOCUMENT_NODE_BASE_URL}?id=${id}`);
+  }
+
+  getNodeListByParentNodeId(id: string): Observable<Node[]> {
+    return this.http.get<Node[]>(`${this.DOCUMENT_NODE_BASE_URL}/all-by-parent?id=${id}`)
   }
 
 }

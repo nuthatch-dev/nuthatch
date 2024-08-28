@@ -21,6 +21,9 @@ import {
 import {
   DocumentListComponent
 } from "./reference-book/administrative-documentation/document-list/document-list.component";
+import {
+  RepresentativeCreateComponent
+} from "./reference-book/organization-and-representative/representative/representative-create/representative-create.component";
 
 export const routes: Routes = [
   {path: '', outlet: 'header', component: HeaderComponent},
@@ -36,6 +39,7 @@ export const routes: Routes = [
   {path: 'legal-entity-list', component: LegalEntityListComponent},
   {path: 'sro-list', component: SroListComponent},
   {path: 'representative-list', component: RepresentativeListComponent},
+  {path: 'representative-create', component: RepresentativeCreateComponent},
   {path: 'role-list', component: RoleListComponent},
 
   // Administrative documents rotes

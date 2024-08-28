@@ -1,11 +1,11 @@
 package ru.nuthatch.documentation.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Описание комплексного типа: attachedFile
@@ -36,5 +36,15 @@ public class AttachedFile extends CommonEntity {
     Минимум 1 символ
      */
     protected String checksum;
+
+    /*
+    Имена миниатюр отдельных листов документа
+     */
+    @ElementCollection
+    @CollectionTable(name = "attached_file_thumbnail",
+            joinColumns = @JoinColumn(name = "attached_file_uuid"))
+    @OrderColumn // order of list is persistent
+    @Column(name = "thumbnail")
+    protected List<String> thumbnails = new ArrayList<>();
 
 }

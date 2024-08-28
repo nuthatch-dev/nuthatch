@@ -1,0 +1,181 @@
+<div class="container my-3">
+  <h4 class="text-center">Новый представитель</h4>
+  <form [formGroup]="formGroup">
+    <div class="row">
+      <div class="col-6">
+        <label class="form-label">ФИО</label>
+        <div class="input-group">
+          <span class="input-group-text">Фамилия</span>
+          <input formControlName="lastName" type="text" class="form-control" id="lastName">
+        </div>
+        <div *ngIf="formGroup.controls['lastName'].errors" class="error">
+          <div *ngIf="formGroup.controls['lastName'].errors?.['required']"
+               class="text-danger form-text">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+
+        <div class="input-group mt-3">
+          <span class="input-group-text">Имя</span>
+          <input formControlName="firstName" type="text" class="form-control" id="firstName">
+        </div>
+        <div *ngIf="formGroup.controls['firstName'].errors" class="error">
+          <div *ngIf="formGroup.controls['firstName'].errors?.['required']"
+               class="text-danger form-text">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+
+        <div class="input-group mt-3">
+          <span class="input-group-text">Отчество</span>
+          <input formControlName="middleName" type="text" class="form-control" id="middleName">
+        </div>
+
+        <label class="form-label mt-3">Регистрационный номер в реестре специалистов</label>
+        <input formControlName="nostroyNumber" type="text" class="form-control" id="nostroyNumber">
+
+        <label class="form-label mt-3">Должность</label>
+        <input formControlName="position" type="text" class="form-control" id="position">
+        <div *ngIf="formGroup.controls['position'].errors" class="error">
+          <div *ngIf="formGroup.controls['position'].errors?.['required']"
+               class="text-danger form-text">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <label class="form-check-label">Является представителем</label>
+        <div class="mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" id="legalEntityRadio"
+                   formControlName="isLegalEntityRepresentative"
+                   [value]="true">
+            <label class="form-check-label" for="legalEntityRadio">
+              Юридического лица
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" id="ieRadio"
+                   formControlName="isLegalEntityRepresentative"
+                   [value]="false">
+            <label class="form-check-label" for="ieRadio">
+              Индивидуального предпринимателя
+            </label>
+          </div>
+          @if (formGroup.controls["isLegalEntityRepresentative"].value) {
+            <select class="form-select mt-2" formControlName="legalEntity">
+              @for (le of legalEntityList; track $index) {
+                <option [ngValue]="le">{{ le.shortName }}</option>
+              }
+            </select>
+          } @else {
+            <select class="form-select mt-2" formControlName="individualEntrepreneur">
+              @for (ie of individualEntrepreneurList; track $index) {
+                <option [ngValue]="ie">
+                  {{ ie.fullNameGroup.lastName }}
+                  {{ ie.fullNameGroup.firstName }}
+                  {{ ie.fullNameGroup.middleName }}
+                </option>
+              }
+            </select>
+          }
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label">Документ, подтверждающий полномочия</label>
+          <div class="input-group">
+            <input formControlName="administrativeDocument" type="text" class="form-control"
+                   id="administrativeDocument">
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#selectDocument">
+              Выбрать
+            </button>
+          </div>
+        </div>
+        <div *ngIf="formGroup.controls['administrativeDocument'].errors" class="error">
+          <div *ngIf="formGroup.controls['administrativeDocument'].errors?.['required']"
+               class="text-danger form-text">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- selectDocument Modal -->
+<div class="modal fade" id="selectDocument" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="selectDocumentLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Выбор документа из справочника</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-6">
+            <div class="text-bg-light px-1 py-2">
+              @if (parentNode?.parentNode) {
+                <a href="" (click)="$event.preventDefault(); getParentNode(parentNode!.parentNode!.uuid)">
+                  <i class="bi-folder2-open mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+                  <span>../</span>
+                </a>
+                <br>
+              }
+              <i class="bi-folder2-open mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+              <span>{{ parentNode?.name }}</span>
+            </div>
+            @for (node of nodeList; track $index) {
+              <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                @if (node.document) {
+                  <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto">
+                    <i class="bi-file-earmark-text ms-4 me-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+                    <a href="" (click)="$event.preventDefault(); previewDocument(node)">
+                    <span>
+                      {{ node.document.docInfoGroup.name }} №
+                      {{ node.document.docInfoGroup.number }} от
+                      {{ node.document.date | date: "dd-MM-YYYY" }} г.
+                    </span>
+                    </a>
+                  </div>
+
+                } @else {
+                  <a href="" (click)="$event.preventDefault(); getParentNode(node.uuid)">
+                    <i class="bi-folder2-open ms-4 me-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+                    <span>{{ node.name }}</span>
+                  </a>
+                }
+              </div>
+            }
+          </div>
+          <div class="col-6 text-md-center">
+            @if (selectedThumbnail != null) {
+              <img [ngSrc]="selectedThumbnail" width="420" height="594" alt="" class="rounded border my-3">
+              <div class="btn-group btn-sm">
+                <button class="btn btn-sm btn-outline-secondary" (click)="getPreviousPage()">
+                  <i class="bi-arrow-left"></i>
+                </button>
+                <span class="input-group-text">
+                  Стр. {{currentPage + 1}} из {{pageCount}}
+                </span>
+                <button class="btn btn-sm btn-outline-secondary" (click)="getNextPage()">
+                  <i class="bi-arrow-right"></i>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                (click)="onDocumentSelected()">
+          Выбрать
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,4 +3,5 @@ export interface AttachedFile {
   name: string,
   description: string,
   checksum: string,
+  thumbnails: string[],
 }

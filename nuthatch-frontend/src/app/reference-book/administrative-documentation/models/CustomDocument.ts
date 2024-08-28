@@ -7,6 +7,6 @@ export interface CustomDocument {
   date: Date,
   beginningDate: Date,
   expirationDate: Date,
-  attachedFile?: AttachedFile,
+  attachedFile: AttachedFile | null,
   tagSet: string[],
 }
