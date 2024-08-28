@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nuthatch.documentation.entity.AttachedFile;
 import ru.nuthatch.documentation.service.AttachedFileService;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -29,6 +30,8 @@ public class AttachedFileController {
             AttachedFile attachedFile = service.upload(file);
             return new ResponseEntity<>(attachedFile, HttpStatus.OK);
         } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (AwsServiceException e) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
     }

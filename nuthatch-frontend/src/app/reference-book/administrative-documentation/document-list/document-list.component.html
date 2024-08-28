@@ -143,16 +143,21 @@
 
           <hr>
 
-          <label class="form-label">Файл документа загружаемый в хранилище</label>
-          <div class="input-group">
-            <input class="form-control" type="file" (change)="onFileSelected($event)" id="formFile" accept=".pdf">
-            <button class="btn btn-outline-primary" type="button" id="uploadButton"
-                    [disabled]="!attachedFile" (click)="uploadFile()">
-              Отправить
-            </button>
+          <div>
+            <label class="form-label">Файл документа загружаемый в хранилище</label>
+            <div class="input-group">
+              <input class="form-control" type="file" (change)="onFileSelected($event)" id="formFile" accept=".pdf">
+              <button class="btn btn-outline-primary" type="button" id="uploadButton"
+                      [disabled]="!selectedFile" (click)="uploadFile()">
+                Отправить
+              </button>
+            </div>
+            <label *ngIf="attachedFile" class="form-text text-bg-success px-3">
+              Файл документа загружен в хранилище
+            </label>
           </div>
 
-          <label class="form-label mt-3">Примечание к загружаемому файлу документа</label>
+          <label class="form-label mt-3">Примечание к файлу документа</label>
           <textarea formControlName="fileDescription" type="text" class="form-control"
                     id="fileDescription" rows="2">
               </textarea>

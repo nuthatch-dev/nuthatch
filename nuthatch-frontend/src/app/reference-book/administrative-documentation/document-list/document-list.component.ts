@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {DatePipe, NgIf} from "@angular/common";
 import {CustomDocument} from "../models/CustomDocument";
 import {dateFormat} from "../../common/CommonMethod";
+import {AttachedFile} from "../models/AttachedFile";
 
 @Component({
   selector: 'app-document-list',
@@ -22,7 +23,7 @@ export class DocumentListComponent implements OnInit {
 
   formGroup: FormGroup;
   nodeList: Node[] = [];
-  private ROOT_NODE_ID: string = "00000000-0000-0000-0000-000000000000"
+  private ROOT_NODE_ID: string = "00000000-0000-0000-0000-000000000000";
 
   constructor(private service: DocumentationService,
               private fb: FormBuilder) {
@@ -41,6 +42,12 @@ export class DocumentListComponent implements OnInit {
     this.getParentNode(this.ROOT_NODE_ID);
   }
 
+  document: CustomDocument | null = null;
+  node: Node = {
+    uuid: "",
+    name: "",
+    document: this.document,
+  }
   parentNode: Node | null = null;
 
   getParentNode(id: string) {
@@ -84,19 +91,21 @@ export class DocumentListComponent implements OnInit {
     });
   }
 
-  attachedFile: File | null = null;
+  selectedFile: File | null = null;
 
   onFileSelected(event: any): void {
     let file: File = event.target.files[0];
     if (file && file.size > 0) {
-      this.attachedFile = file;
+      this.selectedFile = file;
     }
   }
 
+  attachedFile: AttachedFile | null = null;
+
   uploadFile() {
-    this.service.uploadFile(this.attachedFile!).subscribe({
+    this.service.uploadFile(this.selectedFile!).subscribe({
       next: value => {
-        this.document.attachedFile = value;
+        this.attachedFile = value;
       },
       error: err => console.log(err)
     });
@@ -130,7 +139,7 @@ export class DocumentListComponent implements OnInit {
 
   saveDocument() {
     let document: CustomDocument = {
-      uuid: this.entityIsCreated ? "" : this.document.uuid,
+      uuid: this.entityIsCreated ? "" : this.document!.uuid,
       docInfoGroup: {
         name: this.f['documentName'].value,
         number: this.f['documentNumber'].value,
@@ -139,6 +148,7 @@ export class DocumentListComponent implements OnInit {
       beginningDate: this.f['beginningDate'].value,
       expirationDate: this.f['expirationDate'].value,
       tagSet: [], // TODO
+      attachedFile: this.entityIsCreated ? this.attachedFile : this.document!.attachedFile,
     }
     if (this.entityIsCreated) {
       this.service.createCustomDocument(document).subscribe({
@@ -191,30 +201,6 @@ export class DocumentListComponent implements OnInit {
       },
       error: err => console.log(err)
     });
-  }
-
-  document: CustomDocument = {
-    uuid: "",
-    docInfoGroup: {
-      name: "",
-      number: "",
-    },
-    date: new Date(),
-    beginningDate: new Date(),
-    expirationDate: new Date(),
-    attachedFile: {
-      uuid: "",
-      name: "",
-      description: "",
-      checksum: "",
-    },
-    tagSet: [],
-  }
-
-  node: Node = {
-    uuid: "",
-    name: "",
-    document: this.document,
   }
 
 }

@@ -6,6 +6,7 @@ import {LegalEntity} from "../../models/LegalEntity";
 import {IndividualEntrepreneur} from "../../models/IndividualEntrepreneur";
 import {NgForOf, NgIf} from "@angular/common";
 
+
 @Component({
   selector: 'app-representative-list',
   standalone: true,
@@ -19,6 +20,8 @@ import {NgForOf, NgIf} from "@angular/common";
   styleUrl: './representative-list.component.css'
 })
 export class RepresentativeListComponent implements OnInit {
+
+  private ROOT_NODE_ID: string = "00000000-0000-0000-0000-000000000000";
 
   representativeList: Representative[] = [];
   individualEntrepreneurList: IndividualEntrepreneur[] = [];
@@ -42,32 +45,12 @@ export class RepresentativeListComponent implements OnInit {
 
   ngOnInit() {
     this.getRepresentativeList();
-    this.getIndividualEntrepreneurList();
-    this.getLegalEntityList();
   }
 
   private getRepresentativeList() {
     this.service.getAllRepresentatives().subscribe({
       next: value => {
         this.representativeList = value;
-      },
-      error: err => console.log(err)
-    });
-  }
-
-  private getIndividualEntrepreneurList() {
-    this.service.getIndividualEntrepreneurList().subscribe({
-      next: value => {
-        this.individualEntrepreneurList = value;
-      },
-      error: err => console.log(err)
-    });
-  }
-
-  private getLegalEntityList() {
-    this.service.getLegalEntityList().subscribe({
-      next: value => {
-        this.legalEntityList = value;
       },
       error: err => console.log(err)
     });
@@ -164,7 +147,6 @@ export class RepresentativeListComponent implements OnInit {
       error: err => console.log(err)
     });
   }
-
 
   representative: Representative = {
     uuid: '',
