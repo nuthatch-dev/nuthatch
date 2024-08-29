@@ -7,6 +7,7 @@ import {Node} from "../../../administrative-documentation/models/Node";
 import {Representative} from "../../models/Representative";
 import {Router} from "@angular/router";
 import {DatePipe, NgIf, NgOptimizedImage} from "@angular/common";
+import {environment} from "../../../../environment";
 
 @Component({
   selector: 'app-representative-create',
@@ -23,7 +24,7 @@ import {DatePipe, NgIf, NgOptimizedImage} from "@angular/common";
 })
 export class RepresentativeCreateComponent implements OnInit {
 
-  private ROOT_NODE_ID: string = "00000000-0000-0000-0000-000000000000";
+  private ROOT_NODE_ID: string = environment.ROOT_NODE_ID;
 
   formGroup: FormGroup;
   individualEntrepreneurList: IndividualEntrepreneur[] = [];
@@ -82,6 +83,10 @@ export class RepresentativeCreateComponent implements OnInit {
     this.service.getNodeById(id).subscribe({
       next: value => {
         this.parentNode = value;
+        this.selectedNode = null;
+        this.selectedThumbnail = null;
+
+        this.pageCount = 0;
         this.getNodeList();
       },
       error: err => console.log(err)
@@ -100,12 +105,14 @@ export class RepresentativeCreateComponent implements OnInit {
   selectedNode: Node | null = null;
 
   selectedThumbnail: string | null = null;
-  private thumbnailsPrefix: string = "https://nuthatch-test.storage.yandexcloud.net/thumbnails/";
+  private thumbnailsPrefix: string = environment.S3_URL + "/thumbnails/";
 
   previewDocument(node: Node) {
+    this.currentPage = 0;
+    this.pageCount = 0;
     this.selectedNode = node;
-    if (this.selectedNode.document!.attachedFile) {
-      this.pageCount = this.selectedNode.document!.attachedFile.thumbnails.length;
+    if (this.selectedNode.document && this.selectedNode.document.attachedFile) {
+      this.pageCount = this.selectedNode.document.attachedFile.thumbnails.length;
       this.showThumbnail();
     } else {
       this.selectedThumbnail = null;
@@ -131,7 +138,15 @@ export class RepresentativeCreateComponent implements OnInit {
     }
   }
 
+  administrativeDocumentId: string = "";
+
   onDocumentSelected() {
+    this.administrativeDocumentId = this.selectedNode!.document!.uuid;
+    this.formGroup.patchValue({
+      administrativeDocument: this.selectedNode!.document!.docInfoGroup.name + " "
+        + this.selectedNode!.document!.docInfoGroup.number + " "
+        + this.selectedNode!.document!.date,
+    });
   }
 
   get f() {
@@ -163,7 +178,7 @@ export class RepresentativeCreateComponent implements OnInit {
       individualEntrepreneur: this.f["individualEntrepreneur"].value,
       position: this.f["position"].value,
       nostroyNumber: this.f["nostroyNumber"].value,
-      administrativeDocument: this.f["administrativeDocument"].value,
+      administrativeDocument: this.administrativeDocumentId,
     };
     this.service.createRepresentative(representative).subscribe({
       next: _ => {
