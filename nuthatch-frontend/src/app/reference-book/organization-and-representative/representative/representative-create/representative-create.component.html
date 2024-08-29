@@ -3,7 +3,7 @@
   <form [formGroup]="formGroup">
     <div class="row">
       <div class="col-6">
-        <label class="form-label">ФИО</label>
+        <label class="form-label" for="lastName">ФИО</label>
         <div class="input-group">
           <span class="input-group-text">Фамилия</span>
           <input formControlName="lastName" type="text" class="form-control" id="lastName">
@@ -31,7 +31,7 @@
           <input formControlName="middleName" type="text" class="form-control" id="middleName">
         </div>
 
-        <label class="form-label mt-3">Регистрационный номер в реестре специалистов</label>
+        <label class="form-label mt-3" for="nostroyNumber">Регистрационный номер в реестре специалистов</label>
         <input formControlName="nostroyNumber" type="text" class="form-control" id="nostroyNumber">
 
         <label class="form-label mt-3">Должность</label>
@@ -45,7 +45,7 @@
       </div>
 
       <div class="col-6">
-        <label class="form-check-label">Является представителем</label>
+        <label class="form-check-label" for="legalEntityRadio">Является представителем</label>
         <div class="mb-3">
           <div class="form-check">
             <input class="form-check-input" type="radio" id="legalEntityRadio"
@@ -83,7 +83,7 @@
         </div>
 
         <div class="mt-3">
-          <label class="form-label">Документ, подтверждающий полномочия</label>
+          <label class="form-label" for="administrativeDocument">Документ, подтверждающий полномочия</label>
           <div class="input-group">
             <input formControlName="administrativeDocument" type="text" class="form-control"
                    id="administrativeDocument">
@@ -98,9 +98,14 @@
             Поле обязательно для заполнения
           </div>
         </div>
+
       </div>
     </div>
+    <hr>
   </form>
+  <button class="btn btn-success" type="button" (click)="saveRepresentative()" [disabled]="formGroup.invalid">
+    Сохранить
+  </button>
 </div>
 
 <!-- selectDocument Modal -->
@@ -115,56 +120,59 @@
       <div class="modal-body">
 
         <div class="row">
-          <div class="col-6">
-            <div class="text-bg-light px-1 py-2">
-              @if (parentNode?.parentNode) {
-                <a href="" (click)="$event.preventDefault(); getParentNode(parentNode!.parentNode!.uuid)">
-                  <i class="bi-folder2-open mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
-                  <span>../</span>
-                </a>
-                <br>
-              }
-              <i class="bi-folder2-open mx-2" style="font-size: 1.5rem; color: midnightblue;"></i>
-              <span>{{ parentNode?.name }}</span>
-            </div>
-            @for (node of nodeList; track $index) {
-              <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <div class="col-6 navbar-nav-scroll">
+            <div class="list-group list-group-flush">
+              <div class="hstack py-2 ps-4 pe-3 border-bottom bg-primary-subtle">
+                <i class="bi-folder2-open me-2" style="font-size: 1.5rem;"></i>
+                <span class="align-baseline">{{ parentNode?.name }}</span>
+                @if (parentNode?.parentNode) {
+                  <button class="ms-auto btn btn-sm btn-outline-secondary"
+                          (click)="getParentNode(parentNode!.parentNode!.uuid)">
+                    <i class="bi-arrow-up"></i>
+                  </button>
+                }
+              </div>
+              @for (node of nodeList; track $index) {
                 @if (node.document) {
-                  <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto">
-                    <i class="bi-file-earmark-text ms-4 me-2" style="font-size: 1.5rem; color: midnightblue;"></i>
-                    <a href="" (click)="$event.preventDefault(); previewDocument(node)">
+                  <button type="button" class="list-group-item list-group-item-action"
+                          (click)="previewDocument(node)">
+                    <i class="bi-file-earmark-text ms-4 me-2" style="font-size: 1rem;"></i>
                     <span>
                       {{ node.document.docInfoGroup.name }} №
                       {{ node.document.docInfoGroup.number }} от
                       {{ node.document.date | date: "dd-MM-YYYY" }} г.
                     </span>
-                    </a>
-                  </div>
-
+                  </button>
                 } @else {
-                  <a href="" (click)="$event.preventDefault(); getParentNode(node.uuid)">
-                    <i class="bi-folder2-open ms-4 me-2" style="font-size: 1.5rem; color: midnightblue;"></i>
+                  <button type="button" class="list-group-item list-group-item-action"
+                          (click)="getParentNode(node.uuid)">
+                    <i class="bi-folder2 ms-4 me-2" style="font-size: 1rem;"></i>
                     <span>{{ node.name }}</span>
-                  </a>
+                  </button>
                 }
-              </div>
-            }
+              }
+            </div>
           </div>
           <div class="col-6 text-md-center">
             @if (selectedThumbnail != null) {
-              <img [ngSrc]="selectedThumbnail" width="420" height="594" alt="" class="rounded border my-3">
-              <div class="btn-group btn-sm">
-                <button class="btn btn-sm btn-outline-secondary" (click)="getPreviousPage()">
-                  <i class="bi-arrow-left"></i>
-                </button>
-                <span class="input-group-text">
-                  Стр. {{currentPage + 1}} из {{pageCount}}
-                </span>
-                <button class="btn btn-sm btn-outline-secondary" (click)="getNextPage()">
-                  <i class="bi-arrow-right"></i>
-                </button>
-              </div>
+              <img [ngSrc]="selectedThumbnail" width="420" height="594" alt="" class="rounded border mb-3">
+            } @else {
+              <img src="data:image/png;base64,
+              iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                   width="420" height="594" alt="" class="rounded border mb-3">
             }
+            <div class="btn-group btn-sm">
+              <button class="btn btn-sm btn-outline-secondary" (click)="getPreviousPage()">
+                <i class="bi-arrow-left"></i>
+              </button>
+              <span class="input-group-text">
+                  Стр. {{ currentPage + 1 }} из {{ pageCount }}
+                </span>
+              <button class="btn btn-sm btn-outline-secondary" (click)="getNextPage()">
+                <i class="bi-arrow-right"></i>
+              </button>
+            </div>
+
           </div>
         </div>
 
@@ -172,7 +180,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
         <button type="button" class="btn btn-success" data-bs-dismiss="modal"
-                (click)="onDocumentSelected()">
+                (click)="onDocumentSelected()" [disabled]="!selectedNode">
           Выбрать
         </button>
       </div>
