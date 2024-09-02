@@ -14,7 +14,6 @@ import {
   LegalEntityListComponent
 } from "./reference-book/organization-and-representative/legal-entity/legal-entity-list/legal-entity-list.component";
 import {SroListComponent} from "./reference-book/organization-and-representative/sro/sro-list/sro-list.component";
-import {RoleListComponent} from "./reference-book/organization-and-representative/role/role-list/role-list.component";
 import {
   RepresentativeListComponent
 } from "./reference-book/organization-and-representative/representative/representative-list/representative-list.component";
@@ -24,10 +23,12 @@ import {
 import {
   RepresentativeCreateComponent
 } from "./reference-book/organization-and-representative/representative/representative-create/representative-create.component";
+import {NavbarComponent} from "./navbar/navbar.component";
 
 export const routes: Routes = [
   {path: '', outlet: 'header', component: HeaderComponent},
   {path: '', outlet: 'footer', component: FooterComponent},
+  {path: '', outlet: 'navbar', component: NavbarComponent},
 
   {path: 'gwj-list', component: GwjListComponent},
   {path: 'gwj-details/:id', component: GwjDetailsComponent},
@@ -40,7 +41,6 @@ export const routes: Routes = [
   {path: 'sro-list', component: SroListComponent},
   {path: 'representative-list', component: RepresentativeListComponent},
   {path: 'representative-create', component: RepresentativeCreateComponent},
-  {path: 'role-list', component: RoleListComponent},
 
   // Administrative documents rotes
   {path: 'document-list', component: DocumentListComponent},

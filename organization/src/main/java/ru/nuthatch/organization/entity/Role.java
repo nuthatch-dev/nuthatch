@@ -1,19 +1,22 @@
 package ru.nuthatch.organization.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+public enum Role {
+    DEVELOPER("Застройщик"),
+    DESIGNER_CONTRACTOR("Лицо, осуществляющее подготовку проектной документации"),
+    BUILDING_CONTRACTOR("Лицо, осуществляющее строительство, реконструкцию, капитальный ремонт"),
+    OPERATING_PERSON("Лицо, ответственное за эксплуатацию здания, сооружения"),
+    REGIONAL_OPERATOR("Региональный оператор"),
+    TECHNICAL_CUSTOMER("Технический заказчик")
+    ;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "role")
-public class Role extends CommonEntity {
+    private final String role;
 
-    @Column(name = "role_name",
-            nullable = false)
-    protected String roleName;
+    Role(String role) {
+        this.role = role;
+    }
 
+    @Override
+    public String toString() {
+        return role;
+    }
 }

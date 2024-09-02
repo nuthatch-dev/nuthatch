@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../../environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Role} from "../models/Role";
 import {IndividualEntrepreneur} from "../models/IndividualEntrepreneur";
 import {Sro} from "../models/Sro";
 
@@ -13,8 +12,6 @@ export class IndividualEntrepreneurService {
 
   private BASE_URL: string = environment.BASE_API_URL +
     "/organization-and-representative/api/v1/individual-entrepreneur";
-  private ROLE_SERVICE_URL: string = environment.BASE_API_URL +
-    "/organization-and-representative/api/v1/role";
   private SRO_SERVICE_URL: string = environment.BASE_API_URL +
     "/organization-and-representative/api/v1/sro";
 
@@ -42,10 +39,6 @@ export class IndividualEntrepreneurService {
 
   deleteIndividualEntrepreneurById(id: string): Observable<any> {
     return this.http.delete<any>(`${this.BASE_URL}?id=${id}`);
-  }
-
-  getRoleList(): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.ROLE_SERVICE_URL}/all`)
   }
 
   getSroList(): Observable<Sro[]> {

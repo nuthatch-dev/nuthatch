@@ -47,28 +47,28 @@
         <div class="row">
           <div class="col-6">
             <h6>Полное наименование</h6>
-            <p>{{ legalEntity.fullName }}</p>
+            <p>{{ entity.fullName }}</p>
             <h6>Сокращенное наименование</h6>
-            <p>{{ legalEntity.shortName }}</p>
+            <p>{{ entity.shortName }}</p>
             <h6>Адрес</h6>
-            <p>{{ legalEntity.address }}</p>
+            <p>{{ entity.address }}</p>
             <h6>ИНН</h6>
-            <p>{{ legalEntity.inn }}</p>
+            <p>{{ entity.inn }}</p>
             <h6>ОГРНИП</h6>
-            <p>{{ legalEntity.ogrn }}</p>
+            <p>{{ entity.ogrn }}</p>
           </div>
           <div class="col-6">
-            @if (legalEntity.sro) {
+            @if (entity.sro) {
               <h6>
                 Данные саморегулируемой организации, членом которой является юридическое лицо
               </h6>
-              <p>Наименование: {{ legalEntity.sro.name }}</p>
-              <p>ИНН {{ legalEntity.sro.inn }}</p>
-              <p>ОГРН {{ legalEntity.sro.ogrn }}</p>
+              <p>Наименование: {{ entity.sro.name }}</p>
+              <p>ИНН {{ entity.sro.inn }}</p>
+              <p>ОГРН {{ entity.sro.ogrn }}</p>
             }
             <h6>Роли, в качестве которых может выступать данное ЮЛ</h6>
-            <div *ngFor="let role of legalEntity.roleSet">
-              * {{ role.roleName }}
+            <div *ngFor="let role of entity.roleSet">
+              * {{ RoleMap.get(role) }}
             </div>
           </div>
         </div>
@@ -176,8 +176,8 @@
             </div>
             @if (isSroMember) {
               <select class="form-select mt-2" formControlName="sro">
-                <option *ngIf="legalEntity.sro" [defaultSelected]="true" [ngValue]="legalEntity.sro" disabled>
-                  {{ legalEntity.sro.name }}
+                <option *ngIf="entity.sro" [defaultSelected]="true" [ngValue]="entity.sro" disabled>
+                  {{ entity.sro.name }}
                 </option>
                 @for (sro of sroList; track $index) {
                   <option [ngValue]="sro">{{ sro.name }}</option>
@@ -196,11 +196,11 @@
               <div class="text-md-center mb-2">Доступные</div>
               <table class="table table-sm table-borderless table-striped">
                 <tbody class="table-group-divider">
-                <tr *ngFor="let freeRole of freeRoleList">
-                  <td>{{ freeRole.roleName }}</td>
+                <tr *ngFor="let key of Array.from(freeRoleMap.keys())">
+                  <td>{{ freeRoleMap.get(key) }}</td>
                   <td style="width: 1%">
                     <button class="btn btn-sm btn-outline-info"
-                            (click)="onAddRoleClick(freeRole)">
+                            (click)="addRoleClick(key)">
                       Выбрать
                     </button>
                   </td>
@@ -212,11 +212,11 @@
               <div class="text-md-center mb-2">Выбранные</div>
               <table class="table table-sm table-borderless table-striped">
                 <tbody class="table-group-divider">
-                <tr *ngFor="let assignedRole of assignedRoleList">
-                  <td>{{ assignedRole.roleName }}</td>
+                <tr *ngFor="let key of Array.from(assignedRoleMap.keys())">
+                  <td>{{ assignedRoleMap.get(key) }}</td>
                   <td style="width: 1%">
                     <button class="btn btn-sm btn-outline-warning"
-                            (click)="onDeleteRoleClick(assignedRole)">
+                            (click)="removeRoleClick(key)">
                       Удалить
                     </button>
                   </td>

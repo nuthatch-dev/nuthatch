@@ -1,12 +1,11 @@
 import {FullNameGroup} from "./FullNameGroup";
 import {PassportDetails} from "./PassportDetails";
-import {Role} from "./Role";
+import {CommonEntity} from "../common/CommonEntity";
 
-export interface Individual {
+export interface Individual extends CommonEntity {
   uuid: string;
   fullNameGroup: FullNameGroup;
   address: string;
   isaRussianFederationCitizen: boolean;
   passportDetails: PassportDetails;
-  roleSet: Role[];
 }

@@ -45,6 +45,6 @@ public class Individual extends CommonEntity {
     /**
      * Роли, в качестве которых может выступать физическое лицо
      */
-    @ManyToMany
+    @ElementCollection
     protected Set<Role> roleSet = new HashSet<>();
 }

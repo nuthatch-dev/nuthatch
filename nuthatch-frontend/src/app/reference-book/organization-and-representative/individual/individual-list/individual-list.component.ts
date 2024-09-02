@@ -3,8 +3,9 @@ import {IndividualService} from "../individual.service";
 import {Individual} from "../../models/Individual";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Role} from "../../models/Role";
+import {RoleMap} from "../../common/RoleMap";
 import {dateFormat} from "../../../common/CommonMethod";
+import {RoleManagement} from "../../common/RoleManagement";
 
 @Component({
   selector: 'app-individual-list',
@@ -18,14 +19,14 @@ import {dateFormat} from "../../../common/CommonMethod";
   templateUrl: './individual-list.component.html',
   styleUrl: './individual-list.component.css'
 })
-export class IndividualListComponent implements OnInit {
+export class IndividualListComponent extends RoleManagement<Individual> implements OnInit {
 
   individualList: Individual[] = [];
   formGroup: FormGroup;
 
   constructor(private service: IndividualService,
               private fb: FormBuilder) {
-
+    super();
     this.formGroup = this.fb.group({
       lastName: ["", Validators.required],
       firstName: ["", Validators.required],
@@ -40,12 +41,10 @@ export class IndividualListComponent implements OnInit {
       foreign_number: [""],
       foreign_dateIssue: [null],
     });
-
   }
 
   ngOnInit(): void {
     this.getAllIndividuals();
-    this.getRoleList();
   }
 
   private getAllIndividuals() {
@@ -57,7 +56,7 @@ export class IndividualListComponent implements OnInit {
     });
   }
 
-  individual: Individual = {
+  override entity: Individual = {
     uuid: "",
     fullNameGroup: {
       lastName: "",
@@ -83,53 +82,7 @@ export class IndividualListComponent implements OnInit {
   }
 
   individualDetails(individual: Individual) {
-    this.individual = individual;
-  }
-
-  /*
-  Методы для работы с ролями
-   */
-  roleList: Role[] = [];
-
-  private getRoleList() {
-    this.service.getRoleList().subscribe({
-      next: value => {
-        this.roleList = value;
-      },
-      error: err => console.log(err)
-    });
-  }
-
-  /*
-  Массивы ролей определенных для сущности и доступных к добавлению.
-  Подготовка массива доступных ролей
-   */
-  freeRoleList: Role[] = [];
-  assignedRoleList: Role[] = [];
-
-  private prepareFreeRoleList() {
-    this.assignedRoleList = this.individual.roleSet;
-    this.freeRoleList = this.roleList.filter(role => {
-      for (let r of this.individual.roleSet) {
-        if (r.uuid == role.uuid) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }
-
-  /*
-  Изменение массивов ролей по действиям пользователя
-   */
-  onAddRoleClick(role: Role) {
-    this.assignedRoleList.push(role);
-    this.freeRoleList.splice(this.freeRoleList.indexOf(role), 1);
-  }
-
-  onDeleteRoleClick(role: Role) {
-    this.assignedRoleList.splice(this.assignedRoleList.indexOf(role), 1);
-    this.freeRoleList.push(role);
+    this.entity = individual;
   }
 
   entityIsCreated: boolean = true;
@@ -139,30 +92,30 @@ export class IndividualListComponent implements OnInit {
    */
   onUpdateClick() {
     this.entityIsCreated = false;
-    this.prepareFreeRoleList();
+    this.prepareRoleMaps();
 
     this.formGroup.patchValue({
-      lastName: this.individual.fullNameGroup.lastName,
-      firstName: this.individual.fullNameGroup.firstName,
-      middleName: this.individual.fullNameGroup.middleName,
-      address: this.individual.address,
-      roleSet: this.individual.roleSet,
+      lastName: this.entity.fullNameGroup.lastName,
+      firstName: this.entity.fullNameGroup.firstName,
+      middleName: this.entity.fullNameGroup.middleName,
+      address: this.entity.address,
+      roleSet: this.entity.roleSet,
     });
-    if (this.individual.isaRussianFederationCitizen) {
+    if (this.entity.isaRussianFederationCitizen) {
       this.formGroup.patchValue({
-        ru_series: this.individual.passportDetails.passportDetailsRussianFederation.series,
-        ru_number: this.individual.passportDetails.passportDetailsRussianFederation.number,
+        ru_series: this.entity.passportDetails.passportDetailsRussianFederation.series,
+        ru_number: this.entity.passportDetails.passportDetailsRussianFederation.number,
         ru_dateIssue: dateFormat(
-          this.individual.passportDetails.passportDetailsRussianFederation.dateIssue
+          this.entity.passportDetails.passportDetailsRussianFederation.dateIssue
         ),
       });
     } else {
       this.formGroup.patchValue({
-        foreign_docName: this.individual.passportDetails.documentDetailsForeign.docName,
-        foreign_series: this.individual.passportDetails.documentDetailsForeign.series,
-        foreign_number: this.individual.passportDetails.documentDetailsForeign.number,
+        foreign_docName: this.entity.passportDetails.documentDetailsForeign.docName,
+        foreign_series: this.entity.passportDetails.documentDetailsForeign.series,
+        foreign_number: this.entity.passportDetails.documentDetailsForeign.number,
         foreign_dateIssue: dateFormat(
-          this.individual.passportDetails.documentDetailsForeign.dateIssue
+          this.entity.passportDetails.documentDetailsForeign.dateIssue
         ),
       });
     }
@@ -177,8 +130,9 @@ export class IndividualListComponent implements OnInit {
     this.formGroup.patchValue({
       isaRussianFederationCitizen: true,
     });
-    this.freeRoleList = this.roleList;
-    this.assignedRoleList = [];
+    this.assignedRoleMap = new Map<string, string>();
+    this.freeRoleMap = new Map<string, string>();
+    RoleMap.forEach((value, key) => this.freeRoleMap.set(key, value));
   }
 
   get f() {
@@ -187,7 +141,7 @@ export class IndividualListComponent implements OnInit {
 
   saveIndividual() {
     let individual: Individual = {
-      uuid: this.entityIsCreated ? '' : this.individual.uuid,
+      uuid: this.entityIsCreated ? '' : this.entity.uuid,
       fullNameGroup: {
         lastName: this.f['lastName'].value,
         firstName: this.f['firstName'].value,
@@ -196,7 +150,7 @@ export class IndividualListComponent implements OnInit {
       address: this.f['address'].value,
       isaRussianFederationCitizen: this.entityIsCreated ?
         this.f['isaRussianFederationCitizen'].value :
-        this.individual.isaRussianFederationCitizen,
+        this.entity.isaRussianFederationCitizen,
       passportDetails: {
         passportDetailsRussianFederation: {
           series: this.f['ru_series'].value,
@@ -210,7 +164,7 @@ export class IndividualListComponent implements OnInit {
           dateIssue: this.f['foreign_dateIssue'].value
         }
       },
-      roleSet: this.assignedRoleList
+      roleSet: Array.from(this.assignedRoleMap.keys()),
     }
     if (this.entityIsCreated) {
       this.service.createIndividual(individual).subscribe({
@@ -230,12 +184,11 @@ export class IndividualListComponent implements OnInit {
   }
 
   deleteIndividual() {
-    this.service.deleteIndividualById(this.individual.uuid).subscribe({
+    this.service.deleteIndividualById(this.entity.uuid).subscribe({
       next: _ => {
         this.getAllIndividuals();
       },
       error: err => console.log(err)
     });
   }
-
 }

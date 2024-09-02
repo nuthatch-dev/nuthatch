@@ -67,7 +67,7 @@ public class LegalEntity extends CommonEntity {
     /**
      * Роли, в качестве которых может выступать юридическое лицо
      */
-    @ManyToMany
+    @ElementCollection
     protected Set<Role> roleSet = new HashSet<>();
 
 }

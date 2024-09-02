@@ -2,7 +2,17 @@
   <router-outlet name="header"></router-outlet>
 </header>
 <main>
-  <router-outlet></router-outlet>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2 bg-body-tertiary">
+        <router-outlet name="navbar"></router-outlet>
+      </div>
+      <div class="col-10">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+
 </main>
 <footer>
   <router-outlet name="footer"></router-outlet>

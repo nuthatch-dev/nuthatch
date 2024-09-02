@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {IndividualEntrepreneur} from "../../models/IndividualEntrepreneur";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {IndividualEntrepreneurService} from "../individual-entrepreneur.service";
-import {Role} from "../../models/Role";
+import {RoleMap} from "../../common/RoleMap";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {Sro} from "../../models/Sro";
+import {RoleManagement} from "../../common/RoleManagement";
 
 @Component({
   selector: 'app-individual-entrepreneur-list',
@@ -18,14 +19,14 @@ import {Sro} from "../../models/Sro";
   templateUrl: './individual-entrepreneur-list.component.html',
   styleUrl: './individual-entrepreneur-list.component.css'
 })
-export class IndividualEntrepreneurListComponent implements OnInit {
+export class IndividualEntrepreneurListComponent extends RoleManagement<IndividualEntrepreneur> implements OnInit {
 
   ieList: IndividualEntrepreneur[] = [];
   formGroup: FormGroup;
 
   constructor(private service: IndividualEntrepreneurService,
               private fb: FormBuilder) {
-
+    super();
     this.formGroup = this.fb.group({
       lastName: ["", Validators.required],
       firstName: ["", Validators.required],
@@ -35,12 +36,10 @@ export class IndividualEntrepreneurListComponent implements OnInit {
       inn: ["", Validators.required],
       sro: [null],
     });
-
   }
 
   ngOnInit() {
     this.getIeList();
-    this.getRoleList();
   }
 
   private getIeList() {
@@ -52,7 +51,7 @@ export class IndividualEntrepreneurListComponent implements OnInit {
     });
   }
 
-  ie: IndividualEntrepreneur = {
+  override entity: IndividualEntrepreneur = {
     uuid: "",
     fullNameGroup: {
       lastName: "",
@@ -72,54 +71,8 @@ export class IndividualEntrepreneurListComponent implements OnInit {
   }
 
   ieDetails(ie: IndividualEntrepreneur) {
-    this.ie = ie;
-    this.isSroMember = this.ie.sro != null;
-  }
-
-  /*
-  Методы для работы с ролями
-   */
-  roleList: Role[] = [];
-
-  private getRoleList() {
-    this.service.getRoleList().subscribe({
-      next: value => {
-        this.roleList = value;
-      },
-      error: err => console.log(err)
-    });
-  }
-
-  /*
-  Массивы ролей определенных для сущности и доступных к добавлению.
-  Подготовка массива доступных ролей
-   */
-  freeRoleList: Role[] = [];
-  assignedRoleList: Role[] = [];
-
-  private prepareFreeRoleList() {
-    this.assignedRoleList = this.ie.roleSet;
-    this.freeRoleList = this.roleList.filter(role => {
-      for (let r of this.ie.roleSet) {
-        if (r.uuid == role.uuid) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }
-
-  /*
-  Изменение массивов ролей по действиям пользователя
-   */
-  onAddRoleClick(role: Role) {
-    this.assignedRoleList.push(role);
-    this.freeRoleList.splice(this.freeRoleList.indexOf(role), 1);
-  }
-
-  onDeleteRoleClick(role: Role) {
-    this.assignedRoleList.splice(this.assignedRoleList.indexOf(role), 1);
-    this.freeRoleList.push(role);
+    this.entity = ie;
+    this.isSroMember = this.entity.sro != null;
   }
 
   entityIsCreated: boolean = true;
@@ -144,18 +97,18 @@ export class IndividualEntrepreneurListComponent implements OnInit {
    */
   onUpdateClick() {
     this.entityIsCreated = false;
-    this.prepareFreeRoleList();
-    this.isSroMember = (this.ie.sro != null);
+    this.prepareRoleMaps();
+    this.isSroMember = (this.entity.sro != null);
     this.getSroList();
     this.formGroup.patchValue({
-      lastName: this.ie.fullNameGroup.lastName,
-      firstName: this.ie.fullNameGroup.firstName,
-      middleName: this.ie.fullNameGroup.middleName,
-      address: this.ie.address,
-      ogrnip: this.ie.ogrnip,
-      inn: this.ie.inn,
-      sro: this.ie.sro,
-      roleSet: this.ie.roleSet,
+      lastName: this.entity.fullNameGroup.lastName,
+      firstName: this.entity.fullNameGroup.firstName,
+      middleName: this.entity.fullNameGroup.middleName,
+      address: this.entity.address,
+      ogrnip: this.entity.ogrnip,
+      inn: this.entity.inn,
+      sro: this.entity.sro,
+      roleSet: this.entity.roleSet,
     });
   }
 
@@ -165,8 +118,11 @@ export class IndividualEntrepreneurListComponent implements OnInit {
   onCreateClick() {
     this.entityIsCreated = true;
     this.formGroup.reset();
-    this.freeRoleList = this.roleList;
-    this.assignedRoleList = [];
+    // Установка ролей
+    this.assignedRoleMap = new Map<string, string>();
+    this.freeRoleMap = new Map<string, string>();
+    RoleMap.forEach((value, key) => this.freeRoleMap.set(key, value));
+    // Начальные данные по СРО
     this.isSroMember = false;
     this.getSroList();
   }
@@ -186,7 +142,7 @@ export class IndividualEntrepreneurListComponent implements OnInit {
     }
 
     let ie: IndividualEntrepreneur = {
-      uuid: this.entityIsCreated ? "" : this.ie.uuid,
+      uuid: this.entityIsCreated ? "" : this.entity.uuid,
       fullNameGroup: {
         lastName: this.f["lastName"].value,
         firstName: this.f["firstName"].value,
@@ -196,7 +152,7 @@ export class IndividualEntrepreneurListComponent implements OnInit {
       ogrnip: this.f["ogrnip"].value,
       inn: this.f["inn"].value,
       sro: this.f["sro"].value,
-      roleSet: this.assignedRoleList
+      roleSet: Array.from(this.assignedRoleMap.keys()),
     };
 
     if (this.entityIsCreated) {
@@ -217,7 +173,7 @@ export class IndividualEntrepreneurListComponent implements OnInit {
   }
 
   deleteIndividualEntrepreneur() {
-    this.service.deleteIndividualEntrepreneurById(this.ie.uuid).subscribe({
+    this.service.deleteIndividualEntrepreneurById(this.entity.uuid).subscribe({
       next: _ => {
         this.getIeList();
       },

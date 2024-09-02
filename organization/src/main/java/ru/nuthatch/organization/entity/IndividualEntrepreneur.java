@@ -57,6 +57,6 @@ public class IndividualEntrepreneur extends CommonEntity {
     /**
      * Роли, в качестве которых может выступать индивидуальный предприниматель
      */
-    @ManyToMany
+    @ElementCollection
     protected Set<Role> roleSet = new HashSet<>();
 }

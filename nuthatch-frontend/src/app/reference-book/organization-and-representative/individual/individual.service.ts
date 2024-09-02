@@ -3,15 +3,14 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environment";
 import {Individual} from "../models/Individual";
 import {Observable} from "rxjs";
-import {Role} from "../models/Role";
 
 @Injectable({
   providedIn: 'root'
 })
 export class IndividualService {
 
-  private BASE_URL: string = environment.BASE_API_URL + "/organization-and-representative/api/v1/individual";
-  private ROLE_SERVICE_URL: string = environment.BASE_API_URL + "/organization-and-representative/api/v1/role";
+  private BASE_URL: string = environment.BASE_API_URL
+    + "/organization-and-representative/api/v1/individual";
 
   constructor(private http: HttpClient) {
   }
@@ -39,9 +38,4 @@ export class IndividualService {
   deleteIndividualById(id: string): Observable<any> {
     return this.http.delete<any>(`${this.BASE_URL}?id=${id}`);
   }
-
-  getRoleList(): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.ROLE_SERVICE_URL}/all`)
-  }
-
 }

@@ -1,7 +1,7 @@
 import {Sro} from "./Sro";
-import {Role} from "./Role";
+import {CommonEntity} from "../common/CommonEntity";
 
-export interface LegalEntity {
+export interface LegalEntity extends CommonEntity {
   uuid: string;
   fullName: string;
   shortName: string;
@@ -10,5 +10,4 @@ export interface LegalEntity {
   address: string;
   phone: string;
   sro: Sro;
-  roleSet: Role[];
 }
