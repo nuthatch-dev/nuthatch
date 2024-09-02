@@ -58,5 +58,6 @@ public class IndividualEntrepreneur extends CommonEntity {
      * Роли, в качестве которых может выступать индивидуальный предприниматель
      */
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     protected Set<Role> roleSet = new HashSet<>();
 }

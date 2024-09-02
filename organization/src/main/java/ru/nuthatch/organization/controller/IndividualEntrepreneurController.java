@@ -34,9 +34,9 @@ public class IndividualEntrepreneurController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(value = "/all-by-role-id")
-    public ResponseEntity<Collection<IndividualEntrepreneur>> findAllByRoleUuid(@RequestParam(name = "id") UUID uuid) {
-        return new ResponseEntity<>(service.findAllByRoleUuid(uuid), HttpStatus.OK);
+    @GetMapping(value = "/all-by-role")
+    public ResponseEntity<Collection<IndividualEntrepreneur>> findAllByRole(@RequestParam(name = "role") String role) {
+        return new ResponseEntity<>(service.findAllByRole(role), HttpStatus.OK);
     }
 
     @GetMapping(value = "/all")

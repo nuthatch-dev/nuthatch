@@ -6,7 +6,6 @@ import ru.nuthatch.organization.entity.Individual;
 import ru.nuthatch.organization.repository.IndividualRepository;
 
 import java.util.Collection;
-import java.util.UUID;
 
 @Service
 public class IndividualService extends CommonService<Individual, IndividualRepository> {
@@ -20,7 +19,7 @@ public class IndividualService extends CommonService<Individual, IndividualRepos
         return repository.findAll(Sort.by(Sort.Direction.ASC, "fullNameGroup.lastName"));
     }
 
-    public Collection<Individual> findAllByRoleUuid(UUID uuid) {
-        return this.repository.findAllByRoleUuid(uuid);
+    public Collection<Individual> findAllByRole(String role) {
+        return this.repository.findAllByRole(role);
     }
 }
