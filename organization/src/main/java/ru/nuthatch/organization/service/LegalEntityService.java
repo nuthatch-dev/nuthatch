@@ -5,7 +5,6 @@ import ru.nuthatch.organization.entity.LegalEntity;
 import ru.nuthatch.organization.repository.LegalEntityRepository;
 
 import java.util.Collection;
-import java.util.UUID;
 
 @Service
 public class LegalEntityService extends CommonService<LegalEntity, LegalEntityRepository> {
@@ -14,7 +13,7 @@ public class LegalEntityService extends CommonService<LegalEntity, LegalEntityRe
         super(repository);
     }
 
-    public Collection<LegalEntity> findAllByRoleUuid(UUID uuid) {
-        return repository.findAllByRoleUuid(uuid);
+    public Collection<LegalEntity> findAllByRole(String role) {
+        return repository.findAllByRole(role);
     }
 }

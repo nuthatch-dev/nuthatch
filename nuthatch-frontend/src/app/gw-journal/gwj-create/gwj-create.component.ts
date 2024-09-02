@@ -5,6 +5,7 @@ import {ConstructionTypeName} from "../models/ConstructionTypeName";
 import {GwJournalService} from "../gw-journal.service";
 import {Router} from "@angular/router";
 import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
+import {GetOrganizationComponent} from "./get-organization/get-organization.component";
 
 @Component({
   selector: 'app-gwj-create',
@@ -14,7 +15,8 @@ import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
     ReactiveFormsModule,
     NgIf,
     NgForOf,
-    KeyValuePipe
+    KeyValuePipe,
+    GetOrganizationComponent,
   ],
   templateUrl: './gwj-create.component.html',
   styleUrl: './gwj-create.component.css'
@@ -39,9 +41,11 @@ export class GwjCreateComponent {
       constructionSiteAddress: [''],
       constructionTypeName: [null, Validators.required],
       developerWithRepresentatives: [''], // TODO: representatives service
+      developerSro: [''],
       operatingPersonWithRepresentatives: [''],
       regionalOperatorWithRepresentatives: [''],
       technicalCustomerWithRepresentatives: [''],
+      technicalCustomerSro: [''],
       permission_DocInfoName: [''],
       permission_DocInfoNumber: [''],
       permission_ExpirationDate: [null],
@@ -56,6 +60,7 @@ export class GwjCreateComponent {
       projectExamination_Requisites: [''],
       projectExamination_AuthorityName: [''],
       buildingContractorWithRepresentatives: [''],
+      buildingContractorSro: [''],
       otherDevelopersRepresentativesSet: [null],
       supervisoryAuthority: [''],
       supervisory_Representative: [''],
@@ -169,6 +174,12 @@ export class GwjCreateComponent {
       error: err => console.log(err),
       complete: () => console.info('complete')
     });
+  }
+
+  asideIsVisible: boolean = false;
+
+  showAside() {
+    this.asideIsVisible = !this.asideIsVisible;
   }
 
 }

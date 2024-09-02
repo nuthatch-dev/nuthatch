@@ -2,7 +2,7 @@
   <h4 class="my-4 text-center">Общий журнал работ, в котором ведется учет выполнения работ
     по строительству, реконструкции, капитальному ремонту
     объекта капитального строительства</h4>
-  <form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="createForm">
     <div class="mb-3">
       <div class="input-group">
         <span class="input-group-text">№</span>
@@ -74,66 +74,85 @@
         </div>
       </div>
 
-      <div class="mt-4">
-        <h5 class="text-center">Застройщик</h5>
-        <label class="form-label" for="developerWithRepresentatives">Застройщик</label>
-        <input formControlName="developerWithRepresentatives" type="text" class="form-control"
-               id="developerWithRepresentatives" aria-describedby="developerWithRepresentativesHelp">
-        <div id="developerWithRepresentativesHelp" class="form-text mb-3">
-          Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального
-          предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,
-          телефон/факс, адрес электронной почты (при наличии)фамилия, имя, отчество (последнее - при наличии),
-          паспортные данные, адрес места жительства, телефон/факс, адрес электронной почты (при наличии) - для
-          физических лиц, не являющихся индивидуальными предпринимателями
-        </div>
-        <label class="form-label" for="r_o_none">Саморегулируемая организация</label>  <!--TODO: СРО-->
-        <input formControlName="r_o_none" type="text" class="form-control"
-               id="r_o_none" aria-describedby="r_o_none_Help">
-        <div id="r_o_none_Help" class="form-text">
-          Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой является
-          указанное юридическое лицо или индивидуальный предприниматель (за исключением случаев, когда членство в
-          саморегулируемых организациях в области инженерных изысканий, архитектурно-строительного проектирования,
-          строительства, реконструкции, капитального ремонта объектов капитального строительства не требуется
-        </div>
+      <h5 class="text-center mt-4">Застройщик</h5>
+      <div class="row">
+        <div class="col">
+          <label class="form-label" for="developerWithRepresentatives">Застройщик</label>
+          <div class="input-group">
+            <input formControlName="developerWithRepresentatives" type="text" class="form-control"
+                   id="developerWithRepresentatives" aria-describedby="developerWithRepresentativesHelp">
+            <button class="btn btn-outline-primary" (click)="showAside()">
+              Выбрать
+            </button>
+          </div>
 
-        <div class="mt-4">
-          <h5 class="text-center">Уполномоченный представитель застройщика</h5>
-          <table class="table table-sm table-stripped table-bordered my-3">
-            <thead>
-            <tr class="text-md-center align-top">
-              <th style="width: 5%">№ п/п</th>
-              <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
-              <th style="width: 25%">Должность (при наличии)</th>
-              <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
-              <th style="width: 20%">
-                Идентификационный номер в национальном реестре специалистов в области строительства *
-              </th>
-            </tr>
-            <tr class="text-md-center">
-              <th>1</th>
-              <th>2</th>
-              <th>3</th>
-              <th>4</th>
-              <th>5</th>
-            </tr>
-            </thead>
-            <tbody class="table-group-divider">
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            </tbody>
-          </table>
-          <div class="form-text">
-            * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных
-            изысканий, архитектурно- строительного проектирования, строительства, реконструкции, капитального
-            ремонта объектов капитального строительства не требуется
+          <div id="developerWithRepresentativesHelp" class="form-text mb-3">
+            Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального
+            предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,
+            телефон/факс, адрес электронной почты (при наличии)фамилия, имя, отчество (последнее - при наличии),
+            паспортные данные, адрес места жительства, телефон/факс, адрес электронной почты (при наличии) - для
+            физических лиц, не являющихся индивидуальными предпринимателями
+          </div>
+          <label class="form-label" for="developerSro">Саморегулируемая организация</label>  <!--TODO: СРО-->
+          <input formControlName="developerSro" type="text" class="form-control"
+                 id="developerSro" aria-describedby="developerSro_Help">
+          <div id="developerSro_Help" class="form-text">
+            Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой является
+            указанное юридическое лицо или индивидуальный предприниматель (за исключением случаев, когда членство в
+            саморегулируемых организациях в области инженерных изысканий, архитектурно-строительного проектирования,
+            строительства, реконструкции, капитального ремонта объектов капитального строительства не требуется
+          </div>
+
+          <div class="mt-4">
+            <h5 class="text-center">Уполномоченный представитель застройщика</h5>
+            <table class="table table-sm table-stripped table-bordered my-3">
+              <thead>
+              <tr class="text-md-center align-top">
+                <th style="width: 5%">№ п/п</th>
+                <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
+                <th style="width: 25%">Должность (при наличии)</th>
+                <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+                <th style="width: 20%">
+                  Идентификационный номер в национальном реестре специалистов в области строительства *
+                </th>
+              </tr>
+              <tr class="text-md-center">
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+              </tr>
+              </thead>
+              <tbody class="table-group-divider">
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="form-text">
+              * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных
+              изысканий, архитектурно- строительного проектирования, строительства, реконструкции, капитального
+              ремонта объектов капитального строительства не требуется
+            </div>
+          </div>
+        </div>
+        <div *ngIf="asideIsVisible" class="col-6 bg-body-tertiary">
+          <div class="text-end my-3">
+            <button type="button" class="btn btn-sm btn-outline-primary" aria-label="Close">
+              <i class="bi-x-lg"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <app-get-organization></app-get-organization>
           </div>
         </div>
       </div>
+
 
       <div class="mt-4">
         <h5 class="text-center">Технический заказчик</h5>
@@ -144,10 +163,10 @@
           Полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица, телефон/факс, адрес
           электронной почты (при наличии)
         </div>
-        <label class="form-label" for="t_c_none">Саморегулируемая организация</label>  <!--TODO: СРО-->
-        <input formControlName="t_c_none" type="text" class="form-control"
-               id="t_c_none" aria-describedby="t_c_none_Help">
-        <div id="t_c_none_Help" class="form-text">
+        <label class="form-label" for="technicalCustomerSro">Саморегулируемая организация</label>  <!--TODO: СРО-->
+        <input formControlName="technicalCustomerSro" type="text" class="form-control"
+               id="technicalCustomerSro" aria-describedby="technicalCustomerSro_Help">
+        <div id="technicalCustomerSro_Help" class="form-text">
           Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой является
           указанное юридическое лицо (за исключением случаев, когда членство в саморегулируемых организациях в
           области инженерных изысканий, архитектурно-строительного проектирования, строительства, реконструкции,
@@ -396,10 +415,10 @@
           ИНН индивидуального предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место
           нахождения юридического лица, телефон/факс, адрес электронной почты (при наличии)
         </div>
-        <label class="form-label" for="b_c_none">Саморегулируемая организация</label>  <!--TODO: СРО-->
-        <input formControlName="b_c_none" type="text" class="form-control"
-               id="b_c_none" aria-describedby="b_c_none_Help">
-        <div id="b_c_none_Help" class="form-text">
+        <label class="form-label" for="buildingContractorSro">Саморегулируемая организация</label>  <!--TODO: СРО-->
+        <input formControlName="buildingContractorSro" type="text" class="form-control"
+               id="buildingContractorSro" aria-describedby="buildingContractorSro_Help">
+        <div id="buildingContractorSro_Help" class="form-text">
           Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой
           является указанное юридическое лицо или индивидуальный предприниматель (за исключением случаев, когда
           членство в саморегулируемых организациях в области инженерных изысканий, архитектурно-строительного
@@ -627,12 +646,13 @@
         </label>
         <input formControlName="constructionEndDate" type="date" class="form-control" id="constructionEndDate">
 
-        <label class="form-label mt-3">В журнале содержится учет выполнения работ в период</label>
+        <label class="form-label mt-3" for="commonInfo_BeginDate">В журнале содержится учет выполнения работ в
+          период</label>
         <div class="input-group">
           <span class="input-group-text">с:</span>
-          <input formControlName="commonInfo_BeginDate" type="date" class="form-control">
+          <input formControlName="commonInfo_BeginDate" type="date" class="form-control" id="commonInfo_BeginDate">
           <span class="input-group-text">по:</span>
-          <input formControlName="commonInfo_EndDate" type="date" class="form-control">
+          <input formControlName="commonInfo_EndDate" type="date" class="form-control" id="commonInfo_EndDate">
         </div>
         <div class="form-text">
           Заполняется в случае, если в процессе строительства, реконструкции, капитального ремонта велось
@@ -651,6 +671,20 @@
     </div>
 
     <hr>
-    <button class="btn btn-success btn-sm" type="submit">Сохранить</button>
+    <button class="btn btn-success btn-sm">Сохранить</button>
   </form>
+</div>
+
+<!--chooseDeveloper modal-->
+<div class="modal fade modal-xl" id="chooseDeveloper" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="saveRepresentativeLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"></div>
+      <div class="modal-body">
+        <!--        <app-representative-list></app-representative-list>-->
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
 </div>

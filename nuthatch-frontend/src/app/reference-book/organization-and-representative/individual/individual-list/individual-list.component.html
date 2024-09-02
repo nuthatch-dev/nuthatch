@@ -62,35 +62,35 @@
       <div class="modal-body">
         <h6>Фамилия, имя, отчество</h6>
         <p>
-          {{ individual.fullNameGroup.lastName }}
-          {{ individual.fullNameGroup.firstName }}
-          {{ individual.fullNameGroup.middleName }}
+          {{ entity.fullNameGroup.lastName }}
+          {{ entity.fullNameGroup.firstName }}
+          {{ entity.fullNameGroup.middleName }}
         </p>
         <h6>Адрес</h6>
         <p>
-          {{ individual.address }}
+          {{ entity.address }}
         </p>
         <h6>Паспортные данные</h6>
-        @if (individual.isaRussianFederationCitizen) {
+        @if (entity.isaRussianFederationCitizen) {
           <div class="mb-3">
             паспорт:
-            серия {{ individual.passportDetails.passportDetailsRussianFederation.series }}
-            номер {{ individual.passportDetails.passportDetailsRussianFederation.number }} <br>
-            дата выдачи {{ individual.passportDetails.passportDetailsRussianFederation.dateIssue
+            серия {{ entity.passportDetails.passportDetailsRussianFederation.series }}
+            номер {{ entity.passportDetails.passportDetailsRussianFederation.number }} <br>
+            дата выдачи {{ entity.passportDetails.passportDetailsRussianFederation.dateIssue
             | date : "dd.MM.YYYY" }}
           </div>
         } @else {
           <div class="mb-3">
-            наименование документа: {{ individual.passportDetails.documentDetailsForeign.docName }} <br>
-            серия {{ individual.passportDetails.documentDetailsForeign.series }} <br>
-            номер {{ individual.passportDetails.documentDetailsForeign.number }} <br>
-            дата выдачи {{ individual.passportDetails.documentDetailsForeign.dateIssue
+            наименование документа: {{ entity.passportDetails.documentDetailsForeign.docName }} <br>
+            серия {{ entity.passportDetails.documentDetailsForeign.series }} <br>
+            номер {{ entity.passportDetails.documentDetailsForeign.number }} <br>
+            дата выдачи {{ entity.passportDetails.documentDetailsForeign.dateIssue
             | date : "dd.MM.YYYY" }}
           </div>
         }
         <h6>Роли, в качестве которых может выступать данное физическое лицо</h6>
-        <div *ngFor="let role of individual.roleSet">
-          * {{ role.roleName }}
+        <div *ngFor="let role of entity.roleSet">
+          * {{ RoleMap.get(role) }}
         </div>
       </div>
 
@@ -180,7 +180,7 @@
             <!-- Отображение типа документа в зависимости от операции:
              - при создании тип определяем из значения Control-а isaRussianFederationCitizen
              - при редактировании из значения соответствующего поля полученной сущности -->
-            @if ((!entityIsCreated && individual.isaRussianFederationCitizen) ||
+            @if ((!entityIsCreated && entity.isaRussianFederationCitizen) ||
             (entityIsCreated && formGroup.controls["isaRussianFederationCitizen"].value)) {
               <label class="form-label">Паспортные данные</label>
               <div class="input-group">
@@ -217,11 +217,11 @@
               <div class="text-md-center mb-2">Доступные</div>
               <table class="table table-sm table-borderless table-striped">
                 <tbody class="table-group-divider">
-                <tr *ngFor="let freeRole of freeRoleList">
-                  <td>{{ freeRole.roleName }}</td>
+                <tr *ngFor="let key of Array.from(freeRoleMap.keys())">
+                  <td>{{ freeRoleMap.get(key) }}</td>
                   <td style="width: 1%">
                     <button class="btn btn-sm btn-outline-info"
-                            (click)="onAddRoleClick(freeRole)">
+                            (click)="addRoleClick(key)">
                       Выбрать
                     </button>
                   </td>
@@ -233,11 +233,11 @@
               <div class="text-md-center mb-2">Выбранные</div>
               <table class="table table-sm table-borderless table-striped">
                 <tbody class="table-group-divider">
-                <tr *ngFor="let assignedRole of assignedRoleList">
-                  <td>{{ assignedRole.roleName }}</td>
+                <tr *ngFor="let key of Array.from(assignedRoleMap.keys())">
+                  <td>{{ assignedRoleMap.get(key) }}</td>
                   <td style="width: 1%">
                     <button class="btn btn-sm btn-outline-warning"
-                            (click)="onDeleteRoleClick(assignedRole)">
+                            (click)="removeRoleClick(key)">
                       Удалить
                     </button>
                   </td>

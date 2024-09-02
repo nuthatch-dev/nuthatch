@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.nuthatch.organization.entity.IndividualEntrepreneur;
 
 import java.util.Collection;
-import java.util.UUID;
 
 @Repository
 public interface IndividualEntrepreneurRepository extends CommonRepository<IndividualEntrepreneur> {
@@ -14,9 +13,9 @@ public interface IndividualEntrepreneurRepository extends CommonRepository<Indiv
     @Query(value = "SELECT * FROM individual_entrepreneur AS i " +
             "LEFT OUTER JOIN " +
             "(SELECT irs.individual_entrepreneur_uuid FROM individual_entrepreneur_role_set AS irs " +
-            "WHERE irs.role_set_uuid = :uuid) AS is " +
+            "WHERE irs.role_set = :role) AS is " +
             "ON i.uuid = is.individual_entrepreneur_uuid " +
             "ORDER BY i.last_name",
             nativeQuery = true)
-    Collection<IndividualEntrepreneur> findAllByRoleUuid(@Param("uuid") UUID uuid);
+    Collection<IndividualEntrepreneur> findAllByRole(@Param("role") String role);
 }

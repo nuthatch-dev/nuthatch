@@ -3,8 +3,9 @@ import {LegalEntityService} from "../legal-entity.service";
 import {LegalEntity} from "../../models/LegalEntity";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Sro} from "../../models/Sro";
-import {Role} from "../../models/Role";
+import {RoleMap} from "../../common/RoleMap";
 import {NgForOf, NgIf} from "@angular/common";
+import {RoleManagement} from "../../common/RoleManagement";
 
 @Component({
   selector: 'app-legal-entity-list',
@@ -17,13 +18,14 @@ import {NgForOf, NgIf} from "@angular/common";
   templateUrl: './legal-entity-list.component.html',
   styleUrl: './legal-entity-list.component.css'
 })
-export class LegalEntityListComponent implements OnInit {
+export class LegalEntityListComponent extends RoleManagement<LegalEntity> implements OnInit {
 
   legalEntityList: LegalEntity[] = [];
   formGroup: FormGroup;
 
   constructor(private service: LegalEntityService,
               private fb: FormBuilder) {
+    super();
     this.formGroup = this.fb.group({
       fullName: ["", Validators.required],
       shortName: ["", Validators.required],
@@ -37,7 +39,6 @@ export class LegalEntityListComponent implements OnInit {
 
   ngOnInit() {
     this.getLegalEntityList();
-    this.getRoleList();
   }
 
   getLegalEntityList() {
@@ -49,7 +50,7 @@ export class LegalEntityListComponent implements OnInit {
     });
   }
 
-  legalEntity: LegalEntity = {
+  override entity: LegalEntity = {
     uuid: "",
     fullName: "",
     shortName: "",
@@ -67,54 +68,8 @@ export class LegalEntityListComponent implements OnInit {
   }
 
   legalEntityDetails(le: LegalEntity) {
-    this.legalEntity = le;
-    this.isSroMember = this.legalEntity.sro != null;
-  }
-
-  /*
-  Методы для работы с ролями
-   */
-  roleList: Role[] = [];
-
-  private getRoleList() {
-    this.service.getRoleList().subscribe({
-      next: value => {
-        this.roleList = value;
-      },
-      error: err => console.log(err)
-    });
-  }
-
-  /*
-  Массивы ролей определенных для сущности и доступных к добавлению.
-  Подготовка массива доступных ролей
-   */
-  freeRoleList: Role[] = [];
-  assignedRoleList: Role[] = [];
-
-  private prepareFreeRoleList() {
-    this.assignedRoleList = this.legalEntity.roleSet;
-    this.freeRoleList = this.roleList.filter(role => {
-      for (let r of this.legalEntity.roleSet) {
-        if (r.uuid == role.uuid) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }
-
-  /*
-  Изменение массивов ролей по действиям пользователя
-   */
-  onAddRoleClick(role: Role) {
-    this.assignedRoleList.push(role);
-    this.freeRoleList.splice(this.freeRoleList.indexOf(role), 1);
-  }
-
-  onDeleteRoleClick(role: Role) {
-    this.assignedRoleList.splice(this.assignedRoleList.indexOf(role), 1);
-    this.freeRoleList.push(role);
+    this.entity = le;
+    this.isSroMember = this.entity.sro != null;
   }
 
   entityIsCreated: boolean = true;
@@ -139,18 +94,18 @@ export class LegalEntityListComponent implements OnInit {
    */
   onUpdateClick() {
     this.entityIsCreated = false;
-    this.prepareFreeRoleList();
-    this.isSroMember = (this.legalEntity.sro != null);
+    this.prepareRoleMaps();
+    this.isSroMember = (this.entity.sro != null);
     this.getSroList();
     this.formGroup.patchValue({
-      fullName: this.legalEntity.fullName,
-      shortName: this.legalEntity.shortName,
-      ogrn: this.legalEntity.ogrn,
-      inn: this.legalEntity.inn,
-      address: this.legalEntity.address,
-      phone: this.legalEntity.phone,
-      sro: this.legalEntity.sro,
-      roleSet: this.legalEntity.roleSet,
+      fullName: this.entity.fullName,
+      shortName: this.entity.shortName,
+      ogrn: this.entity.ogrn,
+      inn: this.entity.inn,
+      address: this.entity.address,
+      phone: this.entity.phone,
+      sro: this.entity.sro,
+      roleSet: this.entity.roleSet,
     });
   }
 
@@ -160,8 +115,9 @@ export class LegalEntityListComponent implements OnInit {
   onCreateClick() {
     this.entityIsCreated = true;
     this.formGroup.reset();
-    this.freeRoleList = this.roleList;
-    this.assignedRoleList = [];
+    this.assignedRoleMap = new Map<string, string>();
+    this.freeRoleMap = new Map<string, string>();
+    RoleMap.forEach((value, key) => this.freeRoleMap.set(key, value));
     this.isSroMember = false;
     this.getSroList();
   }
@@ -181,7 +137,7 @@ export class LegalEntityListComponent implements OnInit {
     }
 
     let legalEntity: LegalEntity = {
-      uuid: this.entityIsCreated ? "" : this.legalEntity.uuid,
+      uuid: this.entityIsCreated ? "" : this.entity.uuid,
       fullName: this.f["fullName"].value,
       shortName: this.f["shortName"].value,
       ogrn: this.f["ogrn"].value,
@@ -189,7 +145,7 @@ export class LegalEntityListComponent implements OnInit {
       address: this.f["address"].value,
       phone: this.f["phone"].value,
       sro: this.f["sro"].value,
-      roleSet: this.assignedRoleList
+      roleSet: Array.from(this.assignedRoleMap.keys()),
     }
 
     if (this.entityIsCreated) {
@@ -210,7 +166,7 @@ export class LegalEntityListComponent implements OnInit {
   }
 
   deleteLegalEntity() {
-    this.service.deleteLegalEntityById(this.legalEntity.uuid).subscribe({
+    this.service.deleteLegalEntityById(this.entity.uuid).subscribe({
       next: _ => {
         this.getLegalEntityList();
       },
