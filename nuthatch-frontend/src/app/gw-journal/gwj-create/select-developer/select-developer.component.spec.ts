@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GetOrganizationComponent } from './get-organization.component';
+import { SelectDeveloperComponent } from './select-developer.component';
 
-describe('GetOrganizationComponent', () => {
-  let component: GetOrganizationComponent;
-  let fixture: ComponentFixture<GetOrganizationComponent>;
+describe('SelectDeveloperComponent', () => {
+  let component: SelectDeveloperComponent;
+  let fixture: ComponentFixture<SelectDeveloperComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GetOrganizationComponent]
+      imports: [SelectDeveloperComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GetOrganizationComponent);
+    fixture = TestBed.createComponent(SelectDeveloperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
