@@ -12,8 +12,8 @@ public interface LegalEntityRepository extends CommonRepository<LegalEntity> {
 
     @Query(value = "SELECT * FROM legal_entity AS l " +
             "LEFT OUTER JOIN " +
-            "(SELECT lrs.legal_entity_uuid FROM legal_entity_role_set AS lrs WHERE lrs.role_set = :role) AS ls " +
-            "ON l.uuid = ls.legal_entity_uuid " +
+            "(SELECT lrs.legal_entity_uuid FROM legal_entity_role_set AS lrs WHERE lrs.role_set = :role) AS s " +
+            "ON l.uuid = s.legal_entity_uuid " +
             "ORDER BY l.short_name",
             nativeQuery = true)
     Collection<LegalEntity> findAllByRole(@Param("role") String role);

@@ -1,0 +1,221 @@
+<ng-template [ngTemplateOutlet]="loadTemplate()"></ng-template>
+
+<ng-template #individualTemplate>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      Добавление нового физического лица
+      <button type="button" class="btn btn-close" (click)="counterpartyCreated(false)"></button>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="individualForm">
+        <label class="form-label">Ф.И.О</label>
+        <div class="input-group">
+          <span class="input-group-text">Фамилия</span>
+          <input formControlName="lastName" type="text" class="form-control" id="lastName">
+        </div>
+        <div *ngIf="individualForm.controls['lastName'].errors" class="error">
+          <div *ngIf="individualForm.controls['lastName'].errors?.['required']"
+               class="text-danger form-text">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+        <div class="input-group mt-3">
+          <span class="input-group-text">Имя</span>
+          <input formControlName="firstName" type="text" class="form-control" id="firstName">
+        </div>
+        <div *ngIf="individualForm.controls['firstName'].errors" class="error">
+          <div *ngIf="individualForm.controls['firstName'].errors?.['required']"
+               class="text-danger form-text">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+        <div class="input-group mt-3">
+          <span class="input-group-text">Отчество</span>
+          <input formControlName="middleName" type="text" class="form-control" id="middleName">
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label">Адрес</label>
+          <input formControlName="address" type="text" class="form-control" id="address"
+                 aria-describedby="addressHelp">
+          <div id="addressHelp" class="form-text">Почтовый адрес</div>
+        </div>
+        <div *ngIf="individualForm.controls['address'].errors" class="error">
+          <div *ngIf="individualForm.controls['address'].errors?.['required']"
+               class="text-danger form-text">
+            Поле обязательно для заполнения
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Выбор гражданства -->
+        <div class="mt-3">
+          <div class="form-check form-switch">
+            <input formControlName="isaRussianFederationCitizen" class="form-check-input"
+                   type="checkbox" role="switch" id="isaRussianFederationCitizen" checked>
+            <label class="form-check-label" for="isaRussianFederationCitizen">
+              Является гражданином Российской Федерации
+            </label>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <!-- Отображение типа документа из значения Control-а isaRussianFederationCitizen -->
+          @if (individualForm.controls["isaRussianFederationCitizen"].value) {
+            <label class="form-label">Паспортные данные</label>
+            <div class="input-group">
+              <span class="input-group-text">Паспорт серия</span>
+              <input formControlName="ru_series" type="text" class="form-control" id="ru_series">
+              <span class="input-group-text">номер</span>
+              <input formControlName="ru_number" type="text" class="form-control" id="ru_number">
+              <span class="input-group-text">дата выдачи</span>
+              <input formControlName="ru_dateIssue" type="date" class="form-control" id="ru_dateIssue">
+            </div>
+          } @else {
+            <div>
+              <label class="form-label">Наименование документа (для иностранных граждан)</label>
+              <input formControlName="foreign_docName" type="text" class="form-control" id="foreign_docName">
+              <div class="input-group mt-3">
+                <span class="input-group-text">серия</span>
+                <input formControlName="foreign_series" type="text" class="form-control" id="foreign_series">
+                <span class="input-group-text">номер</span>
+                <input formControlName="foreign_number" type="text" class="form-control" id="foreign_number">
+                <span class="input-group-text">дата выдачи</span>
+                <input formControlName="foreign_dateIssue" type="date" class="form-control" id="foreign_dateIssue">
+              </div>
+            </div>
+          }
+        </div>
+      </form>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-sm btn-success" [disabled]="individualForm.invalid" (click)="createIndividual()">
+        Сохранить
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #individualEntrepreneurTemplate>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      Добавление нового индивидуального предпринимателя
+      <button type="button" class="btn btn-close" (click)="counterpartyCreated(false)"></button>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="individualEntrepreneurForm">
+        <div class="row">
+          <div class="col-6">
+            <label class="form-label">Ф.И.О</label>
+            <div class="input-group">
+              <span class="input-group-text">Фамилия</span>
+              <input formControlName="lastName" type="text" class="form-control" id="ieLastName">
+            </div>
+            <div *ngIf="individualEntrepreneurForm.controls['lastName'].errors" class="error">
+              <div *ngIf="individualEntrepreneurForm.controls['lastName'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+            <div class="input-group mt-3">
+              <span class="input-group-text">Имя</span>
+              <input formControlName="firstName" type="text" class="form-control" id="ieFirstName">
+            </div>
+            <div *ngIf="individualEntrepreneurForm.controls['firstName'].errors" class="error">
+              <div *ngIf="individualEntrepreneurForm.controls['firstName'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+            <div class="input-group mt-3">
+              <span class="input-group-text">Отчество</span>
+              <input formControlName="middleName" type="text" class="form-control" id="ieMiddleName">
+            </div>
+
+            <div class="mt-3">
+              <label class="form-label">Адрес</label>
+              <input formControlName="address" type="text" class="form-control" id="ieAddress"
+                     aria-describedby="ieAddressHelp">
+              <div id="ieAddressHelp" class="form-text">Почтовый адрес</div>
+            </div>
+            <div *ngIf="individualEntrepreneurForm.controls['address'].errors" class="error">
+              <div *ngIf="individualEntrepreneurForm.controls['address'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div>
+              <label class="form-label">ИНН</label>
+              <input formControlName="inn" type="text" class="form-control" id="inn">
+            </div>
+            <div *ngIf="individualEntrepreneurForm.controls['inn'].errors" class="error">
+              <div *ngIf="individualEntrepreneurForm.controls['inn'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <label class="form-label">ОГРНИП</label>
+              <input formControlName="ogrnip" type="text" class="form-control" id="ogrnip">
+            </div>
+            <div *ngIf="individualEntrepreneurForm.controls['ogrnip'].errors" class="error">
+              <div *ngIf="individualEntrepreneurForm.controls['ogrnip'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+<!--        <div class="mt-3">-->
+<!--          <div class="form-check form-switch">-->
+<!--            <input class="form-check-input" type="checkbox" role="switch" id="isSroMember"-->
+<!--                   [checked]="isSroMember" (change)="setSroSwitch(!isSroMember)">-->
+<!--            <label class="form-check-label" for="isSroMember">-->
+<!--              Является членом Саморегулируемого общества-->
+<!--            </label>-->
+<!--          </div>-->
+<!--          @if (isSroMember) {-->
+<!--            <select class="form-select" formControlName="sro">-->
+<!--              <option *ngIf="entity.sro" [defaultSelected]="true" [ngValue]="entity.sro" disabled>-->
+<!--                {{ entity.sro.name }}-->
+<!--              </option>-->
+<!--              @for (sro of sroList; track $index) {-->
+<!--                <option [ngValue]="sro">{{ sro.name }}</option>-->
+<!--              }-->
+<!--            </select>-->
+<!--          }-->
+<!--        </div>-->
+      </form>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-sm btn-success" [hidden]="individualEntrepreneurForm.invalid">
+        Сохранить
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #legalEntityTemplate>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      Добавление нового юридического лица
+      <button type="button" class="btn btn-close" (click)="counterpartyCreated(false)"></button>
+    </div>
+    <div class="card-body">
+
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-sm btn-success">
+        Сохранить
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -13,8 +13,8 @@ public interface IndividualEntrepreneurRepository extends CommonRepository<Indiv
     @Query(value = "SELECT * FROM individual_entrepreneur AS i " +
             "LEFT OUTER JOIN " +
             "(SELECT irs.individual_entrepreneur_uuid FROM individual_entrepreneur_role_set AS irs " +
-            "WHERE irs.role_set = :role) AS is " +
-            "ON i.uuid = is.individual_entrepreneur_uuid " +
+            "WHERE irs.role_set = :role) AS s " +
+            "ON i.uuid = s.individual_entrepreneur_uuid " +
             "ORDER BY i.last_name",
             nativeQuery = true)
     Collection<IndividualEntrepreneur> findAllByRole(@Param("role") String role);

@@ -5,7 +5,7 @@ import {ConstructionTypeName} from "../models/ConstructionTypeName";
 import {GwJournalService} from "../gw-journal.service";
 import {Router} from "@angular/router";
 import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
-import {GetOrganizationComponent} from "./get-organization/get-organization.component";
+import {SelectDeveloperComponent} from "./select-developer/select-developer.component";
 
 @Component({
   selector: 'app-gwj-create',
@@ -16,7 +16,7 @@ import {GetOrganizationComponent} from "./get-organization/get-organization.comp
     NgIf,
     NgForOf,
     KeyValuePipe,
-    GetOrganizationComponent,
+    SelectDeveloperComponent,
   ],
   templateUrl: './gwj-create.component.html',
   styleUrl: './gwj-create.component.css'
@@ -41,7 +41,6 @@ export class GwjCreateComponent {
       constructionSiteAddress: [''],
       constructionTypeName: [null, Validators.required],
       developerWithRepresentatives: [''], // TODO: representatives service
-      developerSro: [''],
       operatingPersonWithRepresentatives: [''],
       regionalOperatorWithRepresentatives: [''],
       technicalCustomerWithRepresentatives: [''],
@@ -176,10 +175,12 @@ export class GwjCreateComponent {
     });
   }
 
-  asideIsVisible: boolean = false;
 
-  showAside() {
-    this.asideIsVisible = !this.asideIsVisible;
+
+  technicalCustomerAsideIsVisible: boolean = false;
+
+  showTechnicalCustomerList() {
+    this.technicalCustomerAsideIsVisible = !this.technicalCustomerAsideIsVisible;
   }
 
 }

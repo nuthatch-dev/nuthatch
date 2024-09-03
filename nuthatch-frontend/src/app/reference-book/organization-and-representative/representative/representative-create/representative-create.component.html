@@ -120,7 +120,7 @@
       <div class="modal-body">
 
         <div class="row">
-          <div class="col-6 navbar-nav-scroll">
+          <div class="col navbar-nav-scroll">
             <div class="list-group list-group-flush">
               <div class="hstack py-2 ps-4 pe-3 border-bottom bg-primary-subtle">
                 <i class="bi-folder2-open me-2" style="font-size: 1.5rem;"></i>
@@ -153,24 +153,26 @@
               }
             </div>
           </div>
-          <div class="col-6 text-md-center">
-            @if (selectedThumbnail != null) {
-              <img [ngSrc]="selectedThumbnail" width="420" height="594" alt="" class="rounded border mb-3">
-            } @else {
-              <img src="data:image/png;base64,
+          <div class="col-auto text-md-center">
+            <div class="vstack">
+              @if (selectedThumbnail != null) {
+                <img [ngSrc]="selectedThumbnail" width="420" height="594" alt="" class="rounded border mb-3">
+              } @else {
+                <img src="data:image/png;base64,
               iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
-                   width="420" height="594" alt="" class="rounded border mb-3">
-            }
-            <div class="btn-group btn-sm">
-              <button class="btn btn-sm btn-outline-secondary" (click)="getPreviousPage()">
-                <i class="bi-arrow-left"></i>
-              </button>
-              <span class="input-group-text">
+                     width="420" height="594" alt="" class="rounded border mb-3">
+              }
+              <div class="btn-group btn-sm mx-auto">
+                <button class="btn btn-sm btn-outline-secondary" (click)="getPreviousPage()">
+                  <i class="bi-arrow-left"></i>
+                </button>
+                <span class="input-group-text">
                   Стр. {{ currentPage + 1 }} из {{ pageCount }}
                 </span>
-              <button class="btn btn-sm btn-outline-secondary" (click)="getNextPage()">
-                <i class="bi-arrow-right"></i>
-              </button>
+                <button class="btn btn-sm btn-outline-secondary" (click)="getNextPage()">
+                  <i class="bi-arrow-right"></i>
+                </button>
+              </div>
             </div>
 
           </div>
