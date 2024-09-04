@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nuthatch.organization.entity.LegalEntity;
-import ru.nuthatch.organization.entity.Role;
 import ru.nuthatch.organization.service.LegalEntityService;
 
 import java.util.Collection;

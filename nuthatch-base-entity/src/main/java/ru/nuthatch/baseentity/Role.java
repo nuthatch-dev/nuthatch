@@ -1,4 +1,4 @@
-package ru.nuthatch.organization.entity;
+package ru.nuthatch.baseentity;
 
 public enum Role {
     DEVELOPER("Застройщик"),

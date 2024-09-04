@@ -2,7 +2,6 @@ package ru.nuthatch.organization.service;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.nuthatch.organization.entity.Individual;
 import ru.nuthatch.organization.entity.Representative;
 import ru.nuthatch.organization.repository.RepresentativeRepository;
 

@@ -49,7 +49,6 @@
 
         <hr>
 
-        <!-- Выбор гражданства -->
         <div class="mt-3">
           <div class="form-check form-switch">
             <input formControlName="isaRussianFederationCitizen" class="form-check-input"
@@ -107,7 +106,7 @@
       <form [formGroup]="individualEntrepreneurForm">
         <div class="row">
           <div class="col-6">
-            <label class="form-label">Ф.И.О</label>
+            <label class="form-label" for="ieLastName">Ф.И.О</label>
             <div class="input-group">
               <span class="input-group-text">Фамилия</span>
               <input formControlName="lastName" type="text" class="form-control" id="ieLastName">
@@ -134,7 +133,7 @@
             </div>
 
             <div class="mt-3">
-              <label class="form-label">Адрес</label>
+              <label class="form-label" for="ieAddress">Адрес</label>
               <input formControlName="address" type="text" class="form-control" id="ieAddress"
                      aria-describedby="ieAddressHelp">
               <div id="ieAddressHelp" class="form-text">Почтовый адрес</div>
@@ -149,8 +148,8 @@
 
           <div class="col-6">
             <div>
-              <label class="form-label">ИНН</label>
-              <input formControlName="inn" type="text" class="form-control" id="inn">
+              <label class="form-label" for="ieINN">ИНН</label>
+              <input formControlName="inn" type="text" class="form-control" id="ieINN">
             </div>
             <div *ngIf="individualEntrepreneurForm.controls['inn'].errors" class="error">
               <div *ngIf="individualEntrepreneurForm.controls['inn'].errors?.['required']"
@@ -160,8 +159,8 @@
             </div>
 
             <div class="mt-3">
-              <label class="form-label">ОГРНИП</label>
-              <input formControlName="ogrnip" type="text" class="form-control" id="ogrnip">
+              <label class="form-label" for="ieOGRNIP">ОГРНИП</label>
+              <input formControlName="ogrnip" type="text" class="form-control" id="ieOGRNIP">
             </div>
             <div *ngIf="individualEntrepreneurForm.controls['ogrnip'].errors" class="error">
               <div *ngIf="individualEntrepreneurForm.controls['ogrnip'].errors?.['required']"
@@ -174,29 +173,27 @@
 
         <hr>
 
-<!--        <div class="mt-3">-->
-<!--          <div class="form-check form-switch">-->
-<!--            <input class="form-check-input" type="checkbox" role="switch" id="isSroMember"-->
-<!--                   [checked]="isSroMember" (change)="setSroSwitch(!isSroMember)">-->
-<!--            <label class="form-check-label" for="isSroMember">-->
-<!--              Является членом Саморегулируемого общества-->
-<!--            </label>-->
-<!--          </div>-->
-<!--          @if (isSroMember) {-->
-<!--            <select class="form-select" formControlName="sro">-->
-<!--              <option *ngIf="entity.sro" [defaultSelected]="true" [ngValue]="entity.sro" disabled>-->
-<!--                {{ entity.sro.name }}-->
-<!--              </option>-->
-<!--              @for (sro of sroList; track $index) {-->
-<!--                <option [ngValue]="sro">{{ sro.name }}</option>-->
-<!--              }-->
-<!--            </select>-->
-<!--          }-->
-<!--        </div>-->
+        <div class="mt-3">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="ieIsSroMember"
+                   [checked]="isSroMember" (change)="setSroSwitch(!isSroMember)">
+            <label class="form-check-label" for="ieIsSroMember">
+              Является членом Саморегулируемого общества
+            </label>
+          </div>
+          @if (isSroMember) {
+            <select class="form-select" formControlName="sro" id="ieSroSelect">
+              @for (sro of sroList; track $index) {
+                <option [ngValue]="sro">{{ sro.name }}</option>
+              }
+            </select>
+          }
+        </div>
       </form>
     </div>
     <div class="card-footer">
-      <button class="btn btn-sm btn-success" [hidden]="individualEntrepreneurForm.invalid">
+      <button class="btn btn-sm btn-success" [disabled]="individualEntrepreneurForm.invalid"
+              (click)="createIndividualEntrepreneur()">
         Сохранить
       </button>
     </div>
@@ -210,10 +207,92 @@
       <button type="button" class="btn btn-close" (click)="counterpartyCreated(false)"></button>
     </div>
     <div class="card-body">
+      <form [formGroup]="legalEntityForm">
+        <div class="row">
+          <div class="col-6">
+            <div>
+              <label class="form-label">Полное наименование</label>
+              <input formControlName="fullName" type="text" class="form-control" id="fullName">
+            </div>
+            <div *ngIf="legalEntityForm.controls['fullName'].errors" class="error">
+              <div *ngIf="legalEntityForm.controls['fullName'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
 
+            <div class="mt-3">
+              <label class="form-label">Сокращенное наименование</label>
+              <input formControlName="shortName" type="text" class="form-control" id="shortName">
+            </div>
+            <div *ngIf="legalEntityForm.controls['shortName'].errors" class="error">
+              <div *ngIf="legalEntityForm.controls['shortName'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <label class="form-label">Адрес</label>
+              <input formControlName="address" type="text" class="form-control" id="leAddress"
+                     aria-describedby="addressHelp">
+              <div id="leAddressHelp" class="form-text">Юридический адрес</div>
+            </div>
+            <div *ngIf="legalEntityForm.controls['address'].errors" class="error">
+              <div *ngIf="legalEntityForm.controls['address'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div>
+              <label class="form-label">ИНН</label>
+              <input formControlName="inn" type="text" class="form-control" id="inn">
+            </div>
+            <div *ngIf="legalEntityForm.controls['inn'].errors" class="error">
+              <div *ngIf="legalEntityForm.controls['inn'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <label class="form-label">ОГРН</label>
+              <input formControlName="ogrn" type="text" class="form-control" id="ogrn">
+            </div>
+            <div *ngIf="legalEntityForm.controls['ogrn'].errors" class="error">
+              <div *ngIf="legalEntityForm.controls['ogrn'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="mb-3">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="isSroMember"
+                   [checked]="isSroMember" (change)="setSroSwitch(!isSroMember)">
+            <label class="form-check-label" for="isSroMember">
+              Является членом Саморегулируемого общества
+            </label>
+          </div>
+          @if (isSroMember) {
+            <select class="form-select mt-2" formControlName="sro">
+              @for (sro of sroList; track $index) {
+                <option [ngValue]="sro">{{ sro.name }}</option>
+              }
+            </select>
+          }
+        </div>
+      </form>
     </div>
     <div class="card-footer">
-      <button class="btn btn-sm btn-success">
+      <button class="btn btn-sm btn-success" [disabled]="legalEntityForm.invalid" (click)="createLegalEntity()">
         Сохранить
       </button>
     </div>
