@@ -52,6 +52,12 @@
         </dependency>
 
         <dependency>
+            <groupId>ru.nuthatch</groupId>
+            <artifactId>nuthatch-base-entity-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>

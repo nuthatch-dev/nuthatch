@@ -1,4 +1,4 @@
-package ru.nuthatch.organization.entity;
+package ru.nuthatch.generalworkjournal.entity.representative;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -15,7 +15,7 @@ import ru.nuthatch.baseentity.entity.BaseLegalEntity;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "legal_entity")
-public class LegalEntity extends BaseLegalEntity implements BaseEntity {
+public class LegalEntity extends BaseLegalEntity {
 
     /**
      * Информация о саморегулируемой организации

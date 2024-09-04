@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.nuthatch.generalworkjournal.common.CommonEntity;
-import ru.nuthatch.generalworkjournal.common.OrganizationWithOptionalSroAndId;
+import ru.nuthatch.generalworkjournal.entity.representative.OrganizationWithOptionalSro;
 
 import java.io.Serializable;
 import java.util.*;
@@ -42,8 +42,8 @@ public class DesignerSupervisionRepresentativesSetItem extends CommonEntity impl
      * (авторский надзор)
      * Обязательный элемент
      */
-    @ManyToOne
-    protected OrganizationWithOptionalSroAndId organization;
+    @Embedded
+    protected OrganizationWithOptionalSro organization;
 
     /**
      * Сведения о разделах проектной документации, подготовленных лицами,

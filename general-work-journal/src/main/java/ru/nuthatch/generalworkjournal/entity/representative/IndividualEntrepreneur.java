@@ -1,4 +1,4 @@
-package ru.nuthatch.organization.entity;
+package ru.nuthatch.generalworkjournal.entity.representative;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -15,7 +15,7 @@ import ru.nuthatch.baseentity.entity.BaseIndividualEntrepreneur;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "individual_entrepreneur")
-public class IndividualEntrepreneur extends BaseIndividualEntrepreneur implements BaseEntity {
+public class IndividualEntrepreneur extends BaseIndividualEntrepreneur {
 
     /**
      * Информация о саморегулируемой организации

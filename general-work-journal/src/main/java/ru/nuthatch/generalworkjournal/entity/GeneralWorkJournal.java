@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import ru.nuthatch.generalworkjournal.common.*;
 import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
 import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
+import ru.nuthatch.generalworkjournal.entity.representative.IndividualEntrepreneurOrLegalEntityOrIndividualAndId;
+import ru.nuthatch.generalworkjournal.entity.representative.OrganizationWithOptionalSro;
+import ru.nuthatch.generalworkjournal.entity.representative.Representative;
 
 import java.io.Serializable;
 import java.util.*;
@@ -128,8 +131,10 @@ public class GeneralWorkJournal extends CommonEntity implements Serializable {
      * --------------------------------------------------
      * Застройщик и его представители
      */
-    @Column(name = "developer_with_representatives")
-    protected UUID developerWithRepresentatives;
+    @OneToOne
+    protected IndividualEntrepreneurOrLegalEntityOrIndividualAndId developer;
+    @ManyToMany
+    protected Set<Representative> developerRepresentativeSet = new HashSet<>();
     /**
      * Лицо, ответственное за эксплуатацию здания/сооружения и его представители
      */
@@ -160,8 +165,8 @@ public class GeneralWorkJournal extends CommonEntity implements Serializable {
      * Лицо, осуществляющее подготовку проектной документации
      * Обязательный элемент
      */
-    @ManyToOne
-    protected OrganizationWithOptionalSroAndId projectDocumentationContractor;
+    @Embedded
+    protected OrganizationWithOptionalSro projectDocumentationContractor;
 
     /**
      * Лица, осуществляющие подготовку проектной документации, выполняющие проверку

@@ -1,4 +1,4 @@
-package ru.nuthatch.organization.entity;
+package ru.nuthatch.generalworkjournal.entity.representative;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -10,5 +10,5 @@ import ru.nuthatch.baseentity.entity.BaseSro;
  */
 @Entity
 @Table(name = "sro")
-public class Sro extends BaseSro implements BaseEntity {
+public class Sro extends BaseSro {
 }

@@ -1,12 +1,11 @@
-package ru.nuthatch.organization.entity;
+package ru.nuthatch.generalworkjournal.entity.representative;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.nuthatch.baseentity.entity.BaseRepresentative;
-
-import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Описание комплексного типа: Representative.
@@ -16,7 +15,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "representative")
-public class Representative extends BaseRepresentative implements BaseEntity {
+public class Representative extends BaseRepresentative {
 
     /**
      * Наименование юр. лица.
