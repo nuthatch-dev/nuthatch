@@ -3,9 +3,7 @@ package ru.nuthatch.organization.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.HashSet;
-import java.util.Set;
+import ru.nuthatch.baseentity.entity.BaseIndividualEntrepreneur;
 
 /**
  * Описание комплексного типа: IndividualEntrepreneur.
@@ -15,38 +13,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "individual_entrepreneur")
-public class IndividualEntrepreneur extends CommonEntity {
-
-    /**
-     * ФИО. Обязательный элемент
-     */
-    @Embedded
-    protected FullNameGroup fullNameGroup;
-
-    /**
-     * Адрес (Почтовый). Обязательный элемент
-     */
-    @Column(nullable = false)
-    protected String address;
-
-    /**
-     * Основной государственный регистрационный номер индивидуального предпринимателя.
-     * Обязательный элемент.
-     * Формат:
-     * ххххххххххххх
-     * 13 цифр
-     */
-    @Column(nullable = false, length = 13)
-    protected String ogrnip;
-
-    /**
-     * ИНН.
-     * Обязательный элемент
-     * хххххххххххх
-     * 12 цифр
-     */
-    @Column(nullable = false, length = 12)
-    protected String inn;
+public class IndividualEntrepreneur extends BaseIndividualEntrepreneur implements BaseEntity {
 
     /**
      * Информация о саморегулируемой организации
@@ -54,10 +21,4 @@ public class IndividualEntrepreneur extends CommonEntity {
     @ManyToOne
     protected Sro sro;
 
-    /**
-     * Роли, в качестве которых может выступать индивидуальный предприниматель
-     */
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
-    protected Set<Role> roleSet = new HashSet<>();
 }

@@ -1,9 +1,14 @@
-import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CounterpartiesService} from "../counterparties.service";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {CounterpartyType} from "../counterparty-type";
 import {Individual} from "../../../../reference-book/organization-and-representative/models/Individual";
+import {Sro} from "../../../../reference-book/organization-and-representative/models/Sro";
+import {
+  IndividualEntrepreneur
+} from "../../../../reference-book/organization-and-representative/models/IndividualEntrepreneur";
+import {LegalEntity} from "../../../../reference-book/organization-and-representative/models/LegalEntity";
 
 @Component({
   selector: 'app-create-counterparty',
@@ -17,7 +22,7 @@ import {Individual} from "../../../../reference-book/organization-and-representa
   templateUrl: './create-counterparty.component.html',
   styleUrl: './create-counterparty.component.css'
 })
-export class CreateCounterpartyComponent {
+export class CreateCounterpartyComponent implements OnInit {
 
   @ViewChild("individualTemplate", {static: false}) individualTemplate!: TemplateRef<any>;
   @ViewChild("individualEntrepreneurTemplate", {static: false}) individualEntrepreneurTemplate!: TemplateRef<any>;
@@ -34,6 +39,7 @@ export class CreateCounterpartyComponent {
   individualForm: FormGroup;
   individualEntrepreneurForm: FormGroup;
   legalEntityForm: FormGroup;
+  private ROLE: string = "DEVELOPER";
 
   constructor(private service: CounterpartiesService,
               private fb: FormBuilder) {
@@ -74,7 +80,11 @@ export class CreateCounterpartyComponent {
     });
   }
 
-  loadTemplate(): TemplateRef<any> {
+  ngOnInit() {
+    this.getSroList();
+  }
+
+  loadTemplate() {
     switch (this.counterpartyType) {
       case CounterpartyType.INDIVIDUAL:
         return this.individualTemplate;
@@ -112,10 +122,79 @@ export class CreateCounterpartyComponent {
           dateIssue: this.fi['foreign_dateIssue'].value
         }
       },
-      roleSet: ["DEVELOPER"],
+      roleSet: [this.ROLE],
     }
 
     this.service.createIndividual(individual).subscribe({
+      next: _ => {
+        this.counterpartyCreated(true);
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  // Методы для СРО
+  isSroMember: boolean = false;
+  sroList: Sro[] = [];
+
+  setSroSwitch(value: boolean) {
+    this.isSroMember = value;
+  }
+
+  private getSroList() {
+    this.service.getSroList().subscribe({
+      next: value => {
+        this.sroList = value;
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  // Controls для ИП
+  get fie() {
+    return this.individualEntrepreneurForm.controls;
+  }
+
+  createIndividualEntrepreneur() {
+    let ie: IndividualEntrepreneur = {
+      uuid: "",
+      fullNameGroup: {
+        lastName: this.fie["lastName"].value,
+        firstName: this.fie["firstName"].value,
+        middleName: this.fie["middleName"].value
+      },
+      address: this.fie["address"].value,
+      ogrnip: this.fie["ogrnip"].value,
+      inn: this.fie["inn"].value,
+      sro: this.fie["sro"].value,
+      roleSet: [this.ROLE],
+    };
+    this.service.createIndividualEntrepreneur(ie).subscribe({
+      next: _ => {
+        this.counterpartyCreated(true);
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  // Controls для ЮЛ
+  get fle() {
+    return this.legalEntityForm.controls;
+  }
+
+  createLegalEntity() {
+    let legalEntity: LegalEntity = {
+      uuid: "",
+      fullName: this.fle["fullName"].value,
+      shortName: this.fle["shortName"].value,
+      ogrn: this.fle["ogrn"].value,
+      inn: this.fle["inn"].value,
+      address: this.fle["address"].value,
+      phone: this.fle["phone"].value,
+      sro: this.fle["sro"].value,
+      roleSet: [this.ROLE],
+    }
+    this.service.createLegalEntity(legalEntity).subscribe({
       next: _ => {
         this.counterpartyCreated(true);
       },

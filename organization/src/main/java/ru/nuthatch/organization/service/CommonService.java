@@ -1,13 +1,13 @@
 package ru.nuthatch.organization.service;
 
-import ru.nuthatch.organization.entity.CommonEntity;
+import ru.nuthatch.organization.entity.BaseEntity;
 import ru.nuthatch.organization.repository.CommonRepository;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class CommonService <E extends CommonEntity, R extends CommonRepository<E>> {
+public abstract class CommonService <E extends BaseEntity, R extends CommonRepository<E>> {
 
     protected final R repository;
 

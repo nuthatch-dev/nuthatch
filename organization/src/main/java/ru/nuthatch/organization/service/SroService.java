@@ -2,7 +2,6 @@ package ru.nuthatch.organization.service;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.nuthatch.organization.entity.IndividualEntrepreneur;
 import ru.nuthatch.organization.entity.Sro;
 import ru.nuthatch.organization.repository.SroRepository;
 

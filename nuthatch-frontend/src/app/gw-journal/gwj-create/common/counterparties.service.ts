@@ -7,6 +7,7 @@ import {
   IndividualEntrepreneur
 } from "../../../reference-book/organization-and-representative/models/IndividualEntrepreneur";
 import {LegalEntity} from "../../../reference-book/organization-and-representative/models/LegalEntity";
+import {Sro} from "../../../reference-book/organization-and-representative/models/Sro";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,8 @@ export class CounterpartiesService {
     + "/organization-and-representative/api/v1/individual-entrepreneur";
   private LEGAL_ENTITY_BASE_URL: string = environment.BASE_API_URL
     + "/organization-and-representative/api/v1/legal-entity";
+  private SRO_SERVICE_URL: string = environment.BASE_API_URL +
+    "/organization-and-representative/api/v1/sro";
 
   constructor(private http: HttpClient) { }
 
@@ -54,6 +57,13 @@ export class CounterpartiesService {
 
   getLegalEntityListByRole(role: string): Observable<LegalEntity[]> {
     return this.http.get<LegalEntity[]>(`${this.LEGAL_ENTITY_BASE_URL}/all-by-role?role=${role}`)
+  }
+
+  /*
+  Методы для СРО
+   */
+  getSroList(): Observable<Sro[]> {
+    return this.http.get<Sro[]>(`${this.SRO_SERVICE_URL}/all`)
   }
 
 }

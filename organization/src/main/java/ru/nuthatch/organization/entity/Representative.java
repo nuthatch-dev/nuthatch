@@ -2,8 +2,8 @@ package ru.nuthatch.organization.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -11,10 +11,13 @@ import java.util.UUID;
  * Представитель, имеющий ФИО, должность
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "representative")
-public class Representative extends CommonEntity {
+public class Representative implements Serializable, BaseEntity {
+
+    @Id
+    @GeneratedValue
+    protected UUID uuid;
 
     /**
      * Фамилия, Имя, Отчество. Обязательный элемент

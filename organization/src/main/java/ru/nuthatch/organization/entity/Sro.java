@@ -1,20 +1,23 @@
 package ru.nuthatch.organization.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Описание комплексного типа: Sro.
  * Группа, содержащая информацию о Саморегулируемой организации (СРО)
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "sro")
-public class Sro extends CommonEntity {
+public class Sro implements Serializable, BaseEntity {
+
+    @Id
+    @GeneratedValue
+    protected UUID uuid;
 
     /**
      * Наименование.
