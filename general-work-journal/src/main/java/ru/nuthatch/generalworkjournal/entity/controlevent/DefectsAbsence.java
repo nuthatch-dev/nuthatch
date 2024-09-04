@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.nuthatch.generalworkjournal.common.CommonEntity;
-import ru.nuthatch.generalworkjournal.common.Representative;
+import ru.nuthatch.generalworkjournal.entity.representative.Representative;
 
 import java.io.Serializable;
 
