@@ -2,6 +2,8 @@ package ru.nuthatch.organization.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.nuthatch.baseentity.entity.BaseRepresentative;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -11,19 +13,10 @@ import java.util.UUID;
  * Представитель, имеющий ФИО, должность
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "representative")
-public class Representative implements Serializable, BaseEntity {
-
-    @Id
-    @GeneratedValue
-    protected UUID uuid;
-
-    /**
-     * Фамилия, Имя, Отчество. Обязательный элемент
-     */
-    @Embedded
-    protected FullNameGroup fullNameGroup;
+public class Representative extends BaseRepresentative implements BaseEntity {
 
     /**
      * Наименование юр. лица.
@@ -36,25 +29,5 @@ public class Representative implements Serializable, BaseEntity {
      */
     @ManyToOne
     protected IndividualEntrepreneur individualEntrepreneur;
-
-    /**
-     * Должность.
-     * Обязательный элемент.
-     * Минимум 1 символ
-     */
-    @Column(nullable = false)
-    protected String position;
-
-    /**
-     * Номер специалиста в реестре Нострой
-     */
-    protected String nostroyNumber;
-
-    /**
-     * Распорядительный документ, подтверждающий полномочия.
-     * Обязательный элемент
-     */
-    // TODO: CustomDocument service
-    protected UUID administrativeDocument;
 
 }
