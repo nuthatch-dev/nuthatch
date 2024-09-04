@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import ru.nuthatch.baseentity.Role;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -14,7 +15,7 @@ import java.util.UUID;
  */
 @Data
 @MappedSuperclass
-public class BaseIndividualEntrepreneur{
+public class BaseIndividualEntrepreneur implements Serializable {
 
     @Id
     @GeneratedValue

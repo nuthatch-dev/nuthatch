@@ -1,6 +1,8 @@
 package ru.nuthatch.organization.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.nuthatch.baseentity.entity.BaseIndividualEntrepreneur;
