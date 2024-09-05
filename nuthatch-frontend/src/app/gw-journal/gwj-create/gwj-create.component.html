@@ -75,7 +75,9 @@
       </div>
 
       <h5 class="text-center mt-4">Застройщик</h5>
-      <app-select-developer></app-select-developer>
+      <app-select-developer
+        (onCounterpartySelected)="onDeveloperSelected($event)">
+      </app-select-developer>
 
       <div class="mt-4">
         <h5 class="text-center">Уполномоченный представитель застройщика</h5>
@@ -122,10 +124,10 @@
           <label class="form-label" for="technicalCustomerWithRepresentatives">Технический заказчик</label>
           <div class="col">
             <div class="input-group">
-              <input formControlName="technicalCustomerWithRepresentatives" type="text" class="form-control"
+              <input type="text" class="form-control"
                      id="technicalCustomerWithRepresentatives"
                      aria-describedby="technicalCustomerWithRepresentativesHelp">
-              <button class="btn btn-outline-primary" (click)="showTechnicalCustomerList()">
+              <button class="btn btn-outline-primary">
                 Выбрать
               </button>
             </div>
@@ -136,16 +138,16 @@
               электронной почты (при наличии)
             </div>
             <label class="form-label" for="technicalCustomerSro">Саморегулируемая организация</label>  <!--TODO: СРО-->
-            <input formControlName="technicalCustomerSro" type="text" class="form-control"
+            <input type="text" class="form-control"
                    id="technicalCustomerSro" aria-describedby="technicalCustomerSro_Help">
             <div id="technicalCustomerSro_Help" class="form-text">
               Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой является
               указанное юридическое лицо (за исключением случаев, когда членство в саморегулируемых организациях в
               области инженерных изысканий, архитектурно-строительного проектирования, строительства, реконструкции,
-              капитального ремонта объектов капитального строительства не требуется
+              капитального ремонта объектов капитального строительства не требуется)
             </div>
           </div>
-          <div *ngIf="technicalCustomerAsideIsVisible" class="col-6">
+          <div *ngIf="false" class="col-6">
 
           </div>
         </div>
@@ -199,10 +201,10 @@
         <label class="form-label" for="operatingPersonWithRepresentatives">
           Лицо, ответственное за эксплуатацию здания, сооружения
         </label>
-        <input formControlName="operatingPersonWithRepresentatives" type="text" class="form-control"
+        <input type="text" class="form-control"
                id="operatingPersonWithRepresentatives" aria-describedby="operatingHelp">
         <label class="form-label" for="regionalOperatorWithRepresentatives">Региональный оператор</label>
-        <input formControlName="regionalOperatorWithRepresentatives" type="text" class="form-control"
+        <input type="text" class="form-control"
                id="regionalOperatorWithRepresentatives" aria-describedby="operatingHelp">
 
         <div id="operatingHelp" class="form-text">
@@ -282,24 +284,15 @@
 
       <div class="mt-4">
         <h5 class="text-center">Лицо, осуществляющее подготовку проектной документации</h5>
-        <div class="row mt-3">
-          <div class="col-6">
-            <label class="form-label" for="contractor_LegalEntity">Юридическое лицо</label>
-            <input class="form-control" formControlName="contractor_LegalEntity" id="contractor_LegalEntity">
-          </div>
-          <div class="col-6">
-            <label class="form-label" for="contractor_IndividualEntrepreneur">Индивидуальный предприниматель</label>
-            <input class="form-control" formControlName="contractor_IndividualEntrepreneur"
-                   id="contractor_IndividualEntrepreneur">
-          </div>
-        </div>
+        <label class="form-label" for="contractor_LegalEntity">Лицо, осуществляющее подготовку проектной документации</label>
+        <input class="form-control" id="contractor_LegalEntity">
         <div class="form-text mb-3">
           Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального
           предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,
           телефон/факс, адрес электронной почты (при наличии)
         </div>
         <label class="form-label" for="contractor_Sro">Саморегулируемая организация</label>
-        <input formControlName="contractor_Sro" type="text" class="form-control"
+        <input type="text" class="form-control"
                id="contractor_Sro" aria-describedby="contractor_SroHelp">
         <div id="contractor_SroHelp" class="form-text">
           Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой
@@ -386,7 +379,7 @@
       <div class="mt-4">
         <h5 class="text-center">Лицо, осуществляющее строительство, реконструкцию, капитальный ремонт</h5>
         <label class="form-label" for="buildingContractorWithRepresentatives">Наименование</label>
-        <input formControlName="buildingContractorWithRepresentatives" type="text" class="form-control"
+        <input type="text" class="form-control"
                id="buildingContractorWithRepresentatives" aria-describedby="buildingContractorWithRepresentativesHelp">
         <div id="buildingContractorWithRepresentativesHelp" class="form-text mb-3">
           Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП,
@@ -394,7 +387,7 @@
           нахождения юридического лица, телефон/факс, адрес электронной почты (при наличии)
         </div>
         <label class="form-label" for="buildingContractorSro">Саморегулируемая организация</label>  <!--TODO: СРО-->
-        <input formControlName="buildingContractorSro" type="text" class="form-control"
+        <input type="text" class="form-control"
                id="buildingContractorSro" aria-describedby="buildingContractorSro_Help">
         <div id="buildingContractorSro_Help" class="form-text">
           Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой

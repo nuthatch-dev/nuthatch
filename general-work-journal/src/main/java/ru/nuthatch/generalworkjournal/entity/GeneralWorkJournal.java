@@ -8,7 +8,7 @@ import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
 import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
 import ru.nuthatch.generalworkjournal.entity.representative.IndividualEntrepreneurOrLegalEntityOrIndividualAndId;
 import ru.nuthatch.generalworkjournal.entity.representative.OrganizationWithOptionalSro;
-import ru.nuthatch.generalworkjournal.entity.representative.Representative;
+import ru.nuthatch.generalworkjournal.entity.representative.OrganizationWithOptionalSroAndId;
 
 import java.io.Serializable;
 import java.util.*;
@@ -133,26 +133,32 @@ public class GeneralWorkJournal extends CommonEntity implements Serializable {
      */
     @OneToOne
     protected IndividualEntrepreneurOrLegalEntityOrIndividualAndId developer;
-    @ManyToMany
-    protected Set<Representative> developerRepresentativeSet = new HashSet<>();
+    @ElementCollection
+    protected Set<UUID> developerRepresentativeSet = new HashSet<>();
     /**
      * Лицо, ответственное за эксплуатацию здания/сооружения и его представители
      */
-    @Column(name = "operating_person_with_representatives")
-    protected UUID operatingPersonWithRepresentatives;
+    @OneToOne
+    protected IndividualEntrepreneurOrLegalEntityOrIndividualAndId operatingPerson;
+    @ElementCollection
+    protected Set<UUID> operatingPersonRepresentativeSet = new HashSet<>();
     /**
      * Региональный оператор и его представители
      */
-    @Column(name = "regional_operator_with_representatives")
-    protected UUID regionalOperatorWithRepresentatives;
+    @OneToOne
+    protected OrganizationWithOptionalSroAndId regionalOperator;
+    @ElementCollection
+    protected Set<UUID> regionalOperatorRepresentativeSet = new HashSet<>();
     // --------------------------------------------------
 
     /**
      * Технический заказчик и его представители
      * Необязательный элемент
      */
-    @Column(name = "technical_customer_with_representatives")
-    protected UUID technicalCustomerWithRepresentatives;
+    @OneToOne
+    protected OrganizationWithOptionalSroAndId technicalCustomer;
+    @ElementCollection
+    protected Set<UUID> technicalCustomerRepresentativeSet = new HashSet<>();
 
     /**
      * Сведения о разрешении на строительство
@@ -190,9 +196,10 @@ public class GeneralWorkJournal extends CommonEntity implements Serializable {
      * Лицо, осуществляющее строительство и его представители
      * Обязательный элемент
      */
-    @Column(name = "building_contractor_with_representatives",
-            nullable = false)
-    protected UUID buildingContractorWithRepresentatives;
+    @OneToOne
+    protected OrganizationWithOptionalSroAndId buildingContractor;
+    @ElementCollection
+    protected Set<UUID> buildingContractorRepresentativeSet = new HashSet<>();
 
     /**
      * Другие лица, осуществляющие строительство, их уполномоченные представители

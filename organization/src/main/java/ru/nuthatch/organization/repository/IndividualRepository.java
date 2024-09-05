@@ -11,7 +11,7 @@ import java.util.Collection;
 public interface IndividualRepository extends CommonRepository<Individual> {
 
     @Query(value = "SELECT * FROM individual AS i " +
-            "LEFT OUTER JOIN " +
+            "RIGHT OUTER JOIN " +
             "(SELECT irs.individual_uuid FROM individual_role_set AS irs WHERE irs.role_set = :role) AS s " +
             "ON i.uuid = s.individual_uuid " +
             "ORDER BY i.last_name",

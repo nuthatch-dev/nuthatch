@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {SroService} from "../sro.service";
-import {Sro} from "../../models/Sro";
+import {Sro} from "../../../../models/representative/Sro";
 import {NgForOf, NgIf} from "@angular/common";
 
 @Component({

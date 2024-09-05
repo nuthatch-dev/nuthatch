@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {IndividualService} from "../individual.service";
-import {Individual} from "../../models/Individual";
+import {Individual} from "../../../../models/representative/Individual";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {RoleMap} from "../../common/RoleMap";

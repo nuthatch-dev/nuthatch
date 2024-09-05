@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environment";
-import {Individual} from "../models/Individual";
+import {Individual} from "../../../models/representative/Individual";
 import {Observable} from "rxjs";
 
 @Injectable({

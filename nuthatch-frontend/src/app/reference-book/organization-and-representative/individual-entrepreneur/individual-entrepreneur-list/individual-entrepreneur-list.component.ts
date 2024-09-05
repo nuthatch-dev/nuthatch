@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {IndividualEntrepreneur} from "../../models/IndividualEntrepreneur";
+import {IndividualEntrepreneur} from "../../../../models/representative/IndividualEntrepreneur";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {IndividualEntrepreneurService} from "../individual-entrepreneur.service";
 import {RoleMap} from "../../common/RoleMap";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
-import {Sro} from "../../models/Sro";
+import {Sro} from "../../../../models/representative/Sro";
 import {RoleManagement} from "../../common/RoleManagement";
 
 @Component({

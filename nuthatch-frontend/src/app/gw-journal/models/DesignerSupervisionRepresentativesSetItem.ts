@@ -1,9 +1,9 @@
-import {OrganizationWithOptionalSroAndId} from "./OrganizationWithOptionalSroAndId";
+import {OrganizationWithOptionalSro} from "./OrganizationWithOptionalSro";
 import {ProjectDocSection} from "./ProjectDocSection";
 
 export interface DesignerSupervisionRepresentativesSetItem {
   uuid: string;
   representativesIdsSet: string[];
-  organization: OrganizationWithOptionalSroAndId;
+  organization: OrganizationWithOptionalSro;
   projectDocSectionsSet: ProjectDocSection[];
 }
