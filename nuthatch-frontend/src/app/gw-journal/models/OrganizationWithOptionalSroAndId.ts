@@ -1,6 +1,6 @@
+import {OrganizationWithOptionalSro} from "./OrganizationWithOptionalSro";
+
 export interface OrganizationWithOptionalSroAndId {
   uuid: string;
-  legalEntity: string;
-  individualEntrepreneur: string;
-  sro: string;
+  organizationInfo: OrganizationWithOptionalSro;
 }

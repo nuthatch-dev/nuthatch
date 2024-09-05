@@ -3,12 +3,10 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {CounterpartiesService} from "../counterparties.service";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {CounterpartyType} from "../counterparty-type";
-import {Individual} from "../../../../reference-book/organization-and-representative/models/Individual";
-import {Sro} from "../../../../reference-book/organization-and-representative/models/Sro";
-import {
-  IndividualEntrepreneur
-} from "../../../../reference-book/organization-and-representative/models/IndividualEntrepreneur";
-import {LegalEntity} from "../../../../reference-book/organization-and-representative/models/LegalEntity";
+import {Individual} from "../../../../models/representative/Individual";
+import {Sro} from "../../../../models/representative/Sro";
+import {IndividualEntrepreneur} from "../../../../models/representative/IndividualEntrepreneur";
+import {LegalEntity} from "../../../../models/representative/LegalEntity";
 
 @Component({
   selector: 'app-create-counterparty',

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../../environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Individual} from "../../../reference-book/organization-and-representative/models/Individual";
+import {Individual} from "../../../models/representative/Individual";
 import {
   IndividualEntrepreneur
-} from "../../../reference-book/organization-and-representative/models/IndividualEntrepreneur";
-import {LegalEntity} from "../../../reference-book/organization-and-representative/models/LegalEntity";
-import {Sro} from "../../../reference-book/organization-and-representative/models/Sro";
+} from "../../../models/representative/IndividualEntrepreneur";
+import {LegalEntity} from "../../../models/representative/LegalEntity";
+import {Sro} from "../../../models/representative/Sro";
 
 @Injectable({
   providedIn: 'root'

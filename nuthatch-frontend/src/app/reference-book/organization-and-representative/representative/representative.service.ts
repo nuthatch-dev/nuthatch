@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environment";
 import {Observable} from "rxjs";
-import {Representative} from "../models/Representative";
-import {IndividualEntrepreneur} from "../models/IndividualEntrepreneur";
-import {LegalEntity} from "../models/LegalEntity";
+import {Representative} from "../../../models/representative/Representative";
+import {IndividualEntrepreneur} from "../../../models/representative/IndividualEntrepreneur";
+import {LegalEntity} from "../../../models/representative/LegalEntity";
 import {Node} from "../../administrative-documentation/models/Node";
 
 @Injectable({

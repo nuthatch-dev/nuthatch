@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {RepresentativeService} from "../representative.service";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {IndividualEntrepreneur} from "../../models/IndividualEntrepreneur";
-import {LegalEntity} from "../../models/LegalEntity";
+import {IndividualEntrepreneur} from "../../../../models/representative/IndividualEntrepreneur";
+import {LegalEntity} from "../../../../models/representative/LegalEntity";
 import {Node} from "../../../administrative-documentation/models/Node";
-import {Representative} from "../../models/Representative";
+import {Representative} from "../../../../models/representative/Representative";
 import {Router} from "@angular/router";
 import {DatePipe, NgIf, NgOptimizedImage} from "@angular/common";
 import {environment} from "../../../../environment";

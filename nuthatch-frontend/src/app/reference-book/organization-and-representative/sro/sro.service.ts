@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environment";
-import {Sro} from "../models/Sro";
+import {Sro} from "../../../models/representative/Sro";
 import {Observable} from "rxjs";
 
 @Injectable({

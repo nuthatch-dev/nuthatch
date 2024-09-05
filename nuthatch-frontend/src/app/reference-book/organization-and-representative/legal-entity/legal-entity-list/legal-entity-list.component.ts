@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {LegalEntityService} from "../legal-entity.service";
-import {LegalEntity} from "../../models/LegalEntity";
+import {LegalEntity} from "../../../../models/representative/LegalEntity";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Sro} from "../../models/Sro";
+import {Sro} from "../../../../models/representative/Sro";
 import {RoleMap} from "../../common/RoleMap";
 import {NgForOf, NgIf} from "@angular/common";
 import {RoleManagement} from "../../common/RoleManagement";

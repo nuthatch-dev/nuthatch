@@ -1,6 +1,6 @@
 import {FullNameGroup} from "./FullNameGroup";
 import {Sro} from "./Sro";
-import {CommonEntity} from "../common/CommonEntity";
+import {CommonEntity} from "../../reference-book/organization-and-representative/common/CommonEntity";
 
 export interface IndividualEntrepreneur extends CommonEntity {
   uuid: string;

@@ -11,7 +11,7 @@ import java.util.Collection;
 public interface IndividualEntrepreneurRepository extends CommonRepository<IndividualEntrepreneur> {
 
     @Query(value = "SELECT * FROM individual_entrepreneur AS i " +
-            "LEFT OUTER JOIN " +
+            "RIGHT OUTER JOIN " +
             "(SELECT irs.individual_entrepreneur_uuid FROM individual_entrepreneur_role_set AS irs " +
             "WHERE irs.role_set = :role) AS s " +
             "ON i.uuid = s.individual_entrepreneur_uuid " +

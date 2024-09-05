@@ -11,7 +11,7 @@ import java.util.Collection;
 public interface LegalEntityRepository extends CommonRepository<LegalEntity> {
 
     @Query(value = "SELECT * FROM legal_entity AS l " +
-            "LEFT OUTER JOIN " +
+            "RIGHT OUTER JOIN " +
             "(SELECT lrs.legal_entity_uuid FROM legal_entity_role_set AS lrs WHERE lrs.role_set = :role) AS s " +
             "ON l.uuid = s.legal_entity_uuid " +
             "ORDER BY l.short_name",

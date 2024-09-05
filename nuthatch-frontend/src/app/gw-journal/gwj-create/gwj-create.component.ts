@@ -6,6 +6,22 @@ import {GwJournalService} from "../gw-journal.service";
 import {Router} from "@angular/router";
 import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
 import {SelectDeveloperComponent} from "./select-developer/select-developer.component";
+import {Individual} from "../../models/representative/Individual";
+import {IndividualEntrepreneur} from "../../models/representative/IndividualEntrepreneur";
+import {LegalEntity} from "../../models/representative/LegalEntity";
+import {
+  IndividualEntrepreneurOrLegalEntityOrIndividualAndId
+} from "../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
+import {OrganizationWithOptionalSroAndId} from "../models/OrganizationWithOptionalSroAndId";
+import {ExecutiveAuthorityDocInfo} from "../models/ExecutiveAuthorityDocInfo";
+import {OrganizationWithOptionalSro} from "../models/OrganizationWithOptionalSro";
+import {DesignerSupervisionRepresentativesSetItem} from "../models/DesignerSupervisionRepresentativesSetItem";
+import {ProjectDocumentationExaminationDetails} from "../models/ProjectDocumentationExaminationDetails";
+import {StateSupervisoryAuthorityInfo} from "../models/StateSupervisoryAuthorityInfo";
+import {PermanentObjectCommonInfo} from "../models/PermanentObjectCommonInfo";
+import {GeneralWorkJournalCommonInfo} from "../models/GeneralWorkJournalCommonInfo";
+import {StateSupervisionInfo} from "../models/StateSupervisionInfo";
+import {ExtraParameter} from "../models/ExtraParameter";
 
 @Component({
   selector: 'app-gwj-create',
@@ -40,26 +56,16 @@ export class GwjCreateComponent {
       postalAddress: [''],
       constructionSiteAddress: [''],
       constructionTypeName: [null, Validators.required],
-      developerWithRepresentatives: [''], // TODO: representatives service
-      operatingPersonWithRepresentatives: [''],
-      regionalOperatorWithRepresentatives: [''],
-      technicalCustomerWithRepresentatives: [''],
-      technicalCustomerSro: [''],
       permission_DocInfoName: [''],
       permission_DocInfoNumber: [''],
       permission_ExpirationDate: [null],
       permission_DocChangeDate: [null],
       permission_ExecutiveAuthorityId: [''],
       permission_ExecutiveAuthorityTitle: [''],
-      contractor_LegalEntity: [''], // TODO: выбор между ЮЛ и ИП
-      contractor_IndividualEntrepreneur: [''],
-      contractor_Sro: [''],
       designerSupervisionRepresentativesSet: [null],
       projectExamination_SequenceNumber: [null],
       projectExamination_Requisites: [''],
       projectExamination_AuthorityName: [''],
-      buildingContractorWithRepresentatives: [''],
-      buildingContractorSro: [''],
       otherDevelopersRepresentativesSet: [null],
       supervisoryAuthority: [''],
       supervisory_Representative: [''],
@@ -105,10 +111,14 @@ export class GwjCreateComponent {
         },
       },
       constructionTypeName: this.f['constructionTypeName'].value,
-      developerWithRepresentatives: this.f['developerWithRepresentatives'].value,
-      operatingPersonWithRepresentatives: this.f['operatingPersonWithRepresentatives'].value,
-      regionalOperatorWithRepresentatives: this.f['regionalOperatorWithRepresentatives'].value,
-      technicalCustomerWithRepresentatives: this.f['technicalCustomerWithRepresentatives'].value,
+      developer: this.f['developerWithRepresentatives'].value,
+      developerRepresentativeSet: [],
+      operatingPerson: this.f['operatingPersonWithRepresentatives'].value,
+      operatingPersonRepresentativeSet: [],
+      regionalOperator: this.f['regionalOperatorWithRepresentatives'].value,
+      regionalOperatorRepresentativeSet: [],
+      technicalCustomer: this.f['technicalCustomerWithRepresentatives'].value,
+      technicalCustomerRepresentativeSet: [],
       permissionToConstructionRoot: {
         uuid: '',
         docInfo: {
@@ -120,12 +130,7 @@ export class GwjCreateComponent {
         executiveAuthorityId: this.f['permission_ExecutiveAuthorityId'].value,
         executiveAuthorityTitle: this.f['permission_ExecutiveAuthorityTitle'].value,
       },
-      projectDocumentationContractor: {
-        uuid: '',
-        legalEntity: this.f['contractor_LegalEntity'].value,
-        individualEntrepreneur: this.f['contractor_IndividualEntrepreneur'].value,
-        sro: this.f['contractor_Sro'].value,
-      },
+      projectDocumentationContractor: this.f[''].value,
       designerSupervisionRepresentativesSet: this.f['designerSupervisionRepresentativesSet'].value,
       projectDocumentationExaminationDetails: {
         sequenceNumber: this.f['projectExamination_SequenceNumber'].value,
@@ -175,12 +180,48 @@ export class GwjCreateComponent {
     });
   }
 
-
-
-  technicalCustomerAsideIsVisible: boolean = false;
-
-  showTechnicalCustomerList() {
-    this.technicalCustomerAsideIsVisible = !this.technicalCustomerAsideIsVisible;
+  onDeveloperSelected(developer: IndividualEntrepreneurOrLegalEntityOrIndividualAndId) {
+    console.log(developer);
+    this.createdGeneralWorkJournal.developer = developer;
   }
 
+  createdGeneralWorkJournal: GeneralWorkJournal = {
+    uuid: "",
+    schemaVersion: "",
+    edition: 0,
+    docInfo: {
+      name: "",
+      number: "",
+    },
+    permanentObjectInfo: {
+      permanentObjectName: "",
+      permanentObjectAddress: {
+        postalAddress: "",
+        constructionSiteAddress: "",
+      },
+    },
+    constructionTypeName: null,
+    developer: null,
+    developerRepresentativeSet: [],
+    operatingPerson:  null,
+    operatingPersonRepresentativeSet: [],
+    regionalOperator: null,
+    regionalOperatorRepresentativeSet: [],
+    technicalCustomer: null,
+    technicalCustomerRepresentativeSet: [],
+    permissionToConstructionRoot: null,
+    projectDocumentationContractor: null,
+    designerSupervisionRepresentativesSet: [],
+    projectDocumentationExaminationDetails: null,
+    buildingContractorWithRepresentatives: "",
+    otherDevelopersRepresentativesSet: [],
+    stateSupervisoryAuthorityInfo: null,
+    permanentObjectCommonInfo: null,
+    generalWorkJournalCommonInfo: null,
+    supervisoryAuthorityRegistrationMarkId: "",
+    engineeringAndTechnicalPersonsIdsSet: [],
+    stateSupervisionInfo: null,
+    extraParameterSet: [],
+    archived: false,
+  };
 }
