@@ -1,6 +1,6 @@
 import {FullNameGroup} from "./FullNameGroup";
 import {PassportDetails} from "./PassportDetails";
-import {CommonEntity} from "../../reference-book/organization-and-representative/common/CommonEntity";
+import {CommonEntity} from "./CommonEntity";
 
 export interface Individual extends CommonEntity {
   uuid: string;

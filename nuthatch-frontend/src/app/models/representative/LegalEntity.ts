@@ -1,5 +1,5 @@
 import {Sro} from "./Sro";
-import {CommonEntity} from "../../reference-book/organization-and-representative/common/CommonEntity";
+import {CommonEntity} from "./CommonEntity";
 
 export interface LegalEntity extends CommonEntity {
   uuid: string;

@@ -57,21 +57,24 @@ export class SelectDeveloperComponent implements OnInit {
     individual: null,
   };
 
-  // TODO: Паспортные данные
+  /*
+  Отображение выбранного контрагента в качестве застройщика, отображение СРО (при наличии).
+  Передача контрагента в виде IndividualEntrepreneurOrLegalEntityOrIndividualAndId
+  для сохранения в ОЖР
+   */
+  displayDeveloperName: string = " ";
+  displayDeveloperSro: string = "н/у";
+
   individualSelected(entity: Individual) {
     this.selectedCounterparty.individual = entity;
-    this.displayDeveloperName = entity.fullNameGroup.lastName + " " +
-      entity.fullNameGroup.firstName + " " + entity.fullNameGroup.middleName + ", " +
-      entity.address;
+    this.displayDeveloperName = this.individualToString(entity);
     this.displayDeveloperSro = "н/у";
     this.counterpartySelected(this.selectedCounterparty!)
   }
 
   individualEntrepreneurSelected(entity: IndividualEntrepreneur) {
     this.selectedCounterparty.organizationWithOptionalSro!.individualEntrepreneur = entity;
-    this.displayDeveloperName = entity.fullNameGroup.lastName + " " +
-      entity.fullNameGroup.firstName + " " + entity.fullNameGroup.middleName + ", " +
-      entity.address + ", ОГРНИП " + entity.ogrnip + ", ИНН " + entity.inn;
+    this.displayDeveloperName = this.individualEntrepreneurToString(entity);
     if (entity.sro) {
       this.displayDeveloperSro = entity.sro.name + ", ОГРН " + entity.sro.ogrn + ", ИНН " + entity.sro.inn;
     } else {
@@ -82,8 +85,7 @@ export class SelectDeveloperComponent implements OnInit {
 
   legalEntitySelected(entity: LegalEntity) {
     this.selectedCounterparty.organizationWithOptionalSro!.legalEntity = entity;
-    this.displayDeveloperName = entity.fullName + ", ОГРН " + entity.ogrn + ", ИНН " + entity.inn + ", "
-      + entity.address + ", т. " + entity.phone;
+    this.displayDeveloperName = this.legalEntityToString(entity);
     if (entity.sro) {
       this.displayDeveloperSro = entity.sro.name + ", ОГРН " + entity.sro.ogrn + ", ИНН " + entity.sro.inn;
     } else {
@@ -92,10 +94,16 @@ export class SelectDeveloperComponent implements OnInit {
     this.counterpartySelected(this.selectedCounterparty!)
   }
 
-  displayDeveloperName: string = " ";
-  displayDeveloperSro: string = "н/у";
-
+  /*
+  Выбор застройщика из списка контрагентов
+   */
   private ROLE: string = "DEVELOPER";
+  counterpartyCreatedHidden: boolean = true;
+  developerAsideHidden: boolean = true;
+
+  showDeveloperList() {
+    this.developerAsideHidden = !this.developerAsideHidden;
+  }
 
   private getIndividualList() {
     this.service.getIndividualListByRole(this.ROLE).subscribe({
@@ -124,13 +132,9 @@ export class SelectDeveloperComponent implements OnInit {
     });
   }
 
-  counterpartyCreatedHidden: boolean = true;
-  developerAsideHidden: boolean = true;
-
-  showDeveloperList() {
-    this.developerAsideHidden = !this.developerAsideHidden;
-  }
-
+  /*
+  Добавление нового контрагента
+   */
   createdCounterPartyType: CounterpartyType | null = null;
 
   createNewCounterparty(counterpartyType: CounterpartyType) {
@@ -155,6 +159,34 @@ export class SelectDeveloperComponent implements OnInit {
           break;
       }
     }
+  }
+
+  /*
+   Формирование строки для отображения контрагента
+   */
+  private individualToString(entity: Individual): string {
+    return entity.fullNameGroup.lastName + " " +
+      entity.fullNameGroup.firstName +
+      (entity.fullNameGroup.middleName? (" " + entity.fullNameGroup.middleName) : "") + ", " +
+      (entity.isaRussianFederationCitizen?
+        ("паспорт серия: " + entity.passportDetails.passportDetailsRussianFederation.series +
+          ", номер: " + entity.passportDetails.passportDetailsRussianFederation.number) :
+        (entity.passportDetails.documentDetailsForeign.docName +
+          " серия: " + entity.passportDetails.documentDetailsForeign.series +
+          ", номер: " + entity.passportDetails.documentDetailsForeign.series)) + ", " +
+      entity.address;
+  }
+
+  private individualEntrepreneurToString(entity: IndividualEntrepreneur): string {
+    return entity.fullNameGroup.lastName + " " +
+      entity.fullNameGroup.firstName +
+      (entity.fullNameGroup.middleName? (" " + entity.fullNameGroup.middleName) : "") + ", " +
+      entity.address + ", ОГРНИП " + entity.ogrnip + ", ИНН " + entity.inn;
+  }
+
+  private legalEntityToString(entity: LegalEntity): string {
+    return entity.fullName + ", ОГРН " + entity.ogrn + ", ИНН " + entity.inn + ", "
+      + entity.address + (entity.phone? (", т/ф: " + entity.phone) : "");
   }
 
 }
