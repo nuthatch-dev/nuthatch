@@ -6,22 +6,9 @@ import {GwJournalService} from "../gw-journal.service";
 import {Router} from "@angular/router";
 import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
 import {SelectDeveloperComponent} from "./select-developer/select-developer.component";
-import {Individual} from "../../models/representative/Individual";
-import {IndividualEntrepreneur} from "../../models/representative/IndividualEntrepreneur";
-import {LegalEntity} from "../../models/representative/LegalEntity";
 import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
 } from "../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
-import {OrganizationWithOptionalSroAndId} from "../models/OrganizationWithOptionalSroAndId";
-import {ExecutiveAuthorityDocInfo} from "../models/ExecutiveAuthorityDocInfo";
-import {OrganizationWithOptionalSro} from "../models/OrganizationWithOptionalSro";
-import {DesignerSupervisionRepresentativesSetItem} from "../models/DesignerSupervisionRepresentativesSetItem";
-import {ProjectDocumentationExaminationDetails} from "../models/ProjectDocumentationExaminationDetails";
-import {StateSupervisoryAuthorityInfo} from "../models/StateSupervisoryAuthorityInfo";
-import {PermanentObjectCommonInfo} from "../models/PermanentObjectCommonInfo";
-import {GeneralWorkJournalCommonInfo} from "../models/GeneralWorkJournalCommonInfo";
-import {StateSupervisionInfo} from "../models/StateSupervisionInfo";
-import {ExtraParameter} from "../models/ExtraParameter";
 
 @Component({
   selector: 'app-gwj-create',

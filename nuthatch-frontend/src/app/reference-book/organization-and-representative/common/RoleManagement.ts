@@ -1,5 +1,5 @@
 import {RoleMap} from "./RoleMap"
-import {CommonEntity} from "./CommonEntity";
+import {CommonEntity} from "../../../models/representative/CommonEntity";
 
 /**
  * Управление ролями ЮЛ/ИП/ФЛ
