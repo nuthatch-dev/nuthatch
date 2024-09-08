@@ -1,14 +1,15 @@
-import {Component} from '@angular/core';
+import {Component, OnChanges, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {GeneralWorkJournal} from "../models/GeneralWorkJournal";
 import {ConstructionTypeName} from "../models/ConstructionTypeName";
 import {GwJournalService} from "../gw-journal.service";
 import {Router} from "@angular/router";
 import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
-import {SelectDeveloperComponent} from "./select-developer/select-developer.component";
+import {DeveloperComponent} from "./developer/developer.component";
 import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
 } from "../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
+import {DeveloperRepresentativeComponent} from "./developer-representative/developer-representative.component";
 
 @Component({
   selector: 'app-gwj-create',
@@ -19,7 +20,8 @@ import {
     NgIf,
     NgForOf,
     KeyValuePipe,
-    SelectDeveloperComponent,
+    DeveloperComponent,
+    DeveloperRepresentativeComponent,
   ],
   templateUrl: './gwj-create.component.html',
   styleUrl: './gwj-create.component.css'
@@ -167,10 +169,21 @@ export class GwjCreateComponent {
     });
   }
 
+  /*
+  Выбор застройщика, передача Id застройщика для выбора представителей
+   */
+  developerId: string = "";
   onDeveloperSelected(developer: IndividualEntrepreneurOrLegalEntityOrIndividualAndId) {
-    console.log(developer);
+    if (developer.individual) {
+      this.developerId = developer.individual.uuid;
+    } else if (developer.organizationWithOptionalSro && developer.organizationWithOptionalSro.legalEntity) {
+      this.developerId = developer.organizationWithOptionalSro.legalEntity.uuid;
+    } else {
+      this.developerId = developer.organizationWithOptionalSro!.individualEntrepreneur!.uuid;
+    }
     this.createdGeneralWorkJournal.developer = developer;
   }
+
 
   createdGeneralWorkJournal: GeneralWorkJournal = {
     uuid: "",

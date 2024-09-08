@@ -5,8 +5,9 @@
       <div class="fw-medium bg-body-tertiary flex-fill me-3 py-2 px-3 border-bottom" id="developer">
         {{ displayDeveloperName }}
       </div>
-      <button class="btn btn-outline-primary" (click)="showDeveloperList()" [disabled]="!developerAsideHidden">
-        Выбрать
+      <button class="btn btn-outline-primary" (click)="showDeveloperList()"
+              [disabled]="!developerAsideHidden || !counterpartyCreatedHidden">
+        Выбрать из справочника
       </button>
     </div>
 
@@ -34,7 +35,7 @@
     <div class="accordion" id="selectDeveloper">
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button" type="button"
+          <button class="accordion-button fw-medium" type="button"
                   data-bs-toggle="collapse" data-bs-target="#individual"
                   aria-expanded="true" aria-controls="individual">
             Физические лица
@@ -65,7 +66,7 @@
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button" type="button"
+          <button class="accordion-button fw-medium" type="button"
                   data-bs-toggle="collapse" data-bs-target="#individualEntrepreneur"
                   aria-expanded="true" aria-controls="individualEntrepreneur">
             Индивидуальные предприниматели
@@ -96,8 +97,8 @@
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#legalEntity"
-                  aria-expanded="true" aria-controls="legalEntity">
+          <button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#legalEntity" aria-expanded="true" aria-controls="legalEntity">
             Юридические лица
           </button>
         </h2>
