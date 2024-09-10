@@ -48,7 +48,7 @@ export class DeveloperComponent implements OnInit {
     this.getLegalEntityList();
   }
 
-  selectedCounterparty: IndividualEntrepreneurOrLegalEntityOrIndividualAndId | undefined;
+  selectedCounterparty: IndividualEntrepreneurOrLegalEntityOrIndividualAndId | null = null;
 
   dropCounterparty() {
     this.selectedCounterparty = {

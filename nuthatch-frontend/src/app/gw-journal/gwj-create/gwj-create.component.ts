@@ -10,6 +10,7 @@ import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
 } from "../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
 import {DeveloperRepresentativeComponent} from "./developer-representative/developer-representative.component";
+import {Representative} from "../../models/representative/Representative";
 
 @Component({
   selector: 'app-gwj-create',
@@ -182,6 +183,10 @@ export class GwjCreateComponent {
       this.developerId = developer.organizationWithOptionalSro!.individualEntrepreneur!.uuid;
     }
     this.createdGeneralWorkJournal.developer = developer;
+  }
+
+  onDeveloperRepresentativeSelected(representativeIdSet: string[]) {
+    this.createdGeneralWorkJournal.developerRepresentativeSet = representativeIdSet;
   }
 
 
