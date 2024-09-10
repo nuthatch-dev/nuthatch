@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CounterpartiesService} from "../counterparties.service";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
@@ -20,13 +30,29 @@ import {LegalEntity} from "../../../../models/representative/LegalEntity";
   templateUrl: './create-counterparty.component.html',
   styleUrl: './create-counterparty.component.css'
 })
-export class CreateCounterpartyComponent implements OnInit {
+export class CreateCounterpartyComponent implements OnInit, OnChanges {
 
   @ViewChild("individualTemplate", {static: false}) individualTemplate!: TemplateRef<any>;
   @ViewChild("individualEntrepreneurTemplate", {static: false}) individualEntrepreneurTemplate!: TemplateRef<any>;
   @ViewChild("legalEntityTemplate", {static: false}) legalEntityTemplate!: TemplateRef<any>;
 
   @Input() counterpartyType: CounterpartyType | null = null;
+
+  selectedTemplate: TemplateRef<any> | null = null;
+
+  ngOnChanges(changes: SimpleChanges) {
+    switch (changes["counterpartyType"].currentValue) {
+      case CounterpartyType.INDIVIDUAL:
+        this.selectedTemplate = this.individualTemplate;
+        break;
+      case CounterpartyType.INDIVIDUAL_ENTREPRENEUR:
+        this.selectedTemplate = this.individualEntrepreneurTemplate;
+        break;
+      case CounterpartyType.LEGAL_ENTITY:
+        this.selectedTemplate = this.legalEntityTemplate;
+        break;
+    }
+  }
 
   @Output() onCounterpartyCreated = new EventEmitter<boolean>();
 
@@ -80,16 +106,6 @@ export class CreateCounterpartyComponent implements OnInit {
 
   ngOnInit() {
     this.getSroList();
-  }
-
-  loadTemplate() {
-    switch (this.counterpartyType) {
-      case CounterpartyType.INDIVIDUAL:
-        return this.individualTemplate;
-      case CounterpartyType.INDIVIDUAL_ENTREPRENEUR:
-        return this.individualEntrepreneurTemplate;
-    }
-    return this.legalEntityTemplate;
   }
 
   // Controls для ФЛ

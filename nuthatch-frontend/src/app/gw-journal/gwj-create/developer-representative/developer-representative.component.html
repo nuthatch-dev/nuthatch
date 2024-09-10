@@ -1,0 +1,223 @@
+<h5 class="text-center mt-4">Уполномоченный представитель застройщика</h5>
+<table class="table table-sm table-stripped table-bordered my-3">
+  <thead>
+  <tr class="text-md-center align-top mx-3">
+    <th style="width: 5%">№ п/п</th>
+    <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
+    <th style="width: 20%">Должность (при наличии)</th>
+    <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+    <th style="width: 20%">
+      Идентификационный номер в национальном реестре специалистов в области строительства *
+    </th>
+    <th style="width: 5%"><i class="bi-gear"></i></th>
+  </tr>
+  <tr class="text-md-center">
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+  </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    @for (sr of selectedRepresentativeList; track $index) {
+      <tr>
+        <td class="text-md-center">{{ $index + 1 }}</td>
+        <td class="ps-3">
+          {{ sr.fullNameGroup.lastName }}
+          {{ sr.fullNameGroup.firstName }}
+          @if (sr.fullNameGroup.middleName) {
+            {{ sr.fullNameGroup.middleName }}
+          }
+        </td>
+        <td class="text-md-center">
+          @if (sr.position) {
+            {{ sr.position }}
+          }
+        </td>
+        <td class="text-md-center">
+          {{ sr.administrativeDocument }}
+        </td>
+        <td class="text-md-center">
+          {{ sr.nostroyNumber }}
+        </td>
+        <td class="text-md-center">
+          <button class="btn text-danger" type="button" (click)="removeFromList(sr)">
+            <i class="bi bi-x-circle-fill"></i>
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<ng-template [ngTemplateOutlet]="selectedTemplate"></ng-template>
+
+<div class="form-text">
+  * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных
+  изысканий, архитектурно- строительного проектирования, строительства, реконструкции, капитального
+  ремонта объектов капитального строительства не требуется
+</div>
+
+<ng-template #selectFromListTemplate>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      Выбор списка уполномоченных представителей
+      <button type="button" class="btn btn-close"></button>
+    </div>
+    <div class="card-body">
+      <div class="card-text mb-3">
+        В справочнике "Организации и их представители" найдены следующие записи для данной организации:
+      </div>
+      <table class="table table-sm table-striped-columns">
+        <thead>
+        <tr class="text-md-center align-top">
+          <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
+          <th style="width: 20%">Должность (при наличии)</th>
+          <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
+          <th style="width: 20%">
+            Идентификационный номер в национальном реестре специалистов в области строительства *
+          </th>
+          <th style="width: 10%"></th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          @for (ar of availableRepresentativeList; track $index) {
+            <tr>
+              <td class="ps-3">
+                {{ ar.fullNameGroup.lastName }}
+                {{ ar.fullNameGroup.firstName }}
+                @if (ar.fullNameGroup.middleName) {
+                  {{ ar.fullNameGroup.middleName }}
+                }
+              </td>
+              <td class="text-md-center">
+                @if (ar.position) {
+                  {{ ar.position }}
+                }
+              </td>
+              <td class="text-md-center">
+                {{ ar.administrativeDocument }}
+              </td>
+              <td class="text-md-center">
+                {{ ar.nostroyNumber }}
+              </td>
+              <td class="text-md-center">
+                <button class="btn text-success" type="button" (click)="addToList(ar)">
+                  <i class="bi bi-check-circle"></i> Выбрать
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer">
+      Для выбора уполномоченного представителя воспользуйтесь списком предоставленным выше, либо
+      <a class="icon-link" type="button" (click)="onCreateRepresentativeClick()">
+        создайте нового представителя
+        <i class="bi-person-add"></i>
+      </a>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #createRepresentativeTemplate>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      Добавление нового представителя
+      <button type="button" class="btn btn-close"></button>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="createRepresentativeFormGroup">
+        <div class="row">
+          <div class="col-3">
+            <label class="form-label" for="lastName">Ф.И.О. представителя</label>
+            <div class="input-group">
+              <span class="input-group-text">Фамилия</span>
+              <input formControlName="lastName" type="text" class="form-control" id="lastName">
+            </div>
+            <div *ngIf="createRepresentativeFormGroup.controls['lastName'].errors" class="error">
+              <div *ngIf="createRepresentativeFormGroup.controls['lastName'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+            <div class="input-group mt-3">
+              <span class="input-group-text">Имя</span>
+              <input formControlName="firstName" type="text" class="form-control" id="firstName">
+            </div>
+            <div *ngIf="createRepresentativeFormGroup.controls['firstName'].errors" class="error">
+              <div *ngIf="createRepresentativeFormGroup.controls['firstName'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+            <div class="input-group mt-3">
+              <span class="input-group-text">Отчество</span>
+              <input formControlName="middleName" type="text" class="form-control" id="middleName">
+            </div>
+          </div>
+
+          <div class="col-3">
+            <label class="form-label" for="position">Должность</label>
+            <input formControlName="position" type="text" class="form-control" id="position">
+            <div *ngIf="createRepresentativeFormGroup.controls['position'].errors" class="error">
+              <div *ngIf="createRepresentativeFormGroup.controls['position'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+          </div>
+
+          <div class="col-3">
+            <label class="form-label" for="documentName">Подтверждающий документ</label>
+            <div class="input-group">
+              <span class="input-group-text">Тип</span>
+              <input formControlName="documentName" type="text" class="form-control" id="documentName">
+            </div>
+            <div *ngIf="createRepresentativeFormGroup.controls['documentName'].errors" class="error">
+              <div *ngIf="createRepresentativeFormGroup.controls['documentName'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+            <div class="input-group mt-3">
+              <span class="input-group-text">Дата</span>
+              <input formControlName="documentDate" type="date" class="form-control" id="documentDate">
+            </div>
+            <div *ngIf="createRepresentativeFormGroup.controls['documentDate'].errors" class="error">
+              <div *ngIf="createRepresentativeFormGroup.controls['documentDate'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+            <div class="input-group mt-3">
+              <span class="input-group-text">Номер</span>
+              <input formControlName="documentNumber" type="text" class="form-control" id="documentNumber">
+            </div>
+            <div *ngIf="createRepresentativeFormGroup.controls['documentNumber'].errors" class="error">
+              <div *ngIf="createRepresentativeFormGroup.controls['documentNumber'].errors?.['required']"
+                   class="text-danger form-text">
+                Поле обязательно для заполнения
+              </div>
+            </div>
+          </div>
+
+          <div class="col-3">
+            <label class="form-label" for="position">
+              Идентификационный номер *
+            </label>
+            <input formControlName="nostroyNumber" type="text" class="form-control" id="nostroyNumber">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-md-end">
+      <button class="btn btn-success" type="button" [disabled]="createRepresentativeFormGroup.invalid">
+        Сохранить
+      </button>
+    </div>
+  </div>
+</ng-template>

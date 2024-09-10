@@ -39,6 +39,12 @@ public class RepresentativeController {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/all-by-counterparty")
+    public ResponseEntity<Collection<Representative>> findAllByLegalEntityOrIndividualEntrepreneurUuid(
+            @RequestParam(name = "id") UUID uuid) {
+        return new ResponseEntity<>(service.findAllByLegalEntityOrIndividualEntrepreneurUuid(uuid), HttpStatus.OK);
+    }
+
     @PutMapping
     public ResponseEntity<Representative> update(@RequestBody Representative entity) {
         return service

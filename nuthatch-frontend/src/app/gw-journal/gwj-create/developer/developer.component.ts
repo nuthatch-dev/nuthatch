@@ -21,10 +21,10 @@ import {
     ReactiveFormsModule,
     CreateCounterpartyComponent
   ],
-  templateUrl: './select-developer.component.html',
-  styleUrl: './select-developer.component.css'
+  templateUrl: './developer.component.html',
+  styleUrl: './developer.component.css'
 })
-export class SelectDeveloperComponent implements OnInit {
+export class DeveloperComponent implements OnInit {
 
   individualList: Individual[] = [];
   individualEntrepreneurList: IndividualEntrepreneur[] = [];
@@ -48,14 +48,18 @@ export class SelectDeveloperComponent implements OnInit {
     this.getLegalEntityList();
   }
 
-  selectedCounterparty: IndividualEntrepreneurOrLegalEntityOrIndividualAndId = {
-    uuid: "",
-    organizationWithOptionalSro: {
-      legalEntity: null,
-      individualEntrepreneur: null,
-    },
-    individual: null,
-  };
+  selectedCounterparty: IndividualEntrepreneurOrLegalEntityOrIndividualAndId | null = null;
+
+  dropCounterparty() {
+    this.selectedCounterparty = {
+      uuid: "",
+      organizationWithOptionalSro: {
+        legalEntity: null,
+        individualEntrepreneur: null,
+      },
+      individual: null,
+    };
+  }
 
   /*
   Отображение выбранного контрагента в качестве застройщика, отображение СРО (при наличии).
@@ -66,14 +70,16 @@ export class SelectDeveloperComponent implements OnInit {
   displayDeveloperSro: string = "н/у";
 
   individualSelected(entity: Individual) {
-    this.selectedCounterparty.individual = entity;
+    this.dropCounterparty();
+    this.selectedCounterparty!.individual = entity;
     this.displayDeveloperName = this.individualToString(entity);
     this.displayDeveloperSro = "н/у";
     this.counterpartySelected(this.selectedCounterparty!)
   }
 
   individualEntrepreneurSelected(entity: IndividualEntrepreneur) {
-    this.selectedCounterparty.organizationWithOptionalSro!.individualEntrepreneur = entity;
+    this.dropCounterparty();
+    this.selectedCounterparty!.organizationWithOptionalSro!.individualEntrepreneur = entity;
     this.displayDeveloperName = this.individualEntrepreneurToString(entity);
     if (entity.sro) {
       this.displayDeveloperSro = entity.sro.name + ", ОГРН " + entity.sro.ogrn + ", ИНН " + entity.sro.inn;
@@ -84,7 +90,8 @@ export class SelectDeveloperComponent implements OnInit {
   }
 
   legalEntitySelected(entity: LegalEntity) {
-    this.selectedCounterparty.organizationWithOptionalSro!.legalEntity = entity;
+    this.dropCounterparty();
+    this.selectedCounterparty!.organizationWithOptionalSro!.legalEntity = entity;
     this.displayDeveloperName = this.legalEntityToString(entity);
     if (entity.sro) {
       this.displayDeveloperSro = entity.sro.name + ", ОГРН " + entity.sro.ogrn + ", ИНН " + entity.sro.inn;
@@ -102,7 +109,7 @@ export class SelectDeveloperComponent implements OnInit {
   developerAsideHidden: boolean = true;
 
   showDeveloperList() {
-    this.developerAsideHidden = !this.developerAsideHidden;
+    this.developerAsideHidden = false;
   }
 
   private getIndividualList() {

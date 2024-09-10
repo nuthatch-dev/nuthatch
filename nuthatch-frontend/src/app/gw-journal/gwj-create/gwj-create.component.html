@@ -74,46 +74,30 @@
         </div>
       </div>
 
-      <h5 class="text-center mt-4">Застройщик</h5>
-      <app-select-developer
-        (onCounterpartySelected)="onDeveloperSelected($event)">
-      </app-select-developer>
+      <div class="row">
+        <div class="col-10">
+          <h5 class="text-center mt-4">Застройщик</h5>
+          <app-select-developer
+            (onCounterpartySelected)="onDeveloperSelected($event)">
+          </app-select-developer>
+        </div>
+        <div class="col-2">
 
-      <div class="mt-4">
-        <h5 class="text-center">Уполномоченный представитель застройщика</h5>
-        <table class="table table-sm table-stripped table-bordered my-3">
-          <thead>
-          <tr class="text-md-center align-top">
-            <th style="width: 5%">№ п/п</th>
-            <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
-            <th style="width: 25%">Должность (при наличии)</th>
-            <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
-            <th style="width: 20%">
-              Идентификационный номер в национальном реестре специалистов в области строительства *
-            </th>
-          </tr>
-          <tr class="text-md-center">
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
-          </tr>
-          </thead>
-          <tbody class="table-group-divider">
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          </tbody>
-        </table>
-        <div class="form-text">
-          * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных
-          изысканий, архитектурно- строительного проектирования, строительства, реконструкции, капитального
-          ремонта объектов капитального строительства не требуется
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-10">
+          @if (createdGeneralWorkJournal.developer) {
+            <app-developer-representative [developerId]="developerId"
+                                          (onRepresentativeSelected)="onDeveloperRepresentativeSelected($event)">
+            </app-developer-representative>
+          }
+        </div>
+        <div class="col-2">
+<!--          <div class="form-text my-3">-->
+<!--            <i class="bi-info-circle-fill text-success"></i>-->
+<!--          </div>-->
         </div>
       </div>
 
@@ -284,7 +268,8 @@
 
       <div class="mt-4">
         <h5 class="text-center">Лицо, осуществляющее подготовку проектной документации</h5>
-        <label class="form-label" for="contractor_LegalEntity">Лицо, осуществляющее подготовку проектной документации</label>
+        <label class="form-label" for="contractor_LegalEntity">Лицо, осуществляющее подготовку проектной
+          документации</label>
         <input class="form-control" id="contractor_LegalEntity">
         <div class="form-text mb-3">
           Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального

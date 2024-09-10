@@ -1,4 +1,4 @@
-<ng-template [ngTemplateOutlet]="loadTemplate()"></ng-template>
+<ng-template [ngTemplateOutlet]="selectedTemplate"></ng-template>
 
 <ng-template #individualTemplate>
   <div class="card">
@@ -88,8 +88,8 @@
         </div>
       </form>
     </div>
-    <div class="card-footer">
-      <button class="btn btn-sm btn-success" [disabled]="individualForm.invalid" (click)="createIndividual()">
+    <div class="card-footer text-md-end">
+      <button class="btn btn-success" [disabled]="individualForm.invalid" (click)="createIndividual()">
         Сохранить
       </button>
     </div>
@@ -191,8 +191,8 @@
         </div>
       </form>
     </div>
-    <div class="card-footer">
-      <button class="btn btn-sm btn-success" [disabled]="individualEntrepreneurForm.invalid"
+    <div class="card-footer text-md-end">
+      <button class="btn btn-success" [disabled]="individualEntrepreneurForm.invalid"
               (click)="createIndividualEntrepreneur()">
         Сохранить
       </button>
@@ -296,8 +296,8 @@
         </div>
       </form>
     </div>
-    <div class="card-footer">
-      <button class="btn btn-sm btn-success" [disabled]="legalEntityForm.invalid" (click)="createLegalEntity()">
+    <div class="card-footer text-md-end">
+      <button class="btn btn-success" [disabled]="legalEntityForm.invalid" (click)="createLegalEntity()">
         Сохранить
       </button>
     </div>
