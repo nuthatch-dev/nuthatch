@@ -1,4 +1,4 @@
-package ru.nuthatch.generalworkjournal.entity.representative;
+package ru.nuthatch.organization.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

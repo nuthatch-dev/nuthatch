@@ -1,5 +1,5 @@
-import {OrganizationWithOptionalSro} from "./OrganizationWithOptionalSro";
 import {ProjectDocSection} from "./ProjectDocSection";
+import {OrganizationWithOptionalSro} from "../../models/representative/OrganizationWithOptionalSro";
 
 export interface DesignerSupervisionRepresentativesSetItem {
   uuid: string;

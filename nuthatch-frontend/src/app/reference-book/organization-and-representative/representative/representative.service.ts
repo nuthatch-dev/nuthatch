@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 import {Representative} from "../../../models/representative/Representative";
 import {IndividualEntrepreneur} from "../../../models/representative/IndividualEntrepreneur";
 import {LegalEntity} from "../../../models/representative/LegalEntity";
-import {Node} from "../../administrative-documentation/models/Node";
+import {Node} from "../../../models/administrative-document/Node";
 
 @Injectable({
   providedIn: 'root'

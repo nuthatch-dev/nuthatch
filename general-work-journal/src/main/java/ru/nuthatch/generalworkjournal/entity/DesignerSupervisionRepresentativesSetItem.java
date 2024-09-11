@@ -42,7 +42,7 @@ public class DesignerSupervisionRepresentativesSetItem extends CommonEntity impl
      * (авторский надзор)
      * Обязательный элемент
      */
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
     protected OrganizationWithOptionalSro organization;
 
     /**

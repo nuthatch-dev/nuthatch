@@ -54,6 +54,7 @@ export class DeveloperComponent implements OnInit {
     this.selectedCounterparty = {
       uuid: "",
       organizationWithOptionalSro: {
+        uuid: "",
         legalEntity: null,
         individualEntrepreneur: null,
       },
@@ -174,8 +175,8 @@ export class DeveloperComponent implements OnInit {
   private individualToString(entity: Individual): string {
     return entity.fullNameGroup.lastName + " " +
       entity.fullNameGroup.firstName +
-      (entity.fullNameGroup.middleName? (" " + entity.fullNameGroup.middleName) : "") + ", " +
-      (entity.isaRussianFederationCitizen?
+      (entity.fullNameGroup.middleName ? (" " + entity.fullNameGroup.middleName) : "") + ", " +
+      (entity.isaRussianFederationCitizen ?
         ("паспорт серия: " + entity.passportDetails.passportDetailsRussianFederation.series +
           ", номер: " + entity.passportDetails.passportDetailsRussianFederation.number) :
         (entity.passportDetails.documentDetailsForeign.docName +
@@ -187,13 +188,13 @@ export class DeveloperComponent implements OnInit {
   private individualEntrepreneurToString(entity: IndividualEntrepreneur): string {
     return entity.fullNameGroup.lastName + " " +
       entity.fullNameGroup.firstName +
-      (entity.fullNameGroup.middleName? (" " + entity.fullNameGroup.middleName) : "") + ", " +
+      (entity.fullNameGroup.middleName ? (" " + entity.fullNameGroup.middleName) : "") + ", " +
       entity.address + ", ОГРНИП " + entity.ogrnip + ", ИНН " + entity.inn;
   }
 
   private legalEntityToString(entity: LegalEntity): string {
     return entity.fullName + ", ОГРН " + entity.ogrn + ", ИНН " + entity.inn + ", "
-      + entity.address + (entity.phone? (", т/ф: " + entity.phone) : "");
+      + entity.address + (entity.phone ? (", т/ф: " + entity.phone) : "");
   }
 
 }

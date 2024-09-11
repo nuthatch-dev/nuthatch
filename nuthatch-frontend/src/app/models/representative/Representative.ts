@@ -1,12 +1,10 @@
 import {FullNameGroup} from "./FullNameGroup";
-import {LegalEntity} from "./LegalEntity";
-import {IndividualEntrepreneur} from "./IndividualEntrepreneur";
+import {OrganizationWithOptionalSro} from "./OrganizationWithOptionalSro";
 
 export interface Representative {
   uuid: string;
   fullNameGroup: FullNameGroup;
-  legalEntity: LegalEntity;
-  individualEntrepreneur: IndividualEntrepreneur;
+  organization: OrganizationWithOptionalSro;
   position: string;
   nostroyNumber: string;
   administrativeDocument: string;

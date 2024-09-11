@@ -1,5 +1,5 @@
-import {OrganizationWithOptionalSro} from "./OrganizationWithOptionalSro";
 import {Individual} from "../../models/representative/Individual";
+import {OrganizationWithOptionalSro} from "../../models/representative/OrganizationWithOptionalSro";
 
 export interface IndividualEntrepreneurOrLegalEntityOrIndividualAndId {
   uuid: string;

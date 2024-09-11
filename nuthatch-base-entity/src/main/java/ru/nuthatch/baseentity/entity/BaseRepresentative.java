@@ -41,7 +41,6 @@ public class BaseRepresentative implements Serializable {
      * Распорядительный документ, подтверждающий полномочия.
      * Обязательный элемент
      */
-    // TODO: CustomDocument service
     protected UUID administrativeDocument;
 
 }

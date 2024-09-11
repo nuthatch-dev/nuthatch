@@ -10,7 +10,6 @@ import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
 } from "../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
 import {DeveloperRepresentativeComponent} from "./developer-representative/developer-representative.component";
-import {Representative} from "../../models/representative/Representative";
 
 @Component({
   selector: 'app-gwj-create',

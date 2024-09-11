@@ -5,9 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.nuthatch.baseentity.entity.BaseRepresentative;
 
-import java.io.Serializable;
-import java.util.UUID;
-
 /**
  * Описание комплексного типа: Representative.
  * Представитель, имеющий ФИО, должность
@@ -18,16 +15,10 @@ import java.util.UUID;
 @Table(name = "representative")
 public class Representative extends BaseRepresentative implements BaseEntity {
 
-    /**
-     * Наименование юр. лица.
+    /*
+    Организация (ЮЛ/ИП) с необязательным СРО
      */
-    @ManyToOne
-    protected LegalEntity legalEntity;
-
-    /**
-     * Наименование ИП
-     */
-    @ManyToOne
-    protected IndividualEntrepreneur individualEntrepreneur;
+    @OneToOne(cascade = CascadeType.ALL)
+    protected OrganizationWithOptionalSro organization;
 
 }

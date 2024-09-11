@@ -1,8 +1,6 @@
 package ru.nuthatch.generalworkjournal.entity.representative;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.nuthatch.baseentity.entity.BaseRepresentative;
@@ -17,16 +15,10 @@ import ru.nuthatch.baseentity.entity.BaseRepresentative;
 @Table(name = "representative")
 public class Representative extends BaseRepresentative {
 
-    /**
-     * Наименование юр. лица.
+    /*
+    Организация (ЮЛ/ИП) с необязательным СРО
      */
-    @ManyToOne
-    protected LegalEntity legalEntity;
-
-    /**
-     * Наименование ИП
-     */
-    @ManyToOne
-    protected IndividualEntrepreneur individualEntrepreneur;
+    @OneToOne(cascade = CascadeType.ALL)
+    protected OrganizationWithOptionalSro organization;
 
 }

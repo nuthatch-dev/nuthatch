@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {DocumentationService} from "../documentation.service";
-import {Node} from "../models/Node";
+import {Node} from "../../../models/administrative-document/Node";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {DatePipe, NgIf} from "@angular/common";
-import {CustomDocument} from "../models/CustomDocument";
+import {CustomDocument} from "../../../models/administrative-document/CustomDocument";
 import {dateFormat} from "../../common/CommonMethod";
-import {AttachedFile} from "../models/AttachedFile";
+import {AttachedFile} from "../../../models/administrative-document/AttachedFile";
 
 @Component({
   selector: 'app-document-list',
