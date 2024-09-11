@@ -22,7 +22,7 @@ public class IndividualEntrepreneurOrLegalEntityOrIndividualAndId {
     Обязательный элемент (одно значение из элементов типа)
     Организация (ИП / ЮЛ) с необязательным СРО
      */
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
     protected OrganizationWithOptionalSro organization;
 
     /*

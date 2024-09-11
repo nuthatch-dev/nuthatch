@@ -5,7 +5,6 @@ import {NgIf, NgTemplateOutlet} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CustomDocument} from "../../../models/administrative-document/CustomDocument";
 import {OrganizationWithOptionalSro} from "../../../models/representative/OrganizationWithOptionalSro";
-import {OrganizationWithOptionalSroAndId} from "../../../models/representative/OrganizationWithOptionalSroAndId";
 
 @Component({
   selector: 'app-developer-representative',
@@ -27,7 +26,7 @@ export class DeveloperRepresentativeComponent implements OnChanges {
   @ViewChild("createRepresentativeTemplate", {static: false}) createRepresentativeTemplate!: TemplateRef<any>;
   selectedTemplate: TemplateRef<any> | null = null;
 
-  @Input() developer: OrganizationWithOptionalSroAndId | null = null;
+  @Input() developer: OrganizationWithOptionalSro | null = null;
 
   @Output() onRepresentativeSelected = new EventEmitter<string[]>();
 

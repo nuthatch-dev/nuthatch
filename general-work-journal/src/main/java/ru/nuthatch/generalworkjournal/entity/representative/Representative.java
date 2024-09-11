@@ -1,8 +1,6 @@
 package ru.nuthatch.generalworkjournal.entity.representative;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.nuthatch.baseentity.entity.BaseRepresentative;
@@ -20,7 +18,7 @@ public class Representative extends BaseRepresentative {
     /*
     Организация (ЮЛ/ИП) с необязательным СРО
      */
-    @ManyToOne
-    protected OrganizationWithOptionalSroAndId organization;
+    @OneToOne(cascade = CascadeType.ALL)
+    protected OrganizationWithOptionalSro organization;
 
 }

@@ -18,7 +18,7 @@ public class Representative extends BaseRepresentative implements BaseEntity {
     /*
     Организация (ЮЛ/ИП) с необязательным СРО
      */
-    @ManyToOne
-    protected OrganizationWithOptionalSroAndId organization;
+    @OneToOne(cascade = CascadeType.ALL)
+    protected OrganizationWithOptionalSro organization;
 
 }

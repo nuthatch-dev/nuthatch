@@ -8,7 +8,6 @@ import ru.nuthatch.generalworkjournal.dto.TitleChangeDto;
 import ru.nuthatch.generalworkjournal.entity.controlevent.ControlEventInfo;
 import ru.nuthatch.generalworkjournal.entity.representative.IndividualEntrepreneurOrLegalEntityOrIndividualAndId;
 import ru.nuthatch.generalworkjournal.entity.representative.OrganizationWithOptionalSro;
-import ru.nuthatch.generalworkjournal.entity.representative.OrganizationWithOptionalSroAndId;
 
 import java.io.Serializable;
 import java.util.*;
@@ -145,8 +144,8 @@ public class GeneralWorkJournal extends CommonEntity implements Serializable {
     /**
      * Региональный оператор и его представители
      */
-    @OneToOne
-    protected OrganizationWithOptionalSroAndId regionalOperator;
+    @OneToOne(cascade = CascadeType.ALL)
+    protected OrganizationWithOptionalSro regionalOperator;
     @ElementCollection
     protected Set<UUID> regionalOperatorRepresentativeSet = new HashSet<>();
     // --------------------------------------------------
@@ -155,8 +154,8 @@ public class GeneralWorkJournal extends CommonEntity implements Serializable {
      * Технический заказчик и его представители
      * Необязательный элемент
      */
-    @OneToOne
-    protected OrganizationWithOptionalSroAndId technicalCustomer;
+    @OneToOne(cascade = CascadeType.ALL)
+    protected OrganizationWithOptionalSro technicalCustomer;
     @ElementCollection
     protected Set<UUID> technicalCustomerRepresentativeSet = new HashSet<>();
 
@@ -171,7 +170,7 @@ public class GeneralWorkJournal extends CommonEntity implements Serializable {
      * Лицо, осуществляющее подготовку проектной документации
      * Обязательный элемент
      */
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
     protected OrganizationWithOptionalSro projectDocumentationContractor;
 
     /**
@@ -196,8 +195,8 @@ public class GeneralWorkJournal extends CommonEntity implements Serializable {
      * Лицо, осуществляющее строительство и его представители
      * Обязательный элемент
      */
-    @OneToOne
-    protected OrganizationWithOptionalSroAndId buildingContractor;
+    @OneToOne(cascade = CascadeType.ALL)
+    protected OrganizationWithOptionalSro buildingContractor;
     @ElementCollection
     protected Set<UUID> buildingContractorRepresentativeSet = new HashSet<>();
 

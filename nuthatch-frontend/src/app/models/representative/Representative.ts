@@ -1,10 +1,10 @@
 import {FullNameGroup} from "./FullNameGroup";
-import {OrganizationWithOptionalSroAndId} from "./OrganizationWithOptionalSroAndId";
+import {OrganizationWithOptionalSro} from "./OrganizationWithOptionalSro";
 
 export interface Representative {
   uuid: string;
   fullNameGroup: FullNameGroup;
-  organization: OrganizationWithOptionalSroAndId;
+  organization: OrganizationWithOptionalSro;
   position: string;
   nostroyNumber: string;
   administrativeDocument: string;

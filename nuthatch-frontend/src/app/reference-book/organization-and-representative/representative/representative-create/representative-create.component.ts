@@ -121,16 +121,19 @@ export class RepresentativeCreateComponent implements OnInit {
 
   currentPage: number = 0;
   pageCount: number = 0;
+
   showThumbnail() {
     let filename: string = this.selectedNode!.document!.attachedFile!.thumbnails[this.currentPage];
     this.selectedThumbnail = this.thumbnailsPrefix + this.selectedNode!.document!.attachedFile?.name + "/" + filename;
   }
+
   getPreviousPage() {
     if (this.currentPage > 0) {
       this.currentPage--;
       this.showThumbnail();
     }
   }
+
   getNextPage() {
     if (this.currentPage < this.pageCount - 1) {
       this.currentPage++;
@@ -176,10 +179,8 @@ export class RepresentativeCreateComponent implements OnInit {
       },
       organization: {
         uuid: "",
-        organizationInfo: {
-          legalEntity: this.f["legalEntity"].value,
-          individualEntrepreneur: this.f["individualEntrepreneur"].value,
-        },
+        legalEntity: this.f["legalEntity"].value,
+        individualEntrepreneur: this.f["individualEntrepreneur"].value,
       },
       position: this.f["position"].value,
       nostroyNumber: this.f["nostroyNumber"].value,

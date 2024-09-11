@@ -89,7 +89,7 @@
       <div class="row">
         <div class="col-10">
           @if (createdGeneralWorkJournal.developer) {
-            <app-developer-representative [developer]="createdGeneralWorkJournal.developer.organizationWithOptionalSroAndId"
+            <app-developer-representative [developer]="createdGeneralWorkJournal.developer.organizationWithOptionalSro"
                                           (onRepresentativeSelected)="onDeveloperRepresentativeSelected($event)">
             </app-developer-representative>
           }

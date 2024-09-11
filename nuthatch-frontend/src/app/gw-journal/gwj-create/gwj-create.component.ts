@@ -176,10 +176,10 @@ export class GwjCreateComponent {
   onDeveloperSelected(developer: IndividualEntrepreneurOrLegalEntityOrIndividualAndId) {
     if (developer.individual) {
       this.developerId = developer.individual.uuid;
-    } else if (developer.organizationWithOptionalSroAndId && developer.organizationWithOptionalSroAndId.organizationInfo.legalEntity) {
-      this.developerId = developer.organizationWithOptionalSroAndId.organizationInfo.legalEntity.uuid;
+    } else if (developer.organizationWithOptionalSro && developer.organizationWithOptionalSro.legalEntity) {
+      this.developerId = developer.organizationWithOptionalSro.legalEntity.uuid;
     } else {
-      this.developerId = developer.organizationWithOptionalSroAndId!.organizationInfo.individualEntrepreneur!.uuid;
+      this.developerId = developer.organizationWithOptionalSro!.individualEntrepreneur!.uuid;
     }
     this.createdGeneralWorkJournal.developer = developer;
   }

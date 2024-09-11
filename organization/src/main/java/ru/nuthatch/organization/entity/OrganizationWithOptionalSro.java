@@ -1,16 +1,23 @@
 package ru.nuthatch.organization.entity;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Описание комплексного типа: organizationWithOptionalSro
  * Организация (ЮЛ/ИП) с необязательным СРО
  */
 @Data
-@Embeddable
-public class OrganizationWithOptionalSro {
+@Entity
+@Table(name = "organization_with_optional_sro")
+public class OrganizationWithOptionalSro implements Serializable {
+
+    @Id
+    @GeneratedValue
+    protected UUID uuid;
 
     /*
     Обязательный элемент (одно значение из элементов типа)

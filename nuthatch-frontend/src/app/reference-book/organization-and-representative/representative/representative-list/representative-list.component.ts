@@ -71,9 +71,9 @@ export class RepresentativeListComponent implements OnInit {
       lastName: this.representative.fullNameGroup.lastName,
       firstName: this.representative.fullNameGroup.firstName,
       middleName: this.representative.fullNameGroup.middleName,
-      isLegalEntityRepresentative: !!this.representative.organization.organizationInfo.legalEntity,
-      legalEntity: this.representative.organization.organizationInfo.legalEntity,
-      individualEntrepreneur: this.representative.organization.organizationInfo.individualEntrepreneur,
+      isLegalEntityRepresentative: !!this.representative.organization.legalEntity,
+      legalEntity: this.representative.organization.legalEntity,
+      individualEntrepreneur: this.representative.organization.individualEntrepreneur,
       position: this.representative.position,
       nostroyNumber: this.representative.nostroyNumber,
       administrativeDocument: this.representative.administrativeDocument,
@@ -110,7 +110,7 @@ export class RepresentativeListComponent implements OnInit {
     }
 
     let representative: Representative = {
-      uuid: this.entityIsCreated? "" : this.representative.uuid,
+      uuid: this.entityIsCreated ? "" : this.representative.uuid,
       fullNameGroup: {
         lastName: this.f["lastName"].value,
         firstName: this.f["firstName"].value,
@@ -118,10 +118,8 @@ export class RepresentativeListComponent implements OnInit {
       },
       organization: {
         uuid: "",
-        organizationInfo: {
-          legalEntity: this.f["legalEntity"].value,
-          individualEntrepreneur: this.f["individualEntrepreneur"].value,
-        }
+        legalEntity: this.f["legalEntity"].value,
+        individualEntrepreneur: this.f["individualEntrepreneur"].value,
       },
       position: this.f["position"].value,
       nostroyNumber: this.f["nostroyNumber"].value,
@@ -162,41 +160,39 @@ export class RepresentativeListComponent implements OnInit {
     },
     organization: {
       uuid: "",
-      organizationInfo: {
-        legalEntity: {
+      legalEntity: {
+        uuid: '',
+        fullName: '',
+        shortName: '',
+        inn: '',
+        ogrn: '',
+        address: '',
+        phone: '',
+        sro: {
           uuid: '',
-          fullName: '',
-          shortName: '',
+          name: '',
           inn: '',
-          ogrn: '',
-          address: '',
-          phone: '',
-          sro: {
-            uuid: '',
-            name: '',
-            inn: '',
-            ogrn: ''
-          },
-          roleSet: [],
+          ogrn: ''
         },
-        individualEntrepreneur: {
+        roleSet: [],
+      },
+      individualEntrepreneur: {
+        uuid: '',
+        fullNameGroup: {
+          lastName: '',
+          firstName: '',
+          middleName: ''
+        },
+        address: '',
+        ogrnip: '',
+        inn: '',
+        sro: {
           uuid: '',
-          fullNameGroup: {
-            lastName: '',
-            firstName: '',
-            middleName: ''
-          },
-          address: '',
-          ogrnip: '',
+          name: '',
           inn: '',
-          sro: {
-            uuid: '',
-            name: '',
-            inn: '',
-            ogrn: ''
-          },
-          roleSet: []
+          ogrn: ''
         },
+        roleSet: []
       },
     },
     position: '',

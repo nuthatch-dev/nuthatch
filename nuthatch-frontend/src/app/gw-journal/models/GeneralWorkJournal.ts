@@ -12,7 +12,6 @@ import {ExtraParameter} from "./ExtraParameter";
 import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
 } from "./IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
-import {OrganizationWithOptionalSroAndId} from "../../models/representative/OrganizationWithOptionalSroAndId";
 import {OrganizationWithOptionalSro} from "../../models/representative/OrganizationWithOptionalSro";
 
 export interface GeneralWorkJournal {
@@ -39,11 +38,11 @@ export interface GeneralWorkJournal {
   operatingPersonRepresentativeSet: string[];
 
   // Региональный оператор и его представители
-  regionalOperator: OrganizationWithOptionalSroAndId | null;
+  regionalOperator: OrganizationWithOptionalSro | null;
   regionalOperatorRepresentativeSet: string[];
 
   // Технический заказчик и его представители
-  technicalCustomer: OrganizationWithOptionalSroAndId | null;
+  technicalCustomer: OrganizationWithOptionalSro | null;
   technicalCustomerRepresentativeSet: string[];
 
   // Сведения о разрешении на строительство
