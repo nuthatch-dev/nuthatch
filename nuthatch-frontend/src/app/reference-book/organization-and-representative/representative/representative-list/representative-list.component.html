@@ -18,15 +18,15 @@
         {{ representative.fullNameGroup.middleName }}
       </td>
       <td>
-        @if (representative.legalEntity) {
-          {{ representative.legalEntity.fullName }}
+        @if (representative.organization.organizationInfo.legalEntity) {
+          {{ representative.organization.organizationInfo.legalEntity.fullName }}
         }
       </td>
       <td>
-        @if (representative.individualEntrepreneur) {
-          {{ representative.individualEntrepreneur.fullNameGroup.lastName }}
-          {{ representative.individualEntrepreneur.fullNameGroup.firstName }}
-          {{ representative.individualEntrepreneur.fullNameGroup.middleName }}
+        @if (representative.organization.organizationInfo.individualEntrepreneur) {
+          {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.lastName }}
+          {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.firstName }}
+          {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.middleName }}
         }
       </td>
       <td>{{ representative.position }}</td>
@@ -68,11 +68,13 @@
               {{ representative.fullNameGroup.firstName }}
               {{ representative.fullNameGroup.middleName }}</p>
             <h6>Является представителем</h6>
-            <p *ngIf="representative.legalEntity">{{ representative.legalEntity.fullName }}</p>
-            <p *ngIf="representative.individualEntrepreneur">
-              ИП {{ representative.individualEntrepreneur.fullNameGroup.lastName }}
-              {{ representative.individualEntrepreneur.fullNameGroup.firstName }}
-              {{ representative.individualEntrepreneur.fullNameGroup.middleName }}</p>
+            <p *ngIf="representative.organization.organizationInfo.legalEntity">
+              {{ representative.organization.organizationInfo.legalEntity.fullName }}
+            </p>
+            <p *ngIf="representative.organization.organizationInfo.individualEntrepreneur">
+              ИП {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.lastName }}
+              {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.firstName }}
+              {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.middleName }}</p>
           </div>
           <div class="col-6">
             <h6>Должность</h6>
@@ -176,10 +178,10 @@
                 </div>
                 @if (formGroup.controls["isLegalEntityRepresentative"].value) {
                   <select class="form-select mt-2" formControlName="legalEntity">
-                    <option *ngIf="representative.legalEntity"
+                    <option *ngIf="representative.organization.organizationInfo.legalEntity"
                             [defaultSelected]="true"
-                            [ngValue]="representative.legalEntity" disabled>
-                      {{ representative.legalEntity.shortName }}
+                            [ngValue]="representative.organization.organizationInfo.legalEntity" disabled>
+                      {{ representative.organization.organizationInfo.legalEntity.shortName }}
                     </option>
                     @for (le of legalEntityList; track $index) {
                       <option [ngValue]="le">{{ le.shortName }}</option>
@@ -187,12 +189,12 @@
                   </select>
                 } @else {
                   <select class="form-select mt-2" formControlName="individualEntrepreneur">
-                    <option *ngIf="representative.individualEntrepreneur"
+                    <option *ngIf="representative.organization.organizationInfo.individualEntrepreneur"
                             [defaultSelected]="true"
-                            [ngValue]="representative.individualEntrepreneur" disabled>
-                      {{ representative.individualEntrepreneur.fullNameGroup.lastName }}
-                      {{ representative.individualEntrepreneur.fullNameGroup.firstName }}
-                      {{ representative.individualEntrepreneur.fullNameGroup.middleName }}
+                            [ngValue]="representative.organization.organizationInfo.individualEntrepreneur" disabled>
+                      {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.lastName }}
+                      {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.firstName }}
+                      {{ representative.organization.organizationInfo.individualEntrepreneur.fullNameGroup.middleName }}
                     </option>
                     @for (ie of individualEntrepreneurList; track $index) {
                       <option [ngValue]="ie">

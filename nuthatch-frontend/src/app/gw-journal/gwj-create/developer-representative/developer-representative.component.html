@@ -215,7 +215,9 @@
       </form>
     </div>
     <div class="card-footer text-md-end">
-      <button class="btn btn-success" type="button" [disabled]="createRepresentativeFormGroup.invalid">
+      <button class="btn btn-success" type="button"
+              [disabled]="createRepresentativeFormGroup.invalid"
+              (click)="createRepresentative()">
         Сохранить
       </button>
     </div>

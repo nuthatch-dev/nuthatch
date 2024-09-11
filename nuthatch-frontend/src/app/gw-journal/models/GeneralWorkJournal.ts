@@ -2,7 +2,6 @@ import {DocInfo} from "./DocInfo";
 import {PermanentObjectInfo} from "./PermanentObjectInfo";
 import {ConstructionTypeName} from "./ConstructionTypeName";
 import {ExecutiveAuthorityDocInfo} from "./ExecutiveAuthorityDocInfo";
-import {OrganizationWithOptionalSro} from "./OrganizationWithOptionalSro";
 import {DesignerSupervisionRepresentativesSetItem} from "./DesignerSupervisionRepresentativesSetItem";
 import {ProjectDocumentationExaminationDetails} from "./ProjectDocumentationExaminationDetails";
 import {StateSupervisoryAuthorityInfo} from "./StateSupervisoryAuthorityInfo";
@@ -13,7 +12,8 @@ import {ExtraParameter} from "./ExtraParameter";
 import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
 } from "./IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
-import {OrganizationWithOptionalSroAndId} from "./OrganizationWithOptionalSroAndId";
+import {OrganizationWithOptionalSroAndId} from "../../models/representative/OrganizationWithOptionalSroAndId";
+import {OrganizationWithOptionalSro} from "../../models/representative/OrganizationWithOptionalSro";
 
 export interface GeneralWorkJournal {
   // Информация об UUID и редакции документа, UUID объекта капитального строительства, версии схемы

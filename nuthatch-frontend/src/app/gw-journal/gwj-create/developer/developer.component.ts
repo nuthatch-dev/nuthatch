@@ -53,9 +53,12 @@ export class DeveloperComponent implements OnInit {
   dropCounterparty() {
     this.selectedCounterparty = {
       uuid: "",
-      organizationWithOptionalSro: {
-        legalEntity: null,
-        individualEntrepreneur: null,
+      organizationWithOptionalSroAndId: {
+        uuid: "",
+        organizationInfo: {
+          legalEntity: null,
+          individualEntrepreneur: null,
+        },
       },
       individual: null,
     };
@@ -79,7 +82,7 @@ export class DeveloperComponent implements OnInit {
 
   individualEntrepreneurSelected(entity: IndividualEntrepreneur) {
     this.dropCounterparty();
-    this.selectedCounterparty!.organizationWithOptionalSro!.individualEntrepreneur = entity;
+    this.selectedCounterparty!.organizationWithOptionalSroAndId!.organizationInfo.individualEntrepreneur = entity;
     this.displayDeveloperName = this.individualEntrepreneurToString(entity);
     if (entity.sro) {
       this.displayDeveloperSro = entity.sro.name + ", ОГРН " + entity.sro.ogrn + ", ИНН " + entity.sro.inn;
@@ -91,7 +94,7 @@ export class DeveloperComponent implements OnInit {
 
   legalEntitySelected(entity: LegalEntity) {
     this.dropCounterparty();
-    this.selectedCounterparty!.organizationWithOptionalSro!.legalEntity = entity;
+    this.selectedCounterparty!.organizationWithOptionalSroAndId!.organizationInfo.legalEntity = entity;
     this.displayDeveloperName = this.legalEntityToString(entity);
     if (entity.sro) {
       this.displayDeveloperSro = entity.sro.name + ", ОГРН " + entity.sro.ogrn + ", ИНН " + entity.sro.inn;

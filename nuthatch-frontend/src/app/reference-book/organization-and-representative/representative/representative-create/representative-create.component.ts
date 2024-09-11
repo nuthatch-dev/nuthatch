@@ -3,7 +3,7 @@ import {RepresentativeService} from "../representative.service";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {IndividualEntrepreneur} from "../../../../models/representative/IndividualEntrepreneur";
 import {LegalEntity} from "../../../../models/representative/LegalEntity";
-import {Node} from "../../../administrative-documentation/models/Node";
+import {Node} from "../../../../models/administrative-document/Node";
 import {Representative} from "../../../../models/representative/Representative";
 import {Router} from "@angular/router";
 import {DatePipe, NgIf, NgOptimizedImage} from "@angular/common";
@@ -174,8 +174,13 @@ export class RepresentativeCreateComponent implements OnInit {
         firstName: this.f["firstName"].value,
         middleName: this.f["middleName"].value,
       },
-      legalEntity: this.f["legalEntity"].value,
-      individualEntrepreneur: this.f["individualEntrepreneur"].value,
+      organization: {
+        uuid: "",
+        organizationInfo: {
+          legalEntity: this.f["legalEntity"].value,
+          individualEntrepreneur: this.f["individualEntrepreneur"].value,
+        },
+      },
       position: this.f["position"].value,
       nostroyNumber: this.f["nostroyNumber"].value,
       administrativeDocument: this.administrativeDocumentId,

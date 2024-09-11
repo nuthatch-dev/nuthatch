@@ -17,16 +17,10 @@ import ru.nuthatch.baseentity.entity.BaseRepresentative;
 @Table(name = "representative")
 public class Representative extends BaseRepresentative {
 
-    /**
-     * Наименование юр. лица.
+    /*
+    Организация (ЮЛ/ИП) с необязательным СРО
      */
     @ManyToOne
-    protected LegalEntity legalEntity;
-
-    /**
-     * Наименование ИП
-     */
-    @ManyToOne
-    protected IndividualEntrepreneur individualEntrepreneur;
+    protected OrganizationWithOptionalSroAndId organization;
 
 }

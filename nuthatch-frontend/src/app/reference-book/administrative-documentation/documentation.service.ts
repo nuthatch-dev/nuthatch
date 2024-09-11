@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environment";
-import {Node} from "./models/Node";
+import {Node} from "../../models/administrative-document/Node";
 import {Observable} from "rxjs";
-import {CustomDocument} from "./models/CustomDocument";
-import {AttachedFile} from "./models/AttachedFile";
+import {CustomDocument} from "../../models/administrative-document/CustomDocument";
+import {AttachedFile} from "../../models/administrative-document/AttachedFile";
 
 @Injectable({
   providedIn: 'root'
