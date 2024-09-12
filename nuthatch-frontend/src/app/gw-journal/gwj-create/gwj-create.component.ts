@@ -1,15 +1,15 @@
-import {Component, OnChanges, SimpleChanges} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {GeneralWorkJournal} from "../models/GeneralWorkJournal";
 import {ConstructionTypeName} from "../models/ConstructionTypeName";
 import {GwJournalService} from "../gw-journal.service";
 import {Router} from "@angular/router";
 import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
-import {DeveloperComponent} from "./developer/developer.component";
 import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
 } from "../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
 import {DeveloperRepresentativeComponent} from "./developer-representative/developer-representative.component";
+import {SelectDeveloper} from "./common/select-counterparty/SelectDeveloper";
 
 @Component({
   selector: 'app-gwj-create',
@@ -20,8 +20,8 @@ import {DeveloperRepresentativeComponent} from "./developer-representative/devel
     NgIf,
     NgForOf,
     KeyValuePipe,
-    DeveloperComponent,
     DeveloperRepresentativeComponent,
+    SelectDeveloper,
   ],
   templateUrl: './gwj-create.component.html',
   styleUrl: './gwj-create.component.css'
