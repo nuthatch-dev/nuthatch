@@ -2,16 +2,16 @@
   <label class="form-label">Застройщик</label>
   <div class="col">
     <div class="d-flex justify-content-between">
-      <div class="fw-medium bg-body-tertiary flex-fill me-3 py-2 px-3 border-bottom" id="developer">
-        {{ displayDeveloperName }}
+      <div class="fw-medium bg-body-tertiary flex-fill me-3 py-2 px-3 border-bottom" id="counterparty">
+        {{ displayCounterpartyName }}
       </div>
-      <button class="btn btn-outline-primary" (click)="showDeveloperList()"
-              [disabled]="!developerAsideHidden || !counterpartyCreatedHidden">
+      <button class="btn btn-outline-primary" (click)="showCounterpartyList()"
+              [disabled]="!counterpartyAsideHidden || !counterpartyCreatedHidden">
         Выбрать из справочника
       </button>
     </div>
 
-    <div id="developerHelp" class="form-text mb-3">
+    <div id="counterpartyHelp" class="form-text mb-3">
       Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального
       предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,
       телефон/факс, адрес электронной почты (при наличии) фамилия, имя, отчество (последнее - при наличии),
@@ -19,10 +19,10 @@
       физических лиц, не являющихся индивидуальными предпринимателями
     </div>
     <label class="form-label">Саморегулируемая организация</label>
-    <div class="fw-medium bg-body-tertiary d-flex flex-fill py-2 px-3 border-bottom" id="developerSro">
-      {{ displayDeveloperSro }}
+    <div class="fw-medium bg-body-tertiary d-flex flex-fill py-2 px-3 border-bottom" id="counterpartySro">
+      {{ displayCounterpartySro }}
     </div>
-    <div id="developerSro_Help" class="form-text">
+    <div id="counterpartySro_Help" class="form-text">
       Полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой является
       указанное юридическое лицо или индивидуальный предприниматель (за исключением случаев, когда членство в
       саморегулируемых организациях в области инженерных изысканий, архитектурно-строительного проектирования,
@@ -31,8 +31,8 @@
   </div>
 
   <!-- Выбор контрагента из справочника -->
-  <div [hidden]="developerAsideHidden" class="col-6">
-    <div class="accordion" id="selectDeveloper">
+  <div [hidden]="counterpartyAsideHidden" class="col-6">
+    <div class="accordion" id="selectCounterparty">
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button fw-medium" type="button"
@@ -41,7 +41,7 @@
             Физические лица
           </button>
         </h2>
-        <div id="individual" class="accordion-collapse collapse" data-bs-parent="#selectDeveloper">
+        <div id="individual" class="accordion-collapse collapse" data-bs-parent="#selectCounterparty">
           <div class="accordion-body px-0 py-0">
             <div class="list-group list-group-flush">
               @for (individual of individualList; track $index) {
@@ -72,7 +72,7 @@
             Индивидуальные предприниматели
           </button>
         </h2>
-        <div id="individualEntrepreneur" class="accordion-collapse collapse" data-bs-parent="#selectDeveloper">
+        <div id="individualEntrepreneur" class="accordion-collapse collapse" data-bs-parent="#selectCounterparty">
           <div class="accordion-body px-0 py-0">
             <div class="list-group list-group-flush">
               @for (ie of individualEntrepreneurList; track $index) {
@@ -102,7 +102,7 @@
             Юридические лица
           </button>
         </h2>
-        <div id="legalEntity" class="accordion-collapse collapse" data-bs-parent="#selectDeveloper">
+        <div id="legalEntity" class="accordion-collapse collapse" data-bs-parent="#selectCounterparty">
           <div class="accordion-body px-0 py-0">
             <div class="list-group list-group-flush">
               @for (le of legalEntityList; track $index) {
@@ -127,7 +127,7 @@
   </div>
 
   <div [hidden]="counterpartyCreatedHidden" class="col-6">
-    <app-create-counterparty [counterpartyType]="createdCounterPartyType"
+    <app-create-counterparty [counterpartyType]="createdCounterpartyType" [role]="role"
                              (onCounterpartyCreated)="onCounterpartyCreated($event)">
     </app-create-counterparty>
   </div>

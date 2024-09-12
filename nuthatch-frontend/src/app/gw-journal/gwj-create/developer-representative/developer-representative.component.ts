@@ -27,6 +27,7 @@ export class DeveloperRepresentativeComponent implements OnChanges {
   selectedTemplate: TemplateRef<any> | null = null;
 
   @Input() developer: OrganizationWithOptionalSro | null = null;
+  @Input() developerId: string = "";
 
   @Output() onRepresentativeSelected = new EventEmitter<string[]>();
 
@@ -51,23 +52,18 @@ export class DeveloperRepresentativeComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let developer: OrganizationWithOptionalSro = changes["developer"].currentValue;
-    if (developer.legalEntity || developer.individualEntrepreneur) {
-      let developerId: string = developer.legalEntity?
-        developer.legalEntity.uuid :
-        developer.individualEntrepreneur!.uuid;
-      this.service.getRepresentativeListByCounterpartyId(developerId).subscribe({
-          next: value => {
-            if (value.length == 0) {
-              this.selectedTemplate = this.createRepresentativeTemplate;
-            } else {
-              this.availableRepresentativeList = value;
-              this.selectedTemplate = this.selectFromListTemplate;
-            }
-          },
-          error: err => console.log(err)
-        });
-    }
+    let developerId: string = changes["developerId"].currentValue;
+    this.service.getRepresentativeListByCounterpartyId(developerId).subscribe({
+      next: value => {
+        if (value.length == 0) {
+          this.selectedTemplate = this.createRepresentativeTemplate;
+        } else {
+          this.availableRepresentativeList = value;
+          this.selectedTemplate = this.selectFromListTemplate;
+        }
+      },
+      error: err => console.log(err)
+    });
   }
 
   addToList(r: Representative) {

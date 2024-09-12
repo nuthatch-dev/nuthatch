@@ -37,6 +37,7 @@ export class CreateCounterpartyComponent implements OnInit, OnChanges {
   @ViewChild("legalEntityTemplate", {static: false}) legalEntityTemplate!: TemplateRef<any>;
 
   @Input() counterpartyType: CounterpartyType | null = null;
+  @Input() role: string = "";
 
   selectedTemplate: TemplateRef<any> | null = null;
 
@@ -63,7 +64,6 @@ export class CreateCounterpartyComponent implements OnInit, OnChanges {
   individualForm: FormGroup;
   individualEntrepreneurForm: FormGroup;
   legalEntityForm: FormGroup;
-  private ROLE: string = "DEVELOPER";
 
   constructor(private service: CounterpartiesService,
               private fb: FormBuilder) {
@@ -136,7 +136,7 @@ export class CreateCounterpartyComponent implements OnInit, OnChanges {
           dateIssue: this.fi['foreign_dateIssue'].value
         }
       },
-      roleSet: [this.ROLE],
+      roleSet: [this.role],
     }
 
     this.service.createIndividual(individual).subscribe({
@@ -181,7 +181,7 @@ export class CreateCounterpartyComponent implements OnInit, OnChanges {
       ogrnip: this.fie["ogrnip"].value,
       inn: this.fie["inn"].value,
       sro: this.fie["sro"].value,
-      roleSet: [this.ROLE],
+      roleSet: [this.role],
     };
     this.service.createIndividualEntrepreneur(ie).subscribe({
       next: _ => {
@@ -206,7 +206,7 @@ export class CreateCounterpartyComponent implements OnInit, OnChanges {
       address: this.fle["address"].value,
       phone: this.fle["phone"].value,
       sro: this.fle["sro"].value,
-      roleSet: [this.ROLE],
+      roleSet: [this.role],
     }
     this.service.createLegalEntity(legalEntity).subscribe({
       next: _ => {
