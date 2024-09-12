@@ -1,10 +1,10 @@
-import {Component} from "@angular/core";
 import {SelectCounterparty} from "./SelectCounterparty";
-import {CommonSelectTemplateComponent} from "../common-template/common-select-template.component";
 import {CounterpartiesService} from "../counterparties.service";
+import {Component} from "@angular/core";
+import {CommonSelectTemplateComponent} from "../common-template/common-select-template.component";
 
 @Component({
-  selector: 'app-select-developer',
+  selector: 'app-select-operating-person',
   standalone: true,
   imports: [
     CommonSelectTemplateComponent
@@ -30,12 +30,11 @@ import {CounterpartiesService} from "../counterparties.service";
   `
 })
 
-export class SelectDeveloper extends SelectCounterparty {
+export class SelectOperatingPerson extends SelectCounterparty {
 
-  protected role: string = "DEVELOPER";
+  protected role: string = "OPERATING_PERSON";
 
   constructor(service: CounterpartiesService) {
     super(service);
   }
-
 }

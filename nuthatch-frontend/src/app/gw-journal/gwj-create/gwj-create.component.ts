@@ -10,6 +10,7 @@ import {
 } from "../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
 import {DeveloperRepresentativeComponent} from "./developer-representative/developer-representative.component";
 import {SelectDeveloper} from "./common/select-counterparty/SelectDeveloper";
+import {SelectOperatingPerson} from "./common/select-counterparty/SelectOperatingPerson";
 
 @Component({
   selector: 'app-gwj-create',
@@ -22,6 +23,7 @@ import {SelectDeveloper} from "./common/select-counterparty/SelectDeveloper";
     KeyValuePipe,
     DeveloperRepresentativeComponent,
     SelectDeveloper,
+    SelectOperatingPerson,
   ],
   templateUrl: './gwj-create.component.html',
   styleUrl: './gwj-create.component.css'
@@ -173,19 +175,30 @@ export class GwjCreateComponent {
   Выбор застройщика, передача Id застройщика для выбора представителей
    */
   developerId: string = "";
+
+  setDeveloperId(id: string) {
+    this.developerId = id;
+  }
+
   onDeveloperSelected(developer: IndividualEntrepreneurOrLegalEntityOrIndividualAndId) {
-    if (developer.individual) {
-      this.developerId = developer.individual.uuid;
-    } else if (developer.organizationWithOptionalSro && developer.organizationWithOptionalSro.legalEntity) {
-      this.developerId = developer.organizationWithOptionalSro.legalEntity.uuid;
-    } else {
-      this.developerId = developer.organizationWithOptionalSro!.individualEntrepreneur!.uuid;
-    }
     this.createdGeneralWorkJournal.developer = developer;
   }
 
   onDeveloperRepresentativeSelected(representativeIdSet: string[]) {
     this.createdGeneralWorkJournal.developerRepresentativeSet = representativeIdSet;
+  }
+
+  /*
+  Выбор лица, ответственного за эксплуатацию
+   */
+  operatingPersonId: string = "";
+
+  setOperatingPersonId(id: string) {
+    this.operatingPersonId = id;
+  }
+
+  onOperatingPersonSelected(operatingPerson: IndividualEntrepreneurOrLegalEntityOrIndividualAndId) {
+    this.createdGeneralWorkJournal.operatingPerson = operatingPerson;
   }
 
 

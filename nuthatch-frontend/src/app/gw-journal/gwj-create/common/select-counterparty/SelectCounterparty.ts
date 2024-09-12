@@ -11,7 +11,7 @@ import {CounterpartyType} from "../counterparty-type";
 @Directive()
 export abstract class SelectCounterparty implements OnInit {
 
-  abstract role: string;
+  protected abstract role: string;
 
   individualList: Individual[] = [];
   individualEntrepreneurList: IndividualEntrepreneur[] = [];
@@ -50,8 +50,12 @@ export abstract class SelectCounterparty implements OnInit {
   @Output() onCounterpartySelected =
     new EventEmitter<IndividualEntrepreneurOrLegalEntityOrIndividualAndId>();
 
-  counterpartySelected(counterparty: IndividualEntrepreneurOrLegalEntityOrIndividualAndId) {
+  @Output() counterpartyId = new EventEmitter<string>();
+
+  counterpartySelected(counterparty: IndividualEntrepreneurOrLegalEntityOrIndividualAndId,
+                       counterpartyId: string) {
     this.onCounterpartySelected.emit(counterparty);
+    this.counterpartyId.emit(counterpartyId);
     this.counterpartyAsideHidden = true;
   }
 
@@ -105,7 +109,7 @@ export abstract class SelectCounterparty implements OnInit {
     this.selectedCounterparty!.individual = entity;
     this.displayCounterpartyName = this.individualToString(entity);
     this.displayCounterpartySro = "н/у";
-    this.counterpartySelected(this.selectedCounterparty!)
+    this.counterpartySelected(this.selectedCounterparty!, this.selectedCounterparty!.individual.uuid)
   }
 
   individualEntrepreneurSelected(entity: IndividualEntrepreneur) {
@@ -117,7 +121,8 @@ export abstract class SelectCounterparty implements OnInit {
     } else {
       this.displayCounterpartySro = "н/у";
     }
-    this.counterpartySelected(this.selectedCounterparty!)
+    this.counterpartySelected(this.selectedCounterparty!,
+      this.selectedCounterparty!.organizationWithOptionalSro!.individualEntrepreneur.uuid)
   }
 
   legalEntitySelected(entity: LegalEntity) {
@@ -129,7 +134,8 @@ export abstract class SelectCounterparty implements OnInit {
     } else {
       this.displayCounterpartySro = "н/у";
     }
-    this.counterpartySelected(this.selectedCounterparty!)
+    this.counterpartySelected(this.selectedCounterparty!,
+      this.selectedCounterparty!.organizationWithOptionalSro!.legalEntity.uuid)
   }
 
   /*

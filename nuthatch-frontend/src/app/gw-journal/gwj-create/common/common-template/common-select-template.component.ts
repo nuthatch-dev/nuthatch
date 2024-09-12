@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, input, Input, Output} from '@angular/core';
 import {CreateCounterpartyComponent} from "../create-counterparty/create-counterparty.component";
 import {Individual} from "../../../../models/representative/Individual";
 import {IndividualEntrepreneur} from "../../../../models/representative/IndividualEntrepreneur";
@@ -15,6 +15,8 @@ import {CounterpartyType} from "../counterparty-type";
   styleUrl: './common-select-template.component.css'
 })
 export class CommonSelectTemplateComponent {
+
+  @Input() role: string = "";
 
   @Input() individualList: Individual[] = [];
   @Input() individualEntrepreneurList: IndividualEntrepreneur[] = [];
