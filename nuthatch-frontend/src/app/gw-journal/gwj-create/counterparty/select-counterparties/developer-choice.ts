@@ -1,4 +1,4 @@
-import {ChoiceOfAllTypes} from "./abstract-select/choice-of-all-types";
+import {ChoiceOfAllTypes} from "./common/choice-of-all-types";
 import {Component} from "@angular/core";
 import {CreateCounterpartyComponent} from "../create-counterparty/create-counterparty.component";
 import {CounterpartyType} from "../counterparty-type";

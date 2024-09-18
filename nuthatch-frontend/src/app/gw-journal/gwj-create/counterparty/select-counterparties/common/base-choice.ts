@@ -32,9 +32,7 @@ export abstract class BaseChoice<T extends OrganizationWithOptionalSro |
   /*
   Вывод выбранного представителя для формирования ОЖР
    */
-  @Output() onCounterpartySelected =
-    new EventEmitter<T>();
-
+  @Output() onCounterpartySelected = new EventEmitter<T>();
   @Output() counterpartyId = new EventEmitter<string>();
 
   counterpartySelected(counterparty: T,

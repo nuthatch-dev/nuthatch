@@ -9,19 +9,19 @@ import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
 } from "../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
 import {DeveloperRepresentativeComponent} from "./developer-representative/developer-representative.component";
-import {SelectDeveloper} from "./common/select-counterparty/SelectDeveloper";
-import {SelectOperatingPerson} from "./common/select-counterparty/SelectOperatingPerson";
 import {OrganizationWithOptionalSro} from "../../models/representative/OrganizationWithOptionalSro";
-import {SelectTechnicalCustomer} from "./common/select-counterparty/SelectTechnicalCustomer";
-import {SelectRegionalOperator} from "./common/select-counterparty/SelectRegionalOperator";
-import {DeveloperChoice} from "./common/select-counterparties/developer-choice";
-import {TechnicalCustomerChoice} from "./common/select-counterparties/technical-customer-choice";
-import {OperationPersonChoice} from "./common/select-counterparties/operation-person-choice";
-import {RegionalOperatorChoice} from "./common/select-counterparties/regional-operator-choice";
+import {DeveloperChoice} from "./counterparty/select-counterparties/developer-choice";
+import {TechnicalCustomerChoice} from "./counterparty/select-counterparties/technical-customer-choice";
+import {OperationPersonChoice} from "./counterparty/select-counterparties/operation-person-choice";
+import {RegionalOperatorChoice} from "./counterparty/select-counterparties/regional-operator-choice";
 import {
   ProjectDocumentationContractorChoice
-} from "./common/select-counterparties/project-documentation-contractor-choice";
-import {BuildingContractorChoice} from "./common/select-counterparties/building-contractor-choice";
+} from "./counterparty/select-counterparties/project-documentation-contractor-choice";
+import {BuildingContractorChoice} from "./counterparty/select-counterparties/building-contractor-choice";
+import {DeveloperRepresentativeSelect} from "./representative/select-representatives/developer-representative-select";
+import {
+  TechnicalCustomerRepresentativeSelect
+} from "./representative/select-representatives/technical-customer-representative-select";
 
 @Component({
   selector: 'app-gwj-create',
@@ -33,16 +33,14 @@ import {BuildingContractorChoice} from "./common/select-counterparties/building-
     NgForOf,
     KeyValuePipe,
     DeveloperRepresentativeComponent,
-    SelectDeveloper,
-    SelectOperatingPerson,
-    SelectTechnicalCustomer,
-    SelectRegionalOperator,
     DeveloperChoice,
     TechnicalCustomerChoice,
     OperationPersonChoice,
     RegionalOperatorChoice,
     ProjectDocumentationContractorChoice,
     BuildingContractorChoice,
+    DeveloperRepresentativeSelect,
+    TechnicalCustomerRepresentativeSelect,
   ],
   templateUrl: './gwj-create.component.html',
   styleUrl: './gwj-create.component.css'
@@ -221,6 +219,10 @@ export class GwjCreateComponent {
     this.createdGeneralWorkJournal.operatingPerson = op;
   }
 
+  onOperatingPersonRepresentativeSelected(representativeIdSet: string[]) {
+    this.createdGeneralWorkJournal.operatingPersonRepresentativeSet = representativeIdSet;
+  }
+
   /*
   Выбор регионального оператора
    */
@@ -245,6 +247,10 @@ export class GwjCreateComponent {
 
   onTechnicalCustomerSelected(tc: OrganizationWithOptionalSro) {
     this.createdGeneralWorkJournal.technicalCustomer = tc;
+  }
+
+  onTechnicalCustomerRepresentativeSelected(representativeIdSet: string[]) {
+    this.createdGeneralWorkJournal.technicalCustomerRepresentativeSet = representativeIdSet;
   }
 
   /*

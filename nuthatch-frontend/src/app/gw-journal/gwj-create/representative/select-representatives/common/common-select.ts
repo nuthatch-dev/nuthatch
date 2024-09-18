@@ -1,23 +1,12 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
-import {DeveloperRepresentativeService} from "./developer-representative.service";
-import {Representative} from "../../../models/representative/Representative";
-import {NgIf, NgTemplateOutlet} from "@angular/common";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {CustomDocument} from "../../../models/administrative-document/CustomDocument";
-import {OrganizationWithOptionalSro} from "../../../models/representative/OrganizationWithOptionalSro";
+import {Directive, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild} from "@angular/core";
+import {Representative} from "../../../../../models/representative/Representative";
+import {OrganizationWithOptionalSro} from "../../../../../models/representative/OrganizationWithOptionalSro";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {DeveloperRepresentativeService} from "../../../developer-representative/developer-representative.service";
+import {CustomDocument} from "../../../../../models/administrative-document/CustomDocument";
 
-@Component({
-  selector: 'app-developer-representative',
-  standalone: true,
-  imports: [
-    NgTemplateOutlet,
-    ReactiveFormsModule,
-    NgIf
-  ],
-  templateUrl: './developer-representative.component.html',
-  styleUrl: './developer-representative.component.css'
-})
-export class DeveloperRepresentativeComponent implements OnChanges {
+@Directive()
+export abstract class CommonSelect implements OnChanges {
 
   availableRepresentativeList: Representative[] = [];
   selectedRepresentativeList: Representative[] = [];
@@ -26,8 +15,8 @@ export class DeveloperRepresentativeComponent implements OnChanges {
   @ViewChild("createRepresentativeTemplate", {static: false}) createRepresentativeTemplate!: TemplateRef<any>;
   selectedTemplate: TemplateRef<any> | null = null;
 
-  @Input() developer: OrganizationWithOptionalSro | null = null;
-  @Input() developerId: string = "";
+  @Input() counterparty: OrganizationWithOptionalSro | null = null;
+  @Input() counterpartyId: string = "";
 
   @Output() onRepresentativeSelected = new EventEmitter<string[]>();
 
@@ -52,8 +41,8 @@ export class DeveloperRepresentativeComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let developerId: string = changes["developerId"].currentValue;
-    this.service.getRepresentativeListByCounterpartyId(developerId).subscribe({
+    let counterpartyId: string = changes["counterpartyId"].currentValue;
+    this.service.getRepresentativeListByCounterpartyId(counterpartyId).subscribe({
       next: value => {
         if (value.length == 0) {
           this.selectedTemplate = this.createRepresentativeTemplate;
@@ -108,7 +97,7 @@ export class DeveloperRepresentativeComponent implements OnChanges {
             firstName: this.f["firstName"].value,
             middleName: this.f["middleName"].value,
           },
-          organization: this.developer!,
+          organization: this.counterparty!,
           position: this.f["position"].value,
           nostroyNumber: this.f["nostroyNumber"].value,
           administrativeDocument: cd.uuid,
@@ -122,7 +111,6 @@ export class DeveloperRepresentativeComponent implements OnChanges {
       },
       error: err => console.log(err)
     });
-
-
   }
+
 }

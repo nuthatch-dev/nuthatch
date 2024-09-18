@@ -90,10 +90,11 @@
       <div class="row">
         <div class="col-10">
           @if (createdGeneralWorkJournal.developer) {
-            <app-developer-representative [developerId]="developerId"
-                                          [developer]="createdGeneralWorkJournal.developer.organizationWithOptionalSro"
-                                          (onRepresentativeSelected)="onDeveloperRepresentativeSelected($event)">
-            </app-developer-representative>
+            <app-developer-representative-select
+              [counterpartyId]="developerId"
+              [counterparty]="createdGeneralWorkJournal.developer.organizationWithOptionalSro"
+              (onRepresentativeSelected)="onDeveloperRepresentativeSelected($event)">
+            </app-developer-representative-select>
           }
         </div>
         <div class="col-2">
@@ -115,52 +116,15 @@
 
       <div class="row">
         <div class="col-10">
-          <!--          @if (createdGeneralWorkJournal.technicalCustomer) {-->
-          <!--            <app-developer-representative [developerId]="developerId"-->
-          <!--                                          [developer]="createdGeneralWorkJournal.organizationWithOptionalSro"-->
-          <!--                                          (onRepresentativeSelected)="onDeveloperRepresentativeSelected($event)">-->
-          <!--            </app-developer-representative>-->
-          <!--          }-->
+          @if (createdGeneralWorkJournal.technicalCustomer) {
+            <app-technical-customer-representative-select
+              [counterpartyId]="technicalCustomerId"
+              [counterparty]="createdGeneralWorkJournal.technicalCustomer"
+              (onRepresentativeSelected)="onTechnicalCustomerRepresentativeSelected($event)">
+            </app-technical-customer-representative-select>
+          }
         </div>
         <div class="col-2">
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <h5 class="text-center">Уполномоченный представитель технического заказчика</h5>
-        <table class="table table-sm table-stripped table-bordered my-3">
-          <thead>
-          <tr class="text-md-center align-top">
-            <th style="width: 5%">№ п/п</th>
-            <th style="width: 30%">Фамилия, имя, отчество (последнее при наличии)</th>
-            <th style="width: 25%">Должность (при наличии)</th>
-            <th style="width: 20%">Наименование, дата, номер документа, подтверждающего полномочие</th>
-            <th style="width: 20%">
-              Идентификационный номер в национальном реестре специалистов в области строительства *
-            </th>
-          </tr>
-          <tr class="text-md-center">
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
-          </tr>
-          </thead>
-          <tbody class="table-group-divider">
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          </tbody>
-        </table>
-        <div class="form-text">
-          * за исключением случаев, когда членство в саморегулируемых организациях в области инженерных
-          изысканий, архитектурно- строительного проектирования, строительства, реконструкции, капитального
-          ремонта объектов капитального строительства не требуется
         </div>
       </div>
 
@@ -181,13 +145,13 @@
           (counterpartyId)="setRegionalOperatorId($event)">
         </app-regional-operator-choice>
 
-<!--        <div id="operatingHelp" class="form-text">-->
-<!--          Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального-->
-<!--          предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,-->
-<!--          телефон/факс, адрес электронной почты (при наличии), <br>-->
-<!--          фамилия, имя, отчество (последнее - при наличии), паспортные данные, адрес места жительства, телефон/факс,-->
-<!--          адрес электронной почты (при наличии) - для физических лиц, не являющихся индивидуальными предпринимателями-->
-<!--        </div>-->
+        <!--        <div id="operatingHelp" class="form-text">-->
+        <!--          Фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального-->
+        <!--          предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,-->
+        <!--          телефон/факс, адрес электронной почты (при наличии), <br>-->
+        <!--          фамилия, имя, отчество (последнее - при наличии), паспортные данные, адрес места жительства, телефон/факс,-->
+        <!--          адрес электронной почты (при наличии) - для физических лиц, не являющихся индивидуальными предпринимателями-->
+        <!--        </div>-->
 
         <div class="mt-4">
           <h5 class="text-center">

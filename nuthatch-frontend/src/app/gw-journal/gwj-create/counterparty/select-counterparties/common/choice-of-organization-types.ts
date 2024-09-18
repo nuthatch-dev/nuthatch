@@ -25,7 +25,7 @@ export abstract class ChoiceOfOrganizationTypes extends BaseChoice<OrganizationW
   }
 
   /*
-  Отображение выбранного контрагента в качестве застройщика, отображение СРО (при наличии).
+  Отображение выбранного контрагента, отображение СРО (при наличии).
   Передача контрагента в виде IndividualEntrepreneurOrLegalEntityOrIndividualAndId
   для сохранения в ОЖР
    */

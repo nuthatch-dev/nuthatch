@@ -1,19 +1,19 @@
-import {ChoiceOfAllTypes} from "./abstract-select/choice-of-all-types";
+import {ChoiceOfOrganizationTypes} from "./common/choice-of-organization-types";
 import {CounterpartyType} from "../counterparty-type";
 import {Component} from "@angular/core";
 import {CreateCounterpartyComponent} from "../create-counterparty/create-counterparty.component";
 
 @Component({
-  selector: "app-operation-person-choice",
+  selector: "app-regional-operator-choice",
   standalone: true,
   imports: [
     CreateCounterpartyComponent
   ],
-  templateUrl: "./template/operation-person-template.html"
+  templateUrl: "./template/regional-operator-template.html"
 })
-export class OperationPersonChoice extends ChoiceOfAllTypes {
+export class RegionalOperatorChoice extends ChoiceOfOrganizationTypes {
 
-  protected role: string = "OPERATING_PERSON";
+  protected role: string = "REGIONAL_OPERATOR";
   protected readonly CounterpartyType = CounterpartyType;
 
 }

@@ -8,7 +8,7 @@ import {CustomDocument} from "../../../models/administrative-document/CustomDocu
 @Injectable({
   providedIn: 'root'
 })
-export class DeveloperRepresentativeService {
+export class RepresentativeService {
 
   constructor(private http: HttpClient) { }
 
@@ -29,7 +29,4 @@ export class DeveloperRepresentativeService {
     return this.http.post<CustomDocument>(`${this.DOCUMENT_BASE_URL}`, document);
   }
 
-  getDocumentById(id: string): Observable<CustomDocument> {
-    return this.http.get<CustomDocument>(`${this.DOCUMENT_BASE_URL}?id=${id}`);
-  }
 }
