@@ -61,7 +61,8 @@ export interface GeneralWorkJournal {
   projectDocumentationExaminationDetails: ProjectDocumentationExaminationDetails | null;
 
   // Лицо, осуществляющее строительство и его представители
-  buildingContractorWithRepresentatives: string;
+  buildingContractor: OrganizationWithOptionalSro | null;
+  buildingContractorRepresentativeSet: string[];
 
   // Другие лица, осуществляющие строительство, их уполномоченные представители
   otherDevelopersRepresentativesSet: string[];

@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col">
+    <h6 class="form-label">Наименование</h6>
+    <div class="d-flex justify-content-between">
+      <div class="fw-medium bg-body-tertiary flex-fill me-3 py-2 px-3 border-bottom" id="counterparty">
+        {{ displayCounterpartyName }}
+      </div>
+      <button class="btn btn-outline-primary" (click)="showCounterpartyList()"
+              [disabled]="!counterpartyAsideHidden || !counterpartyCreatedHidden">
+        Выбрать из справочника
+      </button>
+    </div>
+
+    <div id="counterpartyHelp" class="form-text mb-3">
+      фамилия, имя, отчество (последнее - при наличии), адрес места жительства, ОГРНИП, ИНН индивидуального
+      предпринимателя, полное и (или) сокращенное наименование, ОГРН, ИНН, место нахождения юридического лица,
+      телефон/факс, адрес электронной почты (при наличии)
+    </div>
+    <h6>Саморегулируемая организация</h6>
+    <div class="fw-medium bg-body-tertiary d-flex flex-fill py-2 px-3 border-bottom" id="counterpartySro">
+      {{ displayCounterpartySro }}
+    </div>
+    <div id="counterpartySro_Help" class="form-text">
+      полное и (или) сокращенное наименование, ОГРН, ИНН саморегулируемой организации, членом которой является
+      указанное юридическое лицо или индивидуальный предприниматель (за исключением случаев, когда членство в
+      саморегулируемых организациях в области инженерных изысканий, архитектурно-строительного проектирования,
+      строительства, реконструкции, капитального ремонта объектов капитального строительства не требуется)
+    </div>
+  </div>
+
+  <!-- Выбор контрагента из справочника -->
+  <div [hidden]="counterpartyAsideHidden" class="col-6">
+    <div class="accordion" id="selectBuildingContractor">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button fw-medium" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#bc_individualEntrepreneur"
+                  aria-expanded="true" aria-controls="bc_individualEntrepreneur">
+            Индивидуальные предприниматели
+          </button>
+        </h2>
+        <div id="bc_individualEntrepreneur" class="accordion-collapse collapse"
+             data-bs-parent="#selectBuildingContractor">
+          <div class="accordion-body px-0 py-0">
+            <div class="list-group list-group-flush">
+              @for (ie of individualEntrepreneurList; track $index) {
+                <button type="button" class="list-group-item list-group-item-action"
+                        (click)="individualEntrepreneurSelected(ie)">
+                  {{ ie.fullNameGroup.lastName }}
+                  {{ ie.fullNameGroup.firstName }}
+                  {{ ie.fullNameGroup.middleName }}
+                </button>
+              }
+            </div>
+            <div class="text-end mb-2 mx-3">
+              <hr class="mt-0 mb-2">
+              <button type="button" class="btn btn-sm btn-outline-primary"
+                      (click)="createNewCounterparty(CounterpartyType.INDIVIDUAL_ENTREPRENEUR)">
+                <i class="bi-person-add"></i>
+                Добавить нового ИП
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#bc_legalEntity" aria-expanded="true" aria-controls="bc_legalEntity">
+            Юридические лица
+          </button>
+        </h2>
+        <div id="bc_legalEntity" class="accordion-collapse collapse" data-bs-parent="#selectBuildingContractor">
+          <div class="accordion-body px-0 py-0">
+            <div class="list-group list-group-flush">
+              @for (le of legalEntityList; track $index) {
+                <button type="button" class="list-group-item list-group-item-action"
+                        (click)="legalEntitySelected(le)">
+                  {{ le.fullName }}
+                </button>
+              }
+            </div>
+            <div class="text-end mb-2 mx-3">
+              <hr class="mt-0 mb-2">
+              <button type="button" class="btn btn-sm btn-outline-primary"
+                      (click)="createNewCounterparty(CounterpartyType.LEGAL_ENTITY)">
+                <i class="bi-person-add"></i>
+                Добавить новое ЮЛ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div [hidden]="counterpartyCreatedHidden" class="col-6">
+    <app-create-counterparty [counterpartyType]="createdCounterPartyType" [role]="role"
+                             (onCounterpartyCreated)="onCounterpartyCreated($event)">
+    </app-create-counterparty>
+  </div>
+</div>
