@@ -11,6 +11,17 @@ import {
 import {DeveloperRepresentativeComponent} from "./developer-representative/developer-representative.component";
 import {SelectDeveloper} from "./common/select-counterparty/SelectDeveloper";
 import {SelectOperatingPerson} from "./common/select-counterparty/SelectOperatingPerson";
+import {OrganizationWithOptionalSro} from "../../models/representative/OrganizationWithOptionalSro";
+import {SelectTechnicalCustomer} from "./common/select-counterparty/SelectTechnicalCustomer";
+import {SelectRegionalOperator} from "./common/select-counterparty/SelectRegionalOperator";
+import {DeveloperChoice} from "./common/select-counterparties/developer-choice";
+import {TechnicalCustomerChoice} from "./common/select-counterparties/technical-customer-choice";
+import {OperationPersonChoice} from "./common/select-counterparties/operation-person-choice";
+import {RegionalOperatorChoice} from "./common/select-counterparties/regional-operator-choice";
+import {
+  ProjectDocumentationContractorChoice
+} from "./common/select-counterparties/project-documentation-contractor-choice";
+import {BuildingContractorChoice} from "./common/select-counterparties/building-contractor-choice";
 
 @Component({
   selector: 'app-gwj-create',
@@ -24,6 +35,14 @@ import {SelectOperatingPerson} from "./common/select-counterparty/SelectOperatin
     DeveloperRepresentativeComponent,
     SelectDeveloper,
     SelectOperatingPerson,
+    SelectTechnicalCustomer,
+    SelectRegionalOperator,
+    DeveloperChoice,
+    TechnicalCustomerChoice,
+    OperationPersonChoice,
+    RegionalOperatorChoice,
+    ProjectDocumentationContractorChoice,
+    BuildingContractorChoice,
   ],
   templateUrl: './gwj-create.component.html',
   styleUrl: './gwj-create.component.css'
@@ -102,13 +121,13 @@ export class GwjCreateComponent {
         },
       },
       constructionTypeName: this.f['constructionTypeName'].value,
-      developer: this.f['developerWithRepresentatives'].value,
+      developer: this.createdGeneralWorkJournal.developer,
       developerRepresentativeSet: [],
-      operatingPerson: this.f['operatingPersonWithRepresentatives'].value,
+      operatingPerson: this.createdGeneralWorkJournal.operatingPerson,
       operatingPersonRepresentativeSet: [],
-      regionalOperator: this.f['regionalOperatorWithRepresentatives'].value,
+      regionalOperator: this.createdGeneralWorkJournal.regionalOperator,
       regionalOperatorRepresentativeSet: [],
-      technicalCustomer: this.f['technicalCustomerWithRepresentatives'].value,
+      technicalCustomer: this.createdGeneralWorkJournal.technicalCustomer,
       technicalCustomerRepresentativeSet: [],
       permissionToConstructionRoot: {
         uuid: '',
@@ -121,14 +140,15 @@ export class GwjCreateComponent {
         executiveAuthorityId: this.f['permission_ExecutiveAuthorityId'].value,
         executiveAuthorityTitle: this.f['permission_ExecutiveAuthorityTitle'].value,
       },
-      projectDocumentationContractor: this.f[''].value,
+      projectDocumentationContractor: this.createdGeneralWorkJournal.projectDocumentationContractor,
       designerSupervisionRepresentativesSet: this.f['designerSupervisionRepresentativesSet'].value,
       projectDocumentationExaminationDetails: {
         sequenceNumber: this.f['projectExamination_SequenceNumber'].value,
         expertiseConclusionRequisites: this.f['projectExamination_Requisites'].value,
         executiveAuthorityName: this.f['projectExamination_AuthorityName'].value,
       },
-      buildingContractorWithRepresentatives: this.f['buildingContractorWithRepresentatives'].value,
+      buildingContractor: this.createdGeneralWorkJournal.buildingContractor,
+      buildingContractorRepresentativeSet: this.createdGeneralWorkJournal.buildingContractorRepresentativeSet,
       otherDevelopersRepresentativesSet: this.f['otherDevelopersRepresentativesSet'].value,
       stateSupervisoryAuthorityInfo: {
         uuid: '',
@@ -197,10 +217,61 @@ export class GwjCreateComponent {
     this.operatingPersonId = id;
   }
 
-  onOperatingPersonSelected(operatingPerson: IndividualEntrepreneurOrLegalEntityOrIndividualAndId) {
-    this.createdGeneralWorkJournal.operatingPerson = operatingPerson;
+  onOperatingPersonSelected(op: IndividualEntrepreneurOrLegalEntityOrIndividualAndId) {
+    this.createdGeneralWorkJournal.operatingPerson = op;
   }
 
+  /*
+  Выбор регионального оператора
+   */
+  regionalOperatorId: string = "";
+
+  setRegionalOperatorId(id: string) {
+    this.regionalOperatorId = id;
+  }
+
+  onRegionalOperatorSelected(ro: OrganizationWithOptionalSro) {
+    this.createdGeneralWorkJournal.regionalOperator = ro;
+  }
+
+  /*
+  Выбор технического заказчика
+   */
+  technicalCustomerId: string = "";
+
+  setTechnicalCustomerId(id: string) {
+    this.technicalCustomerId = id;
+  }
+
+  onTechnicalCustomerSelected(tc: OrganizationWithOptionalSro) {
+    this.createdGeneralWorkJournal.technicalCustomer = tc;
+  }
+
+  /*
+  Выбор лица, осуществляющего подготовку проектной документации
+   */
+  projectDocumentationContractorId: string = "";
+
+  setProjectDocumentationContractorId(id: string) {
+    this.projectDocumentationContractorId = id;
+  }
+
+  onProjectDocumentationContractorSelected(pdc: OrganizationWithOptionalSro) {
+    this.createdGeneralWorkJournal.projectDocumentationContractor = pdc;
+  }
+
+  /*
+  Выбор лица, осуществляющего строительство
+   */
+  buildingContractorId: string = "";
+
+  setBuildingContractorId(id: string) {
+    this.buildingContractorId = id;
+  }
+
+  onBuildingContractorSelected(bc: OrganizationWithOptionalSro) {
+    this.createdGeneralWorkJournal.buildingContractor = bc;
+  }
 
   createdGeneralWorkJournal: GeneralWorkJournal = {
     uuid: "",
@@ -230,7 +301,8 @@ export class GwjCreateComponent {
     projectDocumentationContractor: null,
     designerSupervisionRepresentativesSet: [],
     projectDocumentationExaminationDetails: null,
-    buildingContractorWithRepresentatives: "",
+    buildingContractor: null,
+    buildingContractorRepresentativeSet: [],
     otherDevelopersRepresentativesSet: [],
     stateSupervisoryAuthorityInfo: null,
     permanentObjectCommonInfo: null,

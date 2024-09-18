@@ -1,58 +1,43 @@
-import {Individual} from "../../../../models/representative/Individual";
-import {IndividualEntrepreneur} from "../../../../models/representative/IndividualEntrepreneur";
-import {LegalEntity} from "../../../../models/representative/LegalEntity";
-import {Directive, EventEmitter, OnInit, Output} from "@angular/core";
-import {CounterpartiesService} from "../counterparties.service";
+import {Individual} from "../../../../../models/representative/Individual";
+import {IndividualEntrepreneur} from "../../../../../models/representative/IndividualEntrepreneur";
+import {LegalEntity} from "../../../../../models/representative/LegalEntity";
+import {CounterpartiesService} from "../../counterparties.service";
 import {
   IndividualEntrepreneurOrLegalEntityOrIndividualAndId
-} from "../../../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
-import {CounterpartyType} from "../counterparty-type";
+} from "../../../../models/IndividualEntrepreneurOrLegalEntityOrIndividualAndId";
+import {Directive, EventEmitter, Output} from "@angular/core";
+import {CounterpartyType} from "../../counterparty-type";
+import {OrganizationWithOptionalSro} from "../../../../../models/representative/OrganizationWithOptionalSro";
 
 @Directive()
-export abstract class SelectCounterparty implements OnInit {
+export abstract class BaseChoice<T extends OrganizationWithOptionalSro |
+  IndividualEntrepreneurOrLegalEntityOrIndividualAndId> {
 
   protected abstract role: string;
 
-  individualList: Individual[] = [];
-  individualEntrepreneurList: IndividualEntrepreneur[] = [];
-  legalEntityList: LegalEntity[] = [];
+  protected individualList: Individual[] = [];
+  protected individualEntrepreneurList: IndividualEntrepreneur[] = [];
+  protected legalEntityList: LegalEntity[] = [];
 
-
-  protected constructor(private service: CounterpartiesService) {
-  }
-
-  ngOnInit() {
-    this.getIndividualList();
-    this.getIndividualEntrepreneurList();
-    this.getLegalEntityList();
+  constructor(private service: CounterpartiesService) {
   }
 
   /*
   Сущность для формирования вывода, метод сброса полей
   */
-  selectedCounterparty: IndividualEntrepreneurOrLegalEntityOrIndividualAndId | null = null;
+  selectedCounterparty: T | null = null;
 
-  dropCounterparty() {
-    this.selectedCounterparty = {
-      uuid: "",
-      organizationWithOptionalSro: {
-        uuid: "",
-        legalEntity: null,
-        individualEntrepreneur: null,
-      },
-      individual: null,
-    };
-  }
+  abstract dropCounterparty(): void;
 
   /*
   Вывод выбранного представителя для формирования ОЖР
    */
   @Output() onCounterpartySelected =
-    new EventEmitter<IndividualEntrepreneurOrLegalEntityOrIndividualAndId>();
+    new EventEmitter<T>();
 
   @Output() counterpartyId = new EventEmitter<string>();
 
-  counterpartySelected(counterparty: IndividualEntrepreneurOrLegalEntityOrIndividualAndId,
+  counterpartySelected(counterparty: T,
                        counterpartyId: string) {
     this.onCounterpartySelected.emit(counterparty);
     this.counterpartyId.emit(counterpartyId);
@@ -62,7 +47,7 @@ export abstract class SelectCounterparty implements OnInit {
   /*
   Получение списков представителей в зависимости от роли контрагента
    */
-  private getIndividualList() {
+  protected getIndividualList() {
     this.service.getIndividualListByRole(this.role).subscribe({
       next: value => {
         this.individualList = value;
@@ -71,7 +56,7 @@ export abstract class SelectCounterparty implements OnInit {
     });
   }
 
-  private getIndividualEntrepreneurList() {
+  protected getIndividualEntrepreneurList() {
     this.service.getIndividualEntrepreneurListByRole(this.role).subscribe({
       next: value => {
         this.individualEntrepreneurList = value;
@@ -80,7 +65,7 @@ export abstract class SelectCounterparty implements OnInit {
     });
   }
 
-  private getLegalEntityList() {
+  protected getLegalEntityList() {
     this.service.getLegalEntityListByRole(this.role).subscribe({
       next: value => {
         this.legalEntityList = value;
@@ -104,44 +89,16 @@ export abstract class SelectCounterparty implements OnInit {
   displayCounterpartyName: string = " ";
   displayCounterpartySro: string = "н/у";
 
-  individualSelected(entity: Individual) {
-    this.dropCounterparty();
-    this.selectedCounterparty!.individual = entity;
-    this.displayCounterpartyName = this.individualToString(entity);
-    this.displayCounterpartySro = "н/у";
-    this.counterpartySelected(this.selectedCounterparty!, this.selectedCounterparty!.individual.uuid)
-  }
+  abstract individualSelected(entity: Individual): void;
 
-  individualEntrepreneurSelected(entity: IndividualEntrepreneur) {
-    this.dropCounterparty();
-    this.selectedCounterparty!.organizationWithOptionalSro!.individualEntrepreneur = entity;
-    this.displayCounterpartyName = this.individualEntrepreneurToString(entity);
-    if (entity.sro) {
-      this.displayCounterpartySro = entity.sro.name + ", ОГРН " + entity.sro.ogrn + ", ИНН " + entity.sro.inn;
-    } else {
-      this.displayCounterpartySro = "н/у";
-    }
-    this.counterpartySelected(this.selectedCounterparty!,
-      this.selectedCounterparty!.organizationWithOptionalSro!.individualEntrepreneur.uuid)
-  }
+  abstract individualEntrepreneurSelected(entity: IndividualEntrepreneur): void;
 
-  legalEntitySelected(entity: LegalEntity) {
-    this.dropCounterparty();
-    this.selectedCounterparty!.organizationWithOptionalSro!.legalEntity = entity;
-    this.displayCounterpartyName = this.legalEntityToString(entity);
-    if (entity.sro) {
-      this.displayCounterpartySro = entity.sro.name + ", ОГРН " + entity.sro.ogrn + ", ИНН " + entity.sro.inn;
-    } else {
-      this.displayCounterpartySro = "н/у";
-    }
-    this.counterpartySelected(this.selectedCounterparty!,
-      this.selectedCounterparty!.organizationWithOptionalSro!.legalEntity.uuid)
-  }
+  abstract legalEntitySelected(entity: LegalEntity): void;
 
   /*
    Формирование строки для отображения контрагента
    */
-  private individualToString(entity: Individual): string {
+  protected individualToString(entity: Individual): string {
     return entity.fullNameGroup.lastName + " " +
       entity.fullNameGroup.firstName +
       (entity.fullNameGroup.middleName ? (" " + entity.fullNameGroup.middleName) : "") + ", " +
@@ -154,14 +111,14 @@ export abstract class SelectCounterparty implements OnInit {
       entity.address;
   }
 
-  private individualEntrepreneurToString(entity: IndividualEntrepreneur): string {
+  protected individualEntrepreneurToString(entity: IndividualEntrepreneur): string {
     return entity.fullNameGroup.lastName + " " +
       entity.fullNameGroup.firstName +
       (entity.fullNameGroup.middleName ? (" " + entity.fullNameGroup.middleName) : "") + ", " +
       entity.address + ", ОГРНИП " + entity.ogrnip + ", ИНН " + entity.inn;
   }
 
-  private legalEntityToString(entity: LegalEntity): string {
+  protected legalEntityToString(entity: LegalEntity): string {
     return entity.fullName + ", ОГРН " + entity.ogrn + ", ИНН " + entity.inn + ", "
       + entity.address + (entity.phone ? (", т/ф: " + entity.phone) : "");
   }
@@ -195,5 +152,4 @@ export abstract class SelectCounterparty implements OnInit {
       }
     }
   }
-
 }
